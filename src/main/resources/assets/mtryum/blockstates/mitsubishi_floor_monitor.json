@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "mtryum:block/mitsubishi_floor_monitor"
+    },
+    "facing=north": {
+      "model": "mtryum:block/mitsubishi_floor_monitor",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "mtryum:block/mitsubishi_floor_monitor",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "mtryum:block/mitsubishi_floor_monitor",
+      "y": 180
+    }
+  }
+}
