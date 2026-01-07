@@ -195,7 +195,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
         matrices.mulPose(Axis.YP.rotationDegrees(180));
 
-        OptimizedFontRenderer.renderText(
+        CustomFontRenderer.renderText(
                 matrices,
                 vertexConsumers,
                 floor,
@@ -305,7 +305,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         matrices.scale(arrowScale, -arrowScale, arrowScale);
         matrices.mulPose(Axis.YP.rotationDegrees(180));
         
-        OptimizedFontRenderer.renderText(
+        CustomFontRenderer.renderText(
                 matrices,
                 vertexConsumers,
                 arrowText,
