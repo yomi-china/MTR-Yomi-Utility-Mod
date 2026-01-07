@@ -18,15 +18,15 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DynamicFontTextureManager implements ResourceManagerReloadListener {
-    private static DynamicFontTextureManager instance;
+public class CustomFontManager implements ResourceManagerReloadListener {
+    private static CustomFontManager instance;
     private final Map<String, FontTexture> textureCache = new HashMap<>();
     private final Map<String, Font> fontCache = new HashMap<>();
     private boolean initialized = false;
 
-    public static DynamicFontTextureManager getInstance() {
+    public static CustomFontManager getInstance() {
         if (instance == null) {
-            instance = new DynamicFontTextureManager();
+            instance = new CustomFontManager();
         }
         return instance;
     }
@@ -63,7 +63,6 @@ public class DynamicFontTextureManager implements ResourceManagerReloadListener 
             Font font;
 
             if (fontPath != null) {
-                // 从资源文件加载
                 InputStream fontStream = getClass().getClassLoader().getResourceAsStream(fontPath);
                 if (fontStream == null) {
                     // 尝试备用路径
@@ -75,7 +74,6 @@ public class DynamicFontTextureManager implements ResourceManagerReloadListener 
                             .deriveFont(Font.PLAIN, baseSize);
                     fontStream.close();
 
-                    // 注册到系统
                     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                     ge.registerFont(font);
                     Mtryum.LOGGER.info("Loaded custom font: {} from {}", fontName, fontPath);
@@ -91,7 +89,7 @@ public class DynamicFontTextureManager implements ResourceManagerReloadListener 
             fontCache.put(fontName, font);
         } catch (Exception e) {
             Mtryum.LOGGER.error("Failed to load font {}: {}", fontName, e.getMessage());
-            // 使用默认字体作为回退
+            // 回退
             fontCache.put(fontName, new Font("SansSerif", Font.PLAIN, baseSize));
         }
     }
@@ -206,7 +204,6 @@ public class DynamicFontTextureManager implements ResourceManagerReloadListener 
                 int g = (color >> 8) & 0xFF;
                 int b = color & 0xFF;
 
-                // 应用颜色和透明度
                 int rgba = (a << 24) | (r << 16) | (g << 8) | b;
                 nativeImage.setPixelRGBA(x, y, rgba);
             }
@@ -231,7 +228,6 @@ public class DynamicFontTextureManager implements ResourceManagerReloadListener 
         clearCache();
     }
 
-    // 纹理包装类
     public static class FontTexture {
         private final NativeImage image;
         private final int width;

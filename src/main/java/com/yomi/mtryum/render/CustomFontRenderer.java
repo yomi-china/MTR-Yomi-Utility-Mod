@@ -17,8 +17,8 @@ import org.joml.Matrix4f;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OptimizedFontRenderer {
-    private static final Map<String, OptimizedFontRenderer> INSTANCES = new HashMap<>();
+public class CustomFontRenderer {
+    private static final Map<String, CustomFontRenderer> INSTANCES = new HashMap<>();
 
     private final String fontName;
     private ResourceLocation fontAtlas;
@@ -31,16 +31,16 @@ public class OptimizedFontRenderer {
                     "abcdefghijklmnopqrstuvwxyz" +
                     " .:-+*/|<>()[]{}";
 
-    public OptimizedFontRenderer(String fontName) {
+    public CustomFontRenderer(String fontName) {
         this.fontName = fontName;
     }
 
-    public static OptimizedFontRenderer getInstance(String fontName) {
-        return INSTANCES.computeIfAbsent(fontName, OptimizedFontRenderer::new);
+    public static CustomFontRenderer getInstance(String fontName) {
+        return INSTANCES.computeIfAbsent(fontName, CustomFontRenderer::new);
     }
 
-    // 向后兼容的方法
-    public static OptimizedFontRenderer getInstance() {
+    // 向后兼容
+    public static CustomFontRenderer getInstance() {
         return getInstance("mitsubishi-modern");
     }
 
@@ -57,7 +57,7 @@ public class OptimizedFontRenderer {
     }
 
     private void generateFontAtlas() {
-        DynamicFontTextureManager fontManager = DynamicFontTextureManager.getInstance();
+        CustomFontManager fontManager = CustomFontManager.getInstance();
         fontManager.initialize();
 
         int atlasWidth = 1024;
@@ -82,7 +82,7 @@ public class OptimizedFontRenderer {
         int padding = 1; // 字符间填充
 
         for (char c : DEFAULT_CHAR_SET.toCharArray()) {
-            DynamicFontTextureManager.FontTexture charTexture =
+            CustomFontManager.FontTexture charTexture =
                     fontManager.getStringTexture(String.valueOf(c), 0xFFFFFFFF, fontName);
 
             if (charTexture != null && charTexture.getImage() != null) {
@@ -148,7 +148,7 @@ public class OptimizedFontRenderer {
     ) {
         if (text == null || text.isEmpty()) return;
 
-        OptimizedFontRenderer renderer = getInstance(fontName);
+        CustomFontRenderer renderer = getInstance(fontName);
         if (!renderer.initialized) {
             renderer.initialize();
         }
@@ -270,7 +270,7 @@ public class OptimizedFontRenderer {
     }
 
     public static void cleanupAll() {
-        for (OptimizedFontRenderer renderer : INSTANCES.values()) {
+        for (CustomFontRenderer renderer : INSTANCES.values()) {
             renderer.cleanup();
         }
         INSTANCES.clear();
