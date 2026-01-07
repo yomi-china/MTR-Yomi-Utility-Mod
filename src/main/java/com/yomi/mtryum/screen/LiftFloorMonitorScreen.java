@@ -1,11 +1,15 @@
 package com.yomi.mtryum.screen;
 
 import com.yomi.mtryum.block.LiftFloorMonitorEntity;
+import com.yomi.mtryum.network.LiftFloorMonitorPacket;
+import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -14,9 +18,10 @@ public class LiftFloorMonitorScreen extends Screen {
     private EditBox colorInput;
     private Button style1Button;
     private Button style2Button;
+    private int currentStyle = 1;
 
     public LiftFloorMonitorScreen(BlockPos pos) {
-        super(Component.literal("蒂森风格电梯楼层显示器 设置"));
+        super(Component.translatable("screen.mtryum.set_style_title"));
         this.pos = pos;
     }
 
@@ -29,6 +34,7 @@ public class LiftFloorMonitorScreen extends Screen {
             BlockEntity entity = minecraft.level.getBlockEntity(pos);
             if (entity instanceof LiftFloorMonitorEntity tile) {
                 currentColor = tile.getTextColor();
+                currentStyle = tile.getArrowStyle();
             }
         }
 
@@ -83,12 +89,12 @@ public class LiftFloorMonitorScreen extends Screen {
         try {
             int newColor = Integer.parseInt(colorInput.getValue(), 16);
 
-            if (minecraft != null && minecraft.level != null) {
-                BlockEntity entity = minecraft.level.getBlockEntity(pos);
-                if (entity instanceof LiftFloorMonitorEntity tile) {
-                    tile.setTextColor(newColor);
-                }
-            }
+            // 发送颜色设置到服务端
+            FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+            buf.writeBlockPos(pos);
+            buf.writeInt(newColor);
+            ClientPlayNetworking.send(LiftFloorMonitorPacket.SET_COLOR, buf);
+
         } catch (NumberFormatException e) {
             System.out.println("无效颜色代码: " + colorInput.getValue());
         }
@@ -96,24 +102,20 @@ public class LiftFloorMonitorScreen extends Screen {
     }
 
     private void setStyle(int style) {
-        if (minecraft != null && minecraft.level != null) {
-            BlockEntity entity = minecraft.level.getBlockEntity(pos);
-            if (entity instanceof LiftFloorMonitorEntity tile) {
-                tile.setArrowStyle(style);
-                updateButtonStyles();
-            }
-        }
+        // 发送样式设置到服务端
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        buf.writeBlockPos(pos);
+        buf.writeInt(style);
+        ClientPlayNetworking.send(LiftFloorMonitorPacket.SET_ARROW_STYLE, buf);
+
+        // 更新本地缓存和按钮状态
+        currentStyle = style;
+        updateButtonStyles();
     }
 
     private void updateButtonStyles() {
-        if (minecraft != null && minecraft.level != null) {
-            BlockEntity entity = minecraft.level.getBlockEntity(pos);
-            if (entity instanceof LiftFloorMonitorEntity tile) {
-                int currentStyle = tile.getArrowStyle();
-                style1Button.active = currentStyle != 1;
-                style2Button.active = currentStyle != 2;
-            }
-        }
+        style1Button.active = currentStyle != 1;
+        style2Button.active = currentStyle != 2;
     }
 
     @Override
