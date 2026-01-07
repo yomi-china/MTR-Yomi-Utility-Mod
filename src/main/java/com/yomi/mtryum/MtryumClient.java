@@ -5,12 +5,12 @@ import com.yomi.mtryum.block.LiftFloorMonitorEntity;
 import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
-import com.yomi.mtryum.render.DynamicFontTextureManager;
+import com.yomi.mtryum.render.CustomFontManager;
 import com.yomi.mtryum.render.LiftArrivalLightRenderer;
 import com.yomi.mtryum.render.LiftFloorMonitorRenderer;
 import com.yomi.mtryum.render.MLFMRender;
 import com.yomi.mtryum.render.MitsubishiStyleLiftButtonsRenderer;
-import com.yomi.mtryum.render.OptimizedFontRenderer;
+import com.yomi.mtryum.render.CustomFontRenderer;
 import com.yomi.mtryum.render.TKClassicLiftButtonsRenderer;
 import com.yomi.mtryum.screen.LiftArrivalSoundPlayerScreen;
 import com.yomi.mtryum.screen.LiftFloorMonitorScreen;
@@ -86,14 +86,14 @@ public class MtryumClient implements ClientModInitializer {
                 MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY,
                 TKClassicLiftButtonsRenderer::new
         );
-        DynamicFontTextureManager fontManager = DynamicFontTextureManager.getInstance();
+        CustomFontManager fontManager = CustomFontManager.getInstance();
         fontManager.initialize();
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
                 .registerReloadListener(new SimpleSynchronousResourceReloadListener() {
                     @Override
                     public void onResourceManagerReload(ResourceManager resourceManager) {
-                        DynamicFontTextureManager.getInstance().clearCache();
-                        OptimizedFontRenderer.cleanupAll();
+                        CustomFontManager.getInstance().clearCache();
+                        CustomFontRenderer.cleanupAll();
                     }
 
                     @Override

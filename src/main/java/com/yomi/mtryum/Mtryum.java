@@ -1,6 +1,7 @@
 package com.yomi.mtryum;
 
 import com.yomi.mtryum.item.LiftFloorSetterItem;
+import com.yomi.mtryum.network.LiftFloorMonitorPacket;
 import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
@@ -24,6 +25,7 @@ public class Mtryum implements ModInitializer {
         MtryumItemGroup.register();
         MtryumSounds.register();
         SetSoundIndexPacket.register();
+        LiftFloorMonitorPacket.register();
         UseBlockCallback.EVENT.register(LiftFloorSetterItem::onBlockUse);
         LOGGER.info("MTR Yomi Utility Mod Initialized!");
     }

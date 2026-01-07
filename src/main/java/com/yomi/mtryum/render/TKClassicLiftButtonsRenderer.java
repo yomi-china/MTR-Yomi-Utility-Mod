@@ -20,19 +20,19 @@ public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TK
         this.arrowColor = 0xFFFF0000;
         this.buttonTintColor = 0xFFFFFF;
 
-        this.fontName = "new-thyssenkrupp";
+        this.fontName = "old-thyssenkrupp";
         this.defaultFloorText = "JU";
 
         this.baseYOffset = -0.135f;
-        this.floorNumberY = 0.67f;
+        this.floorNumberY = 0.675f;
         this.arrowY = 0.75f;
-        this.buttonUpY = 0.48f;
-        this.buttonDownY = 0.35f;
+        this.buttonUpY = 0.47f;
+        this.buttonDownY = 0.36f;
 
-        this.buttonSize = 0.075f;
+        this.buttonSize = 0.06f;
         this.arrowWidth = 0.125f;
         this.arrowHeight = 0.125f;
-        this.depthOffset = 0.002f;
+        this.depthOffset = 0.0015f;
 
         this.floorScaleTwoChars = 0.0012f;
         this.floorScaleThreeChars = 0.0010f;

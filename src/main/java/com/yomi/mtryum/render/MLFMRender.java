@@ -183,7 +183,7 @@ public class MLFMRender implements BlockEntityRenderer<MLFMEntity> {
 
         int color = 0xFFFF8C00;
 
-        OptimizedFontRenderer.renderText(
+        CustomFontRenderer.renderText(
                 matrices,
                 vertexConsumers,
                 floor,
