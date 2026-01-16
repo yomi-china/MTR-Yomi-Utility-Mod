@@ -43,7 +43,7 @@ public class TKClassicLiftButtonsBlock extends BlockLiftButtons {
         super();
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(UNLOCKED, false)
+                .setValue(UNLOCKED, true)
         );
     }
 
