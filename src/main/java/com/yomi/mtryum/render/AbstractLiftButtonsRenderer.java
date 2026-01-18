@@ -58,12 +58,11 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     protected float floorScaleExtraReduction = 0.0001f;// 每多一个字的缩放减少
     protected float floorScaleMin = 0.0001f;// 最小缩放
     protected float arrowScale = 0.0008f;// 箭头缩放
-    
-    // 箭头渲染模式，有字体的用字体，没有的用纹理。
+
     // TODO：动画渲染
     protected ArrowRenderMode arrowRenderMode = ArrowRenderMode.TEXTURE;
 
-    //很多电梯字体中，上下箭头用大于和小于号来表示
+    // 很多电梯字体中，上下箭头用大于和小于号来表示
     protected String arrowUpText = "<";
     protected String arrowDownText = ">";
 
