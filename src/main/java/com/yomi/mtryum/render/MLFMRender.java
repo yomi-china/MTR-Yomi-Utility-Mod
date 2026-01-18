@@ -107,7 +107,6 @@ public class MLFMRender implements BlockEntityRenderer<MLFMEntity> {
 
         matrices.pushPose();
 
-        // 如果需要旋转180度，则先平移到中心，旋转，再平移回去
         if (rotate180) {
             float centerX = (minX + maxX) / 2.0f;
             float centerY = (minY + maxY) / 2.0f;
