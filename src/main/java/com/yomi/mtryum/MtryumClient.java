@@ -1,13 +1,13 @@
 package com.yomi.mtryum;
 
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
-import com.yomi.mtryum.block.LiftFloorMonitorEntity;
+import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
 import com.yomi.mtryum.render.CustomFontManager;
 import com.yomi.mtryum.render.LiftArrivalLightRenderer;
-import com.yomi.mtryum.render.LiftFloorMonitorRenderer;
+import com.yomi.mtryum.render.TKClassicFloorMonitorRenderer;
 import com.yomi.mtryum.render.MLFMRender;
 import com.yomi.mtryum.render.MitsubishiStyleLiftButtonsRenderer;
 import com.yomi.mtryum.render.CustomFontRenderer;
@@ -72,7 +72,7 @@ public class MtryumClient implements ClientModInitializer {
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.LIFT_FLOOR_MONITOR,
-                ctx -> new LiftFloorMonitorRenderer()
+                ctx -> new TKClassicFloorMonitorRenderer()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.MLFM_ENTITY,
@@ -108,7 +108,7 @@ public class MtryumClient implements ClientModInitializer {
                     if (pendingFMScreenPos != null) {
                         if (client.level != null) {
                             BlockEntity entity = client.level.getBlockEntity(pendingFMScreenPos);
-                            if (entity instanceof LiftFloorMonitorEntity) {
+                            if (entity instanceof TKClassicFloorMonitorEntity) {
                                 client.setScreen(new LiftFloorMonitorScreen(pendingFMScreenPos));
                             }
                         }

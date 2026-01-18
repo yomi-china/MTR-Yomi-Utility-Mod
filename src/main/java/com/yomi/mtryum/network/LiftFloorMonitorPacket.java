@@ -1,7 +1,7 @@
 package com.yomi.mtryum.network;
 
 import com.yomi.mtryum.Mtryum;
-import com.yomi.mtryum.block.LiftFloorMonitorEntity;
+import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ public class LiftFloorMonitorPacket {
         
         server.execute(() -> {
             if (player.level() instanceof ServerLevel level) {
-                if (level.getBlockEntity(pos) instanceof LiftFloorMonitorEntity tile) {
+                if (level.getBlockEntity(pos) instanceof TKClassicFloorMonitorEntity tile) {
                     tile.setTextColor(color);
                 }
             }
@@ -44,7 +44,7 @@ public class LiftFloorMonitorPacket {
         
         server.execute(() -> {
             if (player.level() instanceof ServerLevel level) {
-                if (level.getBlockEntity(pos) instanceof LiftFloorMonitorEntity tile) {
+                if (level.getBlockEntity(pos) instanceof TKClassicFloorMonitorEntity tile) {
                     tile.setArrowStyle(style);
                 }
             }

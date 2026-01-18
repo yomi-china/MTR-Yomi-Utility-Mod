@@ -1,6 +1,6 @@
 package com.yomi.mtryum.screen;
 
-import com.yomi.mtryum.block.LiftFloorMonitorEntity;
+import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.network.LiftFloorMonitorPacket;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -32,7 +32,7 @@ public class LiftFloorMonitorScreen extends Screen {
         int currentColor = 0xFFFFFF;
         if (minecraft != null && minecraft.level != null) {
             BlockEntity entity = minecraft.level.getBlockEntity(pos);
-            if (entity instanceof LiftFloorMonitorEntity tile) {
+            if (entity instanceof TKClassicFloorMonitorEntity tile) {
                 currentColor = tile.getTextColor();
                 currentStyle = tile.getArrowStyle();
             }

@@ -3,7 +3,7 @@ package com.yomi.mtryum.registry;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerBlock;
-import com.yomi.mtryum.block.LiftFloorMonitorBlock;
+import com.yomi.mtryum.block.TKClassicFloorMonitorBlock;
 import com.yomi.mtryum.block.MLFMBlock;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlock;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlock;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.Block;
 public class MtryumBlocks {
     public static final Block LIFT_ARRIVAL_LIGHT_BLOCK = new LiftArrivalLightBlock();
     public static final Block LIFT_ARRIVAL_SOUND_PLAYER_BLOCK = new LiftArrivalSoundPlayerBlock();
-    public static final Block LIFT_FLOOR_MONITOR = new LiftFloorMonitorBlock();
+    public static final Block LIFT_FLOOR_MONITOR = new TKClassicFloorMonitorBlock();
     public static final Block MLFM = new MLFMBlock();
     public static final Block MITSUBISHI_STYLE_LIFT_BUTTONS = new MitsubishiStyleLiftButtonsBlock();
     public static final Block TK_STYLE_LIFT_BUTTONS = new TKClassicLiftButtonsBlock();
