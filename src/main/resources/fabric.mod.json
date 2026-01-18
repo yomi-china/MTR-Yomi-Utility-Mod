@@ -8,7 +8,8 @@
     "yomi_307"
   ],
   "contact": {
-    "homepage": "https://yomi-china.github.io/"
+    "homepage": "https://yomi-china.github.io/mod-mtryum/",
+    "sources": "https://github.com/yomi-china/MTR-Yomi-Utility-Mod/"
   },
   "icon": "assets/mtryum/icon.png",
   "environment": "*",
