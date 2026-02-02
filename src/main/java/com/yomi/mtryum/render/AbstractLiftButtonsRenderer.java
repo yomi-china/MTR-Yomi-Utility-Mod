@@ -2,7 +2,7 @@ package com.yomi.mtryum.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import com.yomi.mtryum.Mtryum;
 import mtr.client.ClientData;
 import mtr.data.Lift;
@@ -192,7 +192,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         float scale = calculateFloorNumberScale(floor);
         matrices.scale(scale, -scale, scale);
 
-        matrices.mulPose(Axis.YP.rotationDegrees(180));
+        matrices.mulPose(Vector3f.YP.rotationDegrees(180));
 
         CustomFontRenderer.renderText(
                 matrices,
@@ -250,7 +250,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         
         if (rotateArrow) {
             matrices.translate(centerX, (minY + maxY) / 2.0f, 0);
-            matrices.mulPose(Axis.ZP.rotationDegrees(180));
+            matrices.mulPose(Vector3f.ZP.rotationDegrees(180));
             matrices.translate(-centerX, -(minY + maxY) / 2.0f, 0);
         }
         
@@ -302,7 +302,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         
         matrices.translate(0.5f, arrowY, depthOffset);
         matrices.scale(arrowScale, -arrowScale, arrowScale);
-        matrices.mulPose(Axis.YP.rotationDegrees(180));
+        matrices.mulPose(Vector3f.YP.rotationDegrees(180));
         
         CustomFontRenderer.renderText(
                 matrices,
@@ -342,7 +342,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
             float centerX = 0.5f;
             float centerY = (minY + maxY) / 2.0f;
             matrices.translate(centerX, centerY, 0);
-            matrices.mulPose(Axis.ZP.rotationDegrees(180));
+            matrices.mulPose(Vector3f.ZP.rotationDegrees(180));
             matrices.translate(-centerX, -centerY, 0);
         }
         
@@ -406,15 +406,15 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 break;
             case EAST:
                 matrices.translate(0.99, baseYOffset, 1);
-                matrices.mulPose(Axis.YP.rotationDegrees(90));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(90));
                 break;
             case NORTH:
                 matrices.translate(1, baseYOffset, 0.01);
-                matrices.mulPose(Axis.YP.rotationDegrees(180));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(180));
                 break;
             case WEST:
                 matrices.translate(0.01, baseYOffset, 0);
-                matrices.mulPose(Axis.YP.rotationDegrees(270));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(270));
                 break;
             default:
                 break;

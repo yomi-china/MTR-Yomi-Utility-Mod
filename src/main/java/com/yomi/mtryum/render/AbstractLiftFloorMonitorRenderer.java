@@ -2,7 +2,7 @@ package com.yomi.mtryum.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import mtr.client.ClientData;
 import mtr.data.Lift;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -110,15 +110,15 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
                 break;
             case EAST:
                 matrices.translate(0.99, -0.135, 1);
-                matrices.mulPose(Axis.YP.rotationDegrees(90));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(90));
                 break;
             case NORTH:
                 matrices.translate(1, -0.135, 0.01);
-                matrices.mulPose(Axis.YP.rotationDegrees(180));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(180));
                 break;
             case WEST:
                 matrices.translate(0.01, -0.135, 0);
-                matrices.mulPose(Axis.YP.rotationDegrees(270));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(270));
                 break;
         }
     }
@@ -158,7 +158,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
 
         if (rotate180) {
             matrices.translate(centerX, centerY, 0);
-            matrices.mulPose(Axis.ZP.rotationDegrees(180));
+            matrices.mulPose(Vector3f.ZP.rotationDegrees(180));
             matrices.translate(-centerX, -centerY, 0);
         }
 
@@ -214,7 +214,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
 
         matrices.translate(0.725f, arrowYOffset, depthOffset);
         matrices.scale(arrowTextScale, -arrowTextScale, arrowTextScale);
-        matrices.mulPose(Axis.YP.rotationDegrees(180));
+        matrices.mulPose(Vector3f.YP.rotationDegrees(180));
 
         float textWidth = getTextWidth(arrowText) * arrowTextScale;
         matrices.translate(-textWidth / 2, 0, 0);
@@ -252,7 +252,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         float fn_scale = calculateFloorScale(floor.length());
 
         matrices.scale(fn_scale, -fn_scale, fn_scale);
-        matrices.mulPose(Axis.YP.rotationDegrees(180));
+        matrices.mulPose(Vector3f.YP.rotationDegrees(180));
 
         int alpha = (floorColor >> 24) & 0xFF;
         int red = (floorColor >> 16) & 0xFF;

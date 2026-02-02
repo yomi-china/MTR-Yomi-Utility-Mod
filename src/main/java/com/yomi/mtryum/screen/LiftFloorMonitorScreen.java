@@ -4,7 +4,7 @@ import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.network.LiftFloorMonitorPacket;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -38,7 +38,6 @@ public class LiftFloorMonitorScreen extends Screen {
             }
         }
 
-        // 创建输入框
         colorInput = new EditBox(
                 this.font,
                 this.width / 2 - 100,
@@ -50,38 +49,33 @@ public class LiftFloorMonitorScreen extends Screen {
         colorInput.setValue(String.format("%06X", currentColor));
         addRenderableWidget(colorInput);
 
-        // 创建确认按钮
-        Button confirmButton = Button.builder(
-                Component.literal("确认"),
-                button -> saveAndClose()
-        ).bounds(
+        Button confirmButton = new Button(
                 this.width / 2 - 50,
                 this.height / 2 + 80,
-                100, 20
-        ).build();
+                100, 20,
+                Component.literal("确认"),
+                button -> saveAndClose()
+        );
         addRenderableWidget(confirmButton);
 
-        style1Button = Button.builder(
-                Component.literal("样式1"),
-                button -> setStyle(1)
-        ).bounds(
+        style1Button = new Button(
                 this.width / 2 - 105,
                 this.height / 2 + 45,
-                100, 20
-        ).build();
+                100, 20,
+                Component.literal("样式1"),
+                button -> setStyle(1)
+        );
         addRenderableWidget(style1Button);
 
-        style2Button = Button.builder(
-                Component.literal("样式2"),
-                button -> setStyle(2)
-        ).bounds(
+        style2Button = new Button(
                 this.width / 2 + 5,
                 this.height / 2 + 45,
-                100, 20
-        ).build();
+                100, 20,
+                Component.literal("样式2"),
+                button -> setStyle(2)
+        );
         addRenderableWidget(style2Button);
 
-        // 初始选中状态
         updateButtonStyles();
     }
 
@@ -89,7 +83,6 @@ public class LiftFloorMonitorScreen extends Screen {
         try {
             int newColor = Integer.parseInt(colorInput.getValue(), 16);
 
-            // 发送颜色设置到服务端
             FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
             buf.writeBlockPos(pos);
             buf.writeInt(newColor);
@@ -102,13 +95,11 @@ public class LiftFloorMonitorScreen extends Screen {
     }
 
     private void setStyle(int style) {
-        // 发送样式设置到服务端
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeBlockPos(pos);
         buf.writeInt(style);
         ClientPlayNetworking.send(LiftFloorMonitorPacket.SET_ARROW_STYLE, buf);
 
-        // 更新本地缓存和按钮状态
         currentStyle = style;
         updateButtonStyles();
     }
@@ -119,12 +110,12 @@ public class LiftFloorMonitorScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, partialTick);
 
-        // 绘制标题
-        guiGraphics.drawCenteredString(
+        drawCenteredString(
+                poseStack,
                 this.font,
                 this.title,
                 this.width / 2,
@@ -132,17 +123,18 @@ public class LiftFloorMonitorScreen extends Screen {
                 0xFFFFFF
         );
 
-        // 绘制说明文本
-        guiGraphics.drawString(
+        drawString(
+                poseStack,
                 this.font,
-                "十六进制颜色代码 (常用: 白FFFFFF, 红FF0000)",
+                Component.literal("十六进制颜色代码 (常用: 白FFFFFF, 红FF0000)"),
                 this.width / 2 - 100,
                 this.height / 2 - 40,
                 0xAAAAAA
         );
-        guiGraphics.drawString(
+        drawString(
+                poseStack,
                 this.font,
-                "箭头样式（输入数字）",
+                Component.literal("箭头样式（输入数字）"),
                 this.width / 2 - 100,
                 this.height / 2 + 25,
                 0xAAAAAA

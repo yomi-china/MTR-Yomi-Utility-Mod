@@ -1,7 +1,7 @@
 package com.yomi.mtryum.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import com.yomi.mtryum.block.TKClassicFloorMonitorBlock;
 import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import mtr.data.Lift;
@@ -84,23 +84,23 @@ public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClas
         switch (facing) {
             case NORTH -> {
                 matrices.translate(0.47, 0.69, TEXT_OFFSET);
-                matrices.mulPose(Axis.YP.rotationDegrees(180));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(180));
             }
             case SOUTH -> {
                 matrices.translate(0.47, 0.69, 1 - TEXT_OFFSET);
-                matrices.mulPose(Axis.YP.rotationDegrees(0));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(0));
             }
             case EAST -> {
                 matrices.translate(1 - TEXT_OFFSET, 0.69, 0.47);
-                matrices.mulPose(Axis.YP.rotationDegrees(90));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(90));
             }
             case WEST -> {
                 matrices.translate(TEXT_OFFSET, 0.69, 0.47);
-                matrices.mulPose(Axis.YP.rotationDegrees(-90));
+                matrices.mulPose(Vector3f.YP.rotationDegrees(-90));
             }
         }
         matrices.scale(TEXT_SCALE, TEXT_SCALE, TEXT_SCALE);
-        matrices.mulPose(Axis.ZP.rotationDegrees(180));
+        matrices.mulPose(Vector3f.ZP.rotationDegrees(180));
     }
 
     private void renderText(PoseStack matrices, MultiBufferSource buffer, String text, int color) {
@@ -115,7 +115,7 @@ public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClas
                 false,
                 matrices.last().pose(),
                 buffer,
-                Font.DisplayMode.NORMAL,
+                true,
                 0,
                 15728880
         );

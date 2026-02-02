@@ -9,7 +9,7 @@ import mtr.block.BlockLiftTrackFloor;
 import mtr.item.ItemLiftButtonsLinkModifier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -56,7 +56,7 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
         if (world.isClientSide) return;
 
         try {
-            final ResourceLocation clickedblockId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+            final ResourceLocation clickedblockId = Registry.BLOCK.getKey(state.getBlock());
 
             if (LIFT_TRACK_ID.equals(clickedblockId.toString())) {
                 handleTrackConnection(context, compoundTag, clickedPos);

@@ -6,7 +6,7 @@ import mtr.mappings.BlockEntityMapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -84,7 +84,7 @@ public class LiftArrivalLightBlock extends BlockLiftPanelBase {
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         final ItemStack stack = player.getItemInHand(hand);
-        if (BuiltInRegistries.ITEM.getKey(stack.getItem()).equals(BRUSH_ITEM_ID)) {
+        if (Registry.ITEM.getKey(stack.getItem()).equals(BRUSH_ITEM_ID)) {
             final Position currentPosition = state.getValue(POSITION);
             world.setBlockAndUpdate(pos, state.setValue(POSITION, currentPosition == Position.CENTER ? Position.RIGHT : Position.CENTER));
             return InteractionResult.SUCCESS;

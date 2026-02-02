@@ -9,7 +9,6 @@ import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlockEntity;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
@@ -23,7 +22,7 @@ public class MtryumBlockEntities {
 
     public static void register() {
         LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY = Registry.register(
-                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Registry.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_light_block_entity"),
                 FabricBlockEntityTypeBuilder.create(
                         LiftArrivalLightBlock.Entity::new,
@@ -31,7 +30,7 @@ public class MtryumBlockEntities {
                 ).build(null)
         );
         LIFT_ARRIVAL_SOUND_PLAYER_ENTITY = Registry.register(
-                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Registry.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_player_entity"),
                 FabricBlockEntityTypeBuilder.create(
                         LiftArrivalSoundPlayerEntity::new,
@@ -39,7 +38,7 @@ public class MtryumBlockEntities {
                 ).build(null)
         );
         LIFT_FLOOR_MONITOR = Registry.register(
-                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Registry.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "lift_floor_monitor"),
                 FabricBlockEntityTypeBuilder.create(
                         (pos, state) -> new TKClassicFloorMonitorEntity(LIFT_FLOOR_MONITOR, pos, state),
@@ -47,7 +46,7 @@ public class MtryumBlockEntities {
                 ).build(null)
         );
         MLFM_ENTITY = Registry.register(
-                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Registry.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "mitsubishi_floor_monitor"),
                 FabricBlockEntityTypeBuilder.create(
                         (pos, state) -> new MLFMEntity(MLFM_ENTITY, pos, state),
@@ -55,7 +54,7 @@ public class MtryumBlockEntities {
                 ).build(null)
         );
         MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY = Registry.register(
-                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Registry.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "mitsubishi_style_lift_buttons"),
                 FabricBlockEntityTypeBuilder.create(
                         MitsubishiStyleLiftButtonsBlockEntity::new,
@@ -63,7 +62,7 @@ public class MtryumBlockEntities {
                 ).build(null)
         );
         TK_STYLE_LIFT_BUTTONS_ENTITY = Registry.register(
-                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Registry.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "tk_style_lift_buttons"),
                 FabricBlockEntityTypeBuilder.create(
                         TKClassicLiftButtonsBlockEntity::new,

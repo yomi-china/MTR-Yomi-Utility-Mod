@@ -4,7 +4,6 @@ import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.item.LiftAutoConnectorItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -22,11 +21,11 @@ public class MtryumItems {
     public static final Item ONBOARD_TOOL = registerItem("onboard_tool", new Item(new FabricItemSettings().stacksTo(1)));
 
     private static Item registerItem(String name, Item item) {
-        return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Mtryum.MOD_ID, name), item);
+        return Registry.register(Registry.ITEM, new ResourceLocation(Mtryum.MOD_ID, name), item);
     }
 
     private static Item registerBlockItem(String name, net.minecraft.world.level.block.Block block) {
-        return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Mtryum.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
+        return Registry.register(Registry.ITEM, new ResourceLocation(Mtryum.MOD_ID, name), new BlockItem(block, new FabricItemSettings()));
     }
 
     public static void register() {

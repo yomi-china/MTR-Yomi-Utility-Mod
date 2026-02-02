@@ -2,7 +2,7 @@ package com.yomi.mtryum.item;
 
 import com.yomi.mtryum.registry.MtryumItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +29,7 @@ public class LiftFloorSetterItem {
 
         BlockPos startPos = hitResult.getBlockPos();
         BlockState state = world.getBlockState(startPos);
-        String blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
+        String blockId = Registry.BLOCK.getKey(state.getBlock()).toString();
 
         if (blockId.equals(SOUND_PLAYER_BLOCK_ID)) {
             int selectedSound = getSoundIndexFromBlockEntity(world, startPos);
@@ -59,7 +59,7 @@ public class LiftFloorSetterItem {
         for (int y = minY; y <= maxY; y++) {
             BlockPos pos = new BlockPos(startPos.getX(), y, startPos.getZ());
             BlockState state = world.getBlockState(pos);
-            String blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
+            String blockId = Registry.BLOCK.getKey(state.getBlock()).toString();
             if (blockId.equals(SOUND_PLAYER_BLOCK_ID)) {
                 updateSoundIndexNBT(world, pos, soundIndex);
             }
@@ -85,7 +85,7 @@ public class LiftFloorSetterItem {
 
         while (true) {
             BlockState state = world.getBlockState(currentPos);
-            String blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
+            String blockId = Registry.BLOCK.getKey(state.getBlock()).toString();
 
             if (blockId.equals(ELEVATOR_FLOOR_ID)) {
                 updateFloorNBT(world, currentPos, currentFloor++);

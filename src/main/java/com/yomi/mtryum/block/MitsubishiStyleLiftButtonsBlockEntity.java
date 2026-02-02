@@ -21,6 +21,7 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
     private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
     public static final Logger LOGGER = LoggerFactory.getLogger("MSLB");
 
+
     public MitsubishiStyleLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
     }

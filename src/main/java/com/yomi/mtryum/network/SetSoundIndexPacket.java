@@ -56,7 +56,7 @@ public class SetSoundIndexPacket {
         int soundIndex = buf.readInt();
 
         server.execute(() -> {
-            ServerLevel world = (ServerLevel) player.level();
+            ServerLevel world = (ServerLevel) player.level;
             if (world.hasChunkAt(pos)) {
                 BlockEntity entity = world.getBlockEntity(pos);
                 if (entity instanceof LiftArrivalSoundPlayerEntity) {

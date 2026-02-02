@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -37,6 +38,7 @@ import java.util.List;
 
 public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
 
+    public static final BooleanProperty UNLOCKED = BlockLiftButtons.UNLOCKED;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public MitsubishiStyleLiftButtonsBlock() {
@@ -100,6 +102,7 @@ public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+
         final InteractionResult result = IBlock.checkHoldingBrush(world, player, () -> {
             final boolean unlocked = !IBlock.getStatePropertySafe(state, UNLOCKED);
             world.setBlockAndUpdate(pos, state.setValue(UNLOCKED, unlocked));

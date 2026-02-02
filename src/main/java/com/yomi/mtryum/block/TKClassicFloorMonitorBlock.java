@@ -7,7 +7,7 @@ import mtr.mappings.BlockEntityMapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -87,7 +87,7 @@ public class TKClassicFloorMonitorBlock extends BlockLiftButtons {
         ItemStack stack = player.getItemInHand(hand);
         final Item item = stack.getItem();
 
-        if (BuiltInRegistries.ITEM.getKey(item).equals(BRUSH_ITEM_ID)) {
+        if (Registry.ITEM.getKey(item).equals(BRUSH_ITEM_ID)) {
             if (!world.isClientSide()) {
                 BlockEntity entity = world.getBlockEntity(pos);
                 if (entity instanceof TKClassicFloorMonitorEntity tile) {

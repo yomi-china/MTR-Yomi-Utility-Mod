@@ -1,7 +1,7 @@
 package com.yomi.mtryum.screen;
 
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
-import net.minecraft.client.gui.GuiGraphics;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -31,7 +31,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
             }
         }
 
-        // 创建输入框
         soundIndexInput = new EditBox(
                 this.font,
                 this.width / 2 - 100,
@@ -42,18 +41,15 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         soundIndexInput.setMaxLength(1);
         soundIndexInput.setFilter(s -> s.isEmpty() || s.matches("[1-9]"));
         soundIndexInput.setValue(String.valueOf(currentSoundIndex));
-        soundIndexInput.setHint(Component.translatable("screen.mtryum.lift_arrival_sound_player.input_hint"));
         addRenderableWidget(soundIndexInput);
 
-        // 创建确认按钮
-        Button confirmButton = Button.builder(
-                Component.translatable("screen.mtryum.lift_arrival_sound_player.confirm"),
-                button -> saveAndClose()
-        ).bounds(
+        Button confirmButton = new Button(
                 this.width / 2 - 50,
                 this.height / 2 + 30,
-                100, 20
-        ).build();
+                100, 20,
+                Component.translatable("screen.mtryum.lift_arrival_sound_player.confirm"),
+                button -> saveAndClose()
+        );
         addRenderableWidget(confirmButton);
     }
 
@@ -70,12 +66,12 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, partialTick);
 
-        // 绘制标题
-        guiGraphics.drawCenteredString(
+        drawCenteredString(
+                poseStack,
                 this.font,
                 this.title,
                 this.width / 2,
@@ -83,10 +79,10 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
                 0xFFFFFF
         );
 
-        // 绘制说明文本
-        guiGraphics.drawString(
+        drawString(
+                poseStack,
                 this.font,
-                Component.translatable("screen.mtryum.lift_arrival_sound_player.desc").getString(),
+                Component.translatable("screen.mtryum.lift_arrival_sound_player.desc"),
                 this.width / 2 - 100,
                 this.height / 2 - 40,
                 0xAAAAAA
