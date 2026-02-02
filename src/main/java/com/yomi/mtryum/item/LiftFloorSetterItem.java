@@ -49,7 +49,8 @@ public class LiftFloorSetterItem {
     private static int getSoundIndexFromBlockEntity(Level world, BlockPos pos) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be == null) return -1;
-        CompoundTag nbt = be.saveWithFullMetadata();
+        CompoundTag nbt = new CompoundTag();
+        be.save(nbt);
         return nbt.contains(SOUND_INDEX_NBT_KEY) ? nbt.getInt(SOUND_INDEX_NBT_KEY) : -1;
     }
 
@@ -69,7 +70,8 @@ public class LiftFloorSetterItem {
     private static void updateSoundIndexNBT(Level world, BlockPos pos, int soundIndex) {
         BlockEntity be = world.getBlockEntity(pos);
         if (be == null) return;
-        CompoundTag originalNbt = be.saveWithFullMetadata();
+        CompoundTag originalNbt = new CompoundTag();
+        be.save(originalNbt);
         CompoundTag newNbt = originalNbt.copy();
         newNbt.putInt(SOUND_INDEX_NBT_KEY, soundIndex);
         if (originalNbt.getInt(SOUND_INDEX_NBT_KEY) != soundIndex) {
@@ -104,7 +106,8 @@ public class LiftFloorSetterItem {
         BlockEntity be = world.getBlockEntity(pos);
         if (be == null) return;
 
-        CompoundTag originalNbt = be.saveWithFullMetadata();
+        CompoundTag originalNbt = new CompoundTag();
+        be.save(originalNbt);
         CompoundTag newNbt = originalNbt.copy();
 
         String formattedFloor = String.valueOf(floorNumber);
