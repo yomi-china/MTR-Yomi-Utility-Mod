@@ -67,7 +67,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
                         }
                     }
                 } else {
-                    LOGGER.error("MTRYUM Call lift:RailwayData is null");
+                    LOGGER.error("Call lift:RailwayData is null");
                 }
             }
         }
@@ -95,7 +95,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
 
     public void liftArrived() {
         if (level == null) {
-            LOGGER.error("MTRYUM liftArrived:Level is null");
+            LOGGER.error("liftArrived:Level is null");
             return;
         }
         upButtonPressed = false;

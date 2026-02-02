@@ -74,7 +74,9 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem().getDescriptionId().equals("item.mtr.brush")) {
+
+        // 空手试听
+        if (stack.isEmpty()) {
             if (!world.isClientSide) {
                 BlockEntity be = world.getBlockEntity(pos);
                 if (be instanceof LiftArrivalSoundPlayerEntity entity) {
@@ -83,10 +85,12 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
             }
             return InteractionResult.sidedSuccess(world.isClientSide);
         }
-        if (stack.isEmpty() && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
+
+        if (stack.getItem().getDescriptionId().equals("item.mtr.brush") && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             MtryumClient.scheduleASPScreenOpen(pos);
             return InteractionResult.sidedSuccess(world.isClientSide());
         }
+
         return super.use(state, world, pos, player, hand, hit);
     }
 
@@ -99,10 +103,10 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
         return switch (facing) {
-            case EAST -> Block.box(15, 3, 3, 16, 13, 13); // 东市买骏马
-            case WEST -> Block.box(0, 3, 3, 1, 13, 13); // 西市买鞍鞯
-            case SOUTH -> Block.box(3, 3, 15, 13, 13, 16); // 南市买辔头
-            case NORTH -> Block.box(3, 3, 0, 13, 13, 1); // 北市买长鞭
+            case EAST -> Block.box(15, 3, 3, 16, 13, 13);
+            case WEST -> Block.box(0, 3, 3, 1, 13, 13);
+            case SOUTH -> Block.box(3, 3, 15, 13, 13, 16);
+            case NORTH -> Block.box(3, 3, 0, 13, 13, 1);
             default -> Shapes.block();
         };
     }

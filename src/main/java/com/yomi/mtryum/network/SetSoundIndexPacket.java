@@ -51,6 +51,7 @@ public class SetSoundIndexPacket {
     }
 
     public static void receive(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
+        System.out.println("Received SetSoundIndexPacket");
         BlockPos pos = buf.readBlockPos();
         int soundIndex = buf.readInt();
 

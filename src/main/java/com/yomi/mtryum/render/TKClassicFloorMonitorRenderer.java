@@ -2,8 +2,8 @@ package com.yomi.mtryum.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.yomi.mtryum.block.LiftFloorMonitorBlock;
-import com.yomi.mtryum.block.LiftFloorMonitorEntity;
+import com.yomi.mtryum.block.TKClassicFloorMonitorBlock;
+import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import mtr.data.Lift;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -14,7 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class LiftFloorMonitorRenderer implements BlockEntityRenderer<LiftFloorMonitorEntity> {
+public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClassicFloorMonitorEntity> {
     private static final float TEXT_OFFSET = 0.00625F; // 文字偏移
     private static final float TEXT_SCALE = 0.015F; // 文字大小
     private static final float ARROW_SIZE = 0.25F; // 箭头大小
@@ -23,7 +23,7 @@ public class LiftFloorMonitorRenderer implements BlockEntityRenderer<LiftFloorMo
     private static final long FRAME_DURATION = 100; // 箭头每帧持续时间
 
     @Override
-    public void render(LiftFloorMonitorEntity entity, float tickDelta, PoseStack matrices,
+    public void render(TKClassicFloorMonitorEntity entity, float tickDelta, PoseStack matrices,
                        MultiBufferSource buffer, int light, int combinedOverlay) {
         final Level world = entity.getLevel();
         if (world == null) return;
@@ -55,7 +55,7 @@ public class LiftFloorMonitorRenderer implements BlockEntityRenderer<LiftFloorMo
 
         // 渲染文本
         matrices.pushPose();
-        setupTransform(matrices, entity.getBlockState().getValue(LiftFloorMonitorBlock.FACING));
+        setupTransform(matrices, entity.getBlockState().getValue(TKClassicFloorMonitorBlock.FACING));
         if (entity.isLocked()) {
             renderText(matrices, buffer, "STOP", color);
         } else {
@@ -115,7 +115,7 @@ public class LiftFloorMonitorRenderer implements BlockEntityRenderer<LiftFloorMo
                 false,
                 matrices.last().pose(),
                 buffer,
-                false,
+                true,
                 0,
                 15728880
         );

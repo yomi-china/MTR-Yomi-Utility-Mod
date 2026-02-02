@@ -28,7 +28,7 @@
 		"minecraft": "~1.18.2",
 		"java": ">=8",
 		"fabric": "*",
-		"mtr": "<=4.0.0"
+		"mtr": "*"
 	},
 	"suggests": {
 		"another-mod": "*"

@@ -1,283 +1,94 @@
 package com.yomi.mtryum.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import com.yomi.mtryum.Mtryum;
-import com.yomi.mtryum.block.TKClassicLiftButtonsBlock;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlockEntity;
-import mtr.client.ClientData;
-import mtr.data.Lift;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
-public class TKClassicLiftButtonsRenderer implements BlockEntityRenderer<TKClassicLiftButtonsBlockEntity> {
+public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TKClassicLiftButtonsBlockEntity> {
 
-    // 纹理声明
-    private static final ResourceLocation UP_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_up_normal.png");
-    private static final ResourceLocation UP_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_up_pressed.png");
-    private static final ResourceLocation DOWN_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_down_normal.png");
-    private static final ResourceLocation DOWN_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_down_pressed.png");
-    private static final ResourceLocation ARROW_UP = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_arrow_up.png");
-    private static final ResourceLocation ARROW_DOWN = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_arrow_down.png");
-    private static final float DEPTH_OFFSET = 0.002f;
+    private static final ResourceLocation TK_UP_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_up_normal.png");
+    private static final ResourceLocation TK_UP_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_up_pressed.png");
 
-    private final Font font;
+    public TKClassicLiftButtonsRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
 
-    public TKClassicLiftButtonsRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.font = ctx.getFont();
+        this.buttonNormalTexture = TK_UP_NORMAL;
+        this.buttonPressedTexture = TK_UP_PRESSED;
+
+        this.floorNumberColor = 0xFFFF0000;
+        this.arrowColor = 0xFFFF0000;
+        this.buttonTintColor = 0xFFFFFF;
+
+        this.fontName = "old-thyssenkrupp";
+        this.defaultFloorText = "JU";
+
+        this.baseYOffset = -0.135f;
+        this.floorNumberY = 0.675f;
+        this.arrowY = 0.75f;
+        this.buttonUpY = 0.47f;
+        this.buttonDownY = 0.36f;
+
+        this.buttonSize = 0.06f;
+        this.arrowWidth = 0.125f;
+        this.arrowHeight = 0.125f;
+        this.depthOffset = 0.0015f;
+
+        this.floorScaleTwoChars = 0.0012f;
+        this.floorScaleThreeChars = 0.0010f;
+        this.floorScaleExtraReduction = 0.00015f;
+        this.floorScaleMin = 0.0003f;
+        this.arrowScale = 0.0012f;
+
+        this.arrowRenderMode = ArrowRenderMode.FONT;
+
+        this.arrowUpText = "<";
+        this.arrowDownText = ">";
+
+        this.singleButtonOffset = 0.06f;
     }
 
     @Override
-    public void render(TKClassicLiftButtonsBlockEntity entity, float tickDelta, PoseStack matrices,
-                       MultiBufferSource vertexConsumers, int light, int overlay) {
-        if (entity == null || entity.getLevel() == null) return;
-
-        // 获取按钮状态
-        boolean upPressed = entity.isUpButtonPressed();
-        boolean downPressed = entity.isDownButtonPressed();
-
-        // 获取当前楼层
-        final Level world = entity.getLevel();
-        if (world == null) return;
-
-        // 获取轨道位置
-        final BlockPos trackPosition = entity.getTrackPosition(world);
-        if (trackPosition == null) return;
-
-        Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
-
-        // 检测是否为顶层或底层
-        boolean isTopFloor = false;
-        boolean isBottomFloor = false;
-        int currentFloorY = trackPosition.getY();
-
-        // 获取电梯数据
-        String floorNumber = "JU";
-        for (Lift lift : ClientData.LIFTS) {
-            if (lift.hasFloor(trackPosition)) {
-                final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
-                final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
-
-                if (blockEntity instanceof mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
-                    floorNumber = ((mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
-                    liftDirection = lift.getLiftDirection();
-                    entity.updateLiftDirection(liftDirection);
-
-                    boolean[] hasButton = new boolean[2];
-                    lift.hasUpDownButtonForFloor(currentFloorY, hasButton);
-
-                    isTopFloor = !hasButton[0];
-                    isBottomFloor = !hasButton[1];
-                    break;
-                }
-            }
-        }
-        if (floorNumber.isEmpty()) return;
-
-        for (Lift lift : ClientData.LIFTS) {
-            if (lift.hasFloor(trackPosition)) {
-                final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
-                if (currentFloor != null && currentFloor.equals(trackPosition)) {
-                    entity.liftArrived();
-                }
-            }
-        }
-        // 按钮纹理
-        ResourceLocation upTexture = upPressed ? UP_PRESSED : UP_NORMAL;
-        ResourceLocation downTexture = downPressed ? DOWN_PRESSED : DOWN_NORMAL;
-
-        BlockState state = entity.getBlockState();
-        Direction facing = state.getValue(TKClassicLiftButtonsBlock.FACING);
-
-        matrices.pushPose();
-
-        switch (facing) {
-            case SOUTH:
-                matrices.translate(0, -0.135, 0.99);
-                break;
-            case EAST:
-                matrices.translate(0.99, -0.135, 1);
-                matrices.mulPose(Vector3f.YP.rotationDegrees(90));
-                break;
-            case NORTH:
-                matrices.translate(1, -0.135, 0.01);
-                matrices.mulPose(Vector3f.YP.rotationDegrees(180));
-                break;
-            case WEST:
-                matrices.translate(0.01, -0.135, 0);
-                matrices.mulPose(Vector3f.YP.rotationDegrees(270));
-                break;
-        }
-
-        renderAllElements(matrices, vertexConsumers, light, overlay,
-                floorNumber, liftDirection, upTexture, downTexture, facing, isTopFloor, isBottomFloor);
-
-        matrices.popPose();
+    protected String getFacingPropertyName() {
+        return "facing";
     }
 
-    // 渲染楼层、箭头、按钮
-    private void renderAllElements(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                   int light, int overlay, String floorNumber,
-                                   Lift.LiftDirection liftDirection,
-                                   ResourceLocation upTexture, ResourceLocation downTexture,
-                                   Direction facing, boolean isTopFloor, boolean isBottomFloor) {
-        final float BUTTON_Y_UP = 0.48f;
-        final float BUTTON_Y_DOWN = 0.35f;
-        final float ARROW_Y = 0.65f;
-
-        final float buttonSize = 0.075f;
-
-        renderFloorNumber(matrices, vertexConsumers, floorNumber, light);
-
-        // 渲染方向箭头
-        /*
-        ResourceLocation arrowTexture = liftDirection == Lift.LiftDirection.UP ?
-                    ARROW_UP : ARROW_DOWN;
-
-            renderQuad(matrices, vertexConsumers.getBuffer(RenderType.entityCutout(arrowTexture)),
-                    0.4f, 0.6f, ARROW_Y - 0.05f, ARROW_Y + 0.05f,
-                    0, 1, light, overlay);
-        */
-        if (liftDirection != Lift.LiftDirection.NONE) {
-            if (liftDirection == Lift.LiftDirection.UP)
-                renderArrow(matrices, vertexConsumers, "↑", light);
-            else {
-                renderArrow(matrices, vertexConsumers, "↓", light);
-            }
-        }
-
-        // 渲染上按钮
-        if (!isTopFloor&&isBottomFloor) {
-            renderQuad(matrices, vertexConsumers.getBuffer(RenderType.entityCutout(upTexture)),
-                    BUTTON_Y_UP - buttonSize / 2 - 0.06f, BUTTON_Y_UP + buttonSize / 2 - 0.06f,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 1 : 0,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 0 : 1,
-                    light, overlay);
-        }else if (!isTopFloor){
-            renderQuad(matrices, vertexConsumers.getBuffer(RenderType.entityCutout(upTexture)),
-                    BUTTON_Y_UP - buttonSize / 2, BUTTON_Y_UP + buttonSize / 2,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 1 : 0,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 0 : 1,
-                    light, overlay);
-        }
-
-        // 渲染下按钮
-        if (!isBottomFloor&&isTopFloor) {
-            renderQuad(matrices, vertexConsumers.getBuffer(RenderType.entityCutout(downTexture)),
-                    BUTTON_Y_DOWN - buttonSize / 2 + 0.06f, BUTTON_Y_DOWN + buttonSize / 2 + 0.06f,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 1 : 0,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 0 : 1,
-                    light, overlay);
-        }else if (!isBottomFloor){
-            renderQuad(matrices, vertexConsumers.getBuffer(RenderType.entityCutout(downTexture)),
-                    BUTTON_Y_DOWN - buttonSize / 2, BUTTON_Y_DOWN + buttonSize / 2,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 1 : 0,
-                    (facing == Direction.SOUTH || facing == Direction.WEST) ? 0 : 1,
-                    light, overlay);
-        }
+    @Override
+    protected boolean isUpButtonPressed(TKClassicLiftButtonsBlockEntity entity) {
+        return entity.isUpButtonPressed();
     }
 
-    // 渲染楼层数字
-    private void renderFloorNumber(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                   String floor, int light) {
-        matrices.pushPose();
-        matrices.scale(0.011F, -0.011F, 0.011F);
-        matrices.translate(47, -61, 0);
-        matrices.mulPose(Vector3f.YP.rotationDegrees(180));
-
-        Font font = Minecraft.getInstance().font;
-        //if (MtryumFonts.MSF_FONT != null) {
-        //    fonts = MtryumFonts.MSF_FONT;
-        //}
-
-        font.drawInBatch(
-                floor,
-                0, 0,
-                0xFF0000,
-                false,
-                matrices.last().pose(),
-                vertexConsumers,
-                true,
-                0,
-                light
-        );
-
-        matrices.popPose();
+    @Override
+    protected boolean isDownButtonPressed(TKClassicLiftButtonsBlockEntity entity) {
+        return entity.isDownButtonPressed();
     }
 
-    private void renderArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                             String floor, int light) {
-        matrices.pushPose();
-        matrices.scale(0.011F, -0.011F, 0.011F);
-        matrices.translate(47, -83, 0);
-        matrices.mulPose(Vector3f.YP.rotationDegrees(180));
-
-        //Font fonts = MtryumFonts.MSF_FONT != null ? MtryumFonts.MSF_FONT : Minecraft.getInstance().fonts;
-        font.drawInBatch(
-                floor,
-                0, 0,
-                0xFF0000,
-                false,
-                matrices.last().pose(),
-                vertexConsumers,
-                true,
-                0,
-                light
-        );
-
-        matrices.popPose();
+    @Override
+    protected net.minecraft.core.BlockPos getTrackPosition(TKClassicLiftButtonsBlockEntity entity, net.minecraft.world.level.Level world) {
+        return entity.getTrackPosition(world);
     }
 
-    // 渲染四边形
-    private void renderQuad(PoseStack matrices, VertexConsumer vertexConsumer,
-                            float minY, float maxY,
-                            float uStart, float uEnd,
-                            int light, int overlay) {
-        var matrix = matrices.last().pose();
-        var normal = matrices.last().normal();
-        float normalZ = 1.0f;
+    @Override
+    protected void updateLiftDirection(TKClassicLiftButtonsBlockEntity entity, mtr.data.Lift.LiftDirection liftDirection) {
+        entity.updateLiftDirection(liftDirection);
+    }
 
-        vertexConsumer.vertex(matrix, (float) 0.4625, minY, TKClassicLiftButtonsRenderer.DEPTH_OFFSET)
-                .color(255, 255, 255, 255)
-                .uv(uStart, (float) 1)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
+    @Override
+    protected void liftArrived(TKClassicLiftButtonsBlockEntity entity) {
+        entity.liftArrived();
+    }
 
-        vertexConsumer.vertex(matrix, (float) 0.4625, maxY, TKClassicLiftButtonsRenderer.DEPTH_OFFSET)
-                .color(255, 255, 255, 255)
-                .uv(uStart, (float) 0)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
+    @Override
+    protected float calculateFloorNumberScale(String floor) {
+        int length = floor.length();
 
-        vertexConsumer.vertex(matrix, (float) 0.5375, maxY, TKClassicLiftButtonsRenderer.DEPTH_OFFSET)
-                .color(255, 255, 255, 255)
-                .uv(uEnd, (float) 0)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
-        vertexConsumer.vertex(matrix, (float) 0.5375, minY, TKClassicLiftButtonsRenderer.DEPTH_OFFSET)
-                .color(255, 255, 255, 255)
-                .uv(uEnd, (float) 1)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
+        if (length <= 2) {
+            return floorScaleTwoChars;
+        } else if (length == 3) {
+            return floorScaleThreeChars;
+        } else {
+            float scale = 0.00085f - (length - 3) * 0.00015f;
+            return Math.max(scale, 0.0003f);
+        }
     }
 }

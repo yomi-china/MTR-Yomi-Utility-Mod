@@ -3,9 +3,9 @@ package com.yomi.mtryum.registry;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
-import com.yomi.mtryum.block.LiftFloorMonitorEntity;
 import com.yomi.mtryum.block.MLFMEntity;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlockEntity;
+import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public class MtryumBlockEntities {
     public static BlockEntityType<LiftArrivalSoundPlayerEntity> LIFT_ARRIVAL_SOUND_PLAYER_ENTITY;
     public static BlockEntityType<LiftArrivalLightBlock.Entity> LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY;
-    public static BlockEntityType<LiftFloorMonitorEntity> LIFT_FLOOR_MONITOR;
+    public static BlockEntityType<TKClassicFloorMonitorEntity> LIFT_FLOOR_MONITOR;
     public static BlockEntityType<MLFMEntity> MLFM_ENTITY;
     public static BlockEntityType<MitsubishiStyleLiftButtonsBlockEntity> MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY;
     public static BlockEntityType<TKClassicLiftButtonsBlockEntity> TK_STYLE_LIFT_BUTTONS_ENTITY;
@@ -41,7 +41,7 @@ public class MtryumBlockEntities {
                 Registry.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "lift_floor_monitor"),
                 FabricBlockEntityTypeBuilder.create(
-                        (pos, state) -> new LiftFloorMonitorEntity(LIFT_FLOOR_MONITOR, pos, state),
+                        (pos, state) -> new TKClassicFloorMonitorEntity(LIFT_FLOOR_MONITOR, pos, state),
                         MtryumBlocks.LIFT_FLOOR_MONITOR
                 ).build(null)
         );

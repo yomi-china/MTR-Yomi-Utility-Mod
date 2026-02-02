@@ -32,7 +32,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
             }
         }
 
-        // 创建输入框
         soundIndexInput = new EditBox(
                 this.font,
                 this.width / 2 - 100,
@@ -45,7 +44,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         soundIndexInput.setValue(String.valueOf(currentSoundIndex));
         addRenderableWidget(soundIndexInput);
 
-        // 创建确认按钮
         Button confirmButton = new Button(
                 this.width / 2 - 50,
                 this.height / 2 + 30,
@@ -73,7 +71,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         this.renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTick);
 
-        // 绘制标题
         drawCenteredString(
                 poseStack,
                 this.font,
@@ -83,11 +80,10 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
                 0xFFFFFF
         );
 
-        // 绘制说明文本
         drawString(
                 poseStack,
                 this.font,
-                new TranslatableComponent("screen.mtryum.lift_arrival_sound_player.desc").getString(),
+                new TranslatableComponent("screen.mtryum.lift_arrival_sound_player.desc"),
                 this.width / 2 - 100,
                 this.height / 2 - 40,
                 0xAAAAAA

@@ -1,8 +1,11 @@
 package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.registry.MtryumBlockEntities;
+import mtr.Items;
 import mtr.block.BlockLiftButtons;
+import mtr.block.IBlock;
 import mtr.mappings.BlockEntityMapper;
+import mtr.mappings.Text;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,6 +44,7 @@ public class TKClassicLiftButtonsBlock extends BlockLiftButtons {
         super();
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
+                .setValue(UNLOCKED, true)
         );
     }
 
@@ -55,7 +59,7 @@ public class TKClassicLiftButtonsBlock extends BlockLiftButtons {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, UNLOCKED);
     }
 
     @Override
@@ -97,17 +101,33 @@ public class TKClassicLiftButtonsBlock extends BlockLiftButtons {
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (world.isClientSide) return InteractionResult.SUCCESS;
+        final InteractionResult result = IBlock.checkHoldingBrush(world, player, () -> {
+            final boolean unlocked = !IBlock.getStatePropertySafe(state, UNLOCKED);
+            world.setBlockAndUpdate(pos, state.setValue(UNLOCKED, unlocked));
+            player.displayClientMessage(unlocked ? Text.translatable("gui.mtr.lift_buttons_unlocked") : Text.translatable("gui.mtr.lift_buttons_locked"), true);
+        });
 
-        double relativeY = hit.getLocation().y - pos.getY();
-        boolean isUpButton = relativeY > 0.3;
-
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof TKClassicLiftButtonsBlockEntity) {
-            ((TKClassicLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
+        if (world.isClientSide || result == InteractionResult.SUCCESS) {
             return InteractionResult.SUCCESS;
-        }
+        } else {
+            if (player.isHolding(Items.LIFT_BUTTONS_LINK_CONNECTOR.get()) || player.isHolding(Items.LIFT_BUTTONS_LINK_REMOVER.get())) {
+                return InteractionResult.PASS;
+            } else {
+                final boolean unlocked = IBlock.getStatePropertySafe(state, UNLOCKED);
+                if (unlocked) {
+                    double relativeY = hit.getLocation().y - pos.getY();
+                    boolean isUpButton = relativeY > 0.3;
 
-        return InteractionResult.PASS;
+                    BlockEntity blockEntity = world.getBlockEntity(pos);
+                    if (blockEntity instanceof TKClassicLiftButtonsBlockEntity) {
+                        ((TKClassicLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.PASS;
+                } else {
+                    return InteractionResult.FAIL;
+                }
+            }
+        }
     }
 }
