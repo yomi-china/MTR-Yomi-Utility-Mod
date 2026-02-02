@@ -13,8 +13,8 @@
   "item.mtryum.tk_style_lift_buttons": "ThyssenKrupp Style lift button",
   "item.mtryum.mod_logo": "MTR-YUM Logo",
   "item.mtryum.onboard_tool": "Onboard Tool",
-  "itemGroup.mtryum.block_group": "MTR Yomi's Utility Mod: Blocks",
-  "itemGroup.mtryum.tool_group": "MTR Yomi's Utility Mod: Tools",
+  "itemGroup.mtryum_block_group": "MTR Yomi's Utility Mod: Blocks",
+  "itemGroup.mtryum_tool_group": "MTR Yomi's Utility Mod: Tools",
   "msg.mtryum.connection_complete": "Successfully connected %d floors！~",
   "msg.mtryum.invalid_base_track": "Original track is missing!",
   "msg.mtryum.no_base_track": "No base track selected!",
@@ -32,5 +32,6 @@
   "tooltip.mtryum.floor_monitor.line1": "Lock:Click with MTR brush",
   "tooltip.mtryum.floor_monitor.line2": "Change color:Click with empty Hand",
   "tooltip.mtryum.lift_arrival_light.line1": " Use MTR-Lift Buttons Link Connector to connect",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": ""
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "",
+  "screen.mtryum.set_style_title": "Set Style"
 }

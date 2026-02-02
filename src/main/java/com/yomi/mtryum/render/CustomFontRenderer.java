@@ -17,36 +17,47 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OptimizedFontRenderer {
-    private static OptimizedFontRenderer instance;
+public class CustomFontRenderer {
+    private static final Map<String, CustomFontRenderer> INSTANCES = new HashMap<>();
+
+    private final String fontName;
     private ResourceLocation fontAtlas;
     private final Map<Character, CharInfo> charMap = new HashMap<>();
+    private boolean initialized = false;
 
-    private static final String CHAR_SET =
+    private static final String DEFAULT_CHAR_SET =
             "0123456789" +
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-            "abcdefghijklmnopqrstuvwxyz";
+                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                    "abcdefghijklmnopqrstuvwxyz" +
+                    " .:-+*/|<>()[]{}";
 
-    public static OptimizedFontRenderer getInstance() {
-        if (instance == null) {
-            instance = new OptimizedFontRenderer();
-        }
-        return instance;
+    public CustomFontRenderer(String fontName) {
+        this.fontName = fontName;
+    }
+
+    public static CustomFontRenderer getInstance(String fontName) {
+        return INSTANCES.computeIfAbsent(fontName, CustomFontRenderer::new);
+    }
+
+    // 向后兼容
+    public static CustomFontRenderer getInstance() {
+        return getInstance("mitsubishi-modern");
     }
 
     public void initialize() {
-        if (fontAtlas != null) return;
+        if (initialized) return;
 
         try {
             generateFontAtlas();
-            Mtryum.LOGGER.info("Font atlas initialized with {} characters", charMap.size());
+            Mtryum.LOGGER.debug("Font atlas for '{}' initialized with {} characters", fontName, charMap.size());
+            initialized = true;
         } catch (Exception e) {
-            Mtryum.LOGGER.error("Failed to initialize font atlas: {}", e.getMessage());
+            Mtryum.LOGGER.error("Failed to initialize font atlas for '{}': {}", fontName, e.getMessage());
         }
     }
 
     private void generateFontAtlas() {
-        DynamicFontTextureManager fontManager = DynamicFontTextureManager.getInstance();
+        CustomFontManager fontManager = CustomFontManager.getInstance();
         fontManager.initialize();
 
         int atlasWidth = 1024;
@@ -58,6 +69,7 @@ public class OptimizedFontRenderer {
                 false
         );
 
+        // 清空图集
         for (int y = 0; y < atlasHeight; y++) {
             for (int x = 0; x < atlasWidth; x++) {
                 atlasImage.setPixelRGBA(x, y, 0);
@@ -67,10 +79,11 @@ public class OptimizedFontRenderer {
         int currentX = 0;
         int currentY = 0;
         int maxRowHeight = 0;
+        int padding = 1; // 字符间填充
 
-        for (char c : CHAR_SET.toCharArray()) {
-            DynamicFontTextureManager.FontTexture charTexture =
-                    fontManager.getStringTexture(String.valueOf(c), 0xFFFFFFFF);
+        for (char c : DEFAULT_CHAR_SET.toCharArray()) {
+            CustomFontManager.FontTexture charTexture =
+                    fontManager.getStringTexture(String.valueOf(c), 0xFFFFFFFF, fontName);
 
             if (charTexture != null && charTexture.getImage() != null) {
                 NativeImage charImage = charTexture.getImage();
@@ -78,12 +91,19 @@ public class OptimizedFontRenderer {
                 int charH = charTexture.getHeight();
 
                 // 检查是否需要换行
-                if (currentX + charW > atlasWidth) {
+                if (currentX + charW + padding > atlasWidth) {
                     currentX = 0;
-                    currentY += maxRowHeight + 1;
+                    currentY += maxRowHeight + padding;
                     maxRowHeight = 0;
                 }
 
+                // 确保不会超出图集边界
+                if (currentY + charH + padding > atlasHeight) {
+                    Mtryum.LOGGER.warn("Font atlas too small for font '{}', some characters may be missing", fontName);
+                    break;
+                }
+
+                // 复制字符图像到图集
                 for (int y = 0; y < charH; y++) {
                     for (int x = 0; x < charW; x++) {
                         int pixel = charImage.getPixelRGBA(x, y);
@@ -91,6 +111,7 @@ public class OptimizedFontRenderer {
                     }
                 }
 
+                // 计算UV坐标
                 float u1 = (float) currentX / atlasWidth;
                 float v1 = (float) currentY / atlasHeight;
                 float u2 = (float) (currentX + charW) / atlasWidth;
@@ -98,17 +119,18 @@ public class OptimizedFontRenderer {
 
                 charMap.put(c, new CharInfo(u1, v1, u2, v2, charW, charH));
 
-                currentX += charW + 1;
+                currentX += charW + padding;
                 maxRowHeight = Math.max(maxRowHeight, charH);
 
                 charTexture.close();
             }
         }
 
+        // 创建动态纹理
         DynamicTexture texture = new DynamicTexture(atlasImage);
         fontAtlas = Minecraft.getInstance()
                 .getTextureManager()
-                .register("font_atlas_" + System.currentTimeMillis(), texture);
+                .register("font_atlas_" + fontName + "_" + System.currentTimeMillis(), texture);
 
         atlasImage.close();
     }
@@ -121,13 +143,19 @@ public class OptimizedFontRenderer {
             float x, float y, float z,
             float scale,
             int light,
-            boolean centered // 居中
+            boolean centered,
+            String fontName
     ) {
         if (text == null || text.isEmpty()) return;
 
-        OptimizedFontRenderer renderer = getInstance();
-        if (renderer.fontAtlas == null) {
+        CustomFontRenderer renderer = getInstance(fontName);
+        if (!renderer.initialized) {
             renderer.initialize();
+        }
+
+        if (renderer.fontAtlas == null) {
+            Mtryum.LOGGER.error("Font atlas not initialized for '{}'", fontName);
+            return;
         }
 
         int alpha = (color >>> 24) & 0xFF;
@@ -159,15 +187,19 @@ public class OptimizedFontRenderer {
         Matrix4f matrix = poseStack.last().pose();
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.text(renderer.fontAtlas));
 
-        // 渲染
+        // 渲染每个字符
         for (char c : text.toCharArray()) {
             CharInfo info = renderer.charMap.get(c);
-            if (info == null) continue;
+            if (info == null) {
+                // 跳过不支持的字符
+                currentX += 5 * scale * spacingFactor; // 默认宽度
+                continue;
+            }
 
             float charWidth = info.width * scale;
             float charHeight = info.height * scale;
 
-            // 单个字符
+            // 渲染字符四边形
             vertexConsumer.vertex(matrix, currentX, y + charHeight, z)
                     .color(red, green, blue, alpha)
                     .uv(info.u1, info.v2)
@@ -196,8 +228,22 @@ public class OptimizedFontRenderer {
                     .uv2(light)
                     .endVertex();
 
-            currentX += charWidth * spacingFactor; // 字符间距
+            currentX += charWidth * spacingFactor;
         }
+    }
+
+    // 向后兼容的重载方法
+    public static void renderText(
+            PoseStack poseStack,
+            MultiBufferSource buffer,
+            String text,
+            int color,
+            float x, float y, float z,
+            float scale,
+            int light,
+            boolean centered
+    ) {
+        renderText(poseStack, buffer, text, color, x, y, z, scale, light, centered, "mitsubishi-modern");
     }
 
     private static class CharInfo {
@@ -212,5 +258,21 @@ public class OptimizedFontRenderer {
             this.width = width;
             this.height = height;
         }
+    }
+
+    public void cleanup() {
+        if (fontAtlas != null) {
+            Minecraft.getInstance().getTextureManager().release(fontAtlas);
+            fontAtlas = null;
+        }
+        charMap.clear();
+        initialized = false;
+    }
+
+    public static void cleanupAll() {
+        for (CustomFontRenderer renderer : INSTANCES.values()) {
+            renderer.cleanup();
+        }
+        INSTANCES.clear();
     }
 }

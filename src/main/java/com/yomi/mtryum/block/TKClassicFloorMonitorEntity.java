@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LiftFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
+public class TKClassicFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
 
     private BlockPos trackPosition;
     private boolean isLocked = false;
@@ -16,7 +16,7 @@ public class LiftFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPan
     private int arrowStyle = 1;
     private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
 
-    public LiftFloorMonitorEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public TKClassicFloorMonitorEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
     }
 
@@ -54,17 +54,13 @@ public class LiftFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPan
     public void registerFloor(BlockPos pos, boolean isAdd) {
         trackPosition = isAdd ? pos : null;
         setChanged();
-        if (level != null && !level.isClientSide) {
-            syncData();
-        }
+        syncData();
     }
 
     public void toggleLock() {
         isLocked = !isLocked;
         setChanged();
-        if (level != null && !level.isClientSide) {
-            syncData();
-        }
+        syncData();
     }
 
     public boolean isLocked() {
@@ -81,8 +77,8 @@ public class LiftFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPan
 
         if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            syncData();
         }
+        syncData();
     }
 
     public BlockPos getTrackPosition(Level world) {
@@ -96,9 +92,7 @@ public class LiftFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPan
     public void setArrowStyle(int style) {
         arrowStyle = Math.max(1, Math.min(2, style));
         setChanged();
-        if (level != null && !level.isClientSide) {
-            syncData();
-        }
+        syncData();
     }
 
     public void updateLiftDirection(Lift.LiftDirection direction) {
