@@ -1,0 +1,74 @@
+{
+  "lift_arrival_sound_1": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_1"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_2": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_2"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_3": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_3"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_4": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_4"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_5": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_5"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_6": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_6"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_7": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_7"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_8": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_8"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_9": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_9"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
+  }
+}

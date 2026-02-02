@@ -1,0 +1,68 @@
+{
+  "variants": {
+    "facing=north,position=center,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_center",
+      "y": 270
+    },
+    "facing=east,position=center,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_center",
+      "y": 0
+    },
+    "facing=south,position=center,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_center",
+      "y": 90
+    },
+    "facing=west,position=center,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_center",
+      "y": 180
+    },
+    "facing=north,position=right,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_right",
+      "y": 270
+    },
+    "facing=east,position=right,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_right",
+      "y": 0
+    },
+    "facing=south,position=right,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_right",
+      "y": 90
+    },
+    "facing=west,position=right,lit=false": {
+      "model": "mtryum:block/lift_arrival_light_right",
+      "y": 180
+    },
+    "facing=north,position=center,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_center_lit",
+      "y": 270
+    },
+    "facing=east,position=center,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_center_lit",
+      "y": 0
+    },
+    "facing=south,position=center,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_center_lit",
+      "y": 90
+    },
+    "facing=west,position=center,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_center_lit",
+      "y": 180
+    },
+    "facing=north,position=right,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_right_lit",
+      "y": 270
+    },
+    "facing=east,position=right,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_right_lit",
+      "y": 0
+    },
+    "facing=south,position=right,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_right_lit",
+      "y": 90
+    },
+    "facing=west,position=right,lit=true": {
+      "model": "mtryum:block/lift_arrival_light_right_lit",
+      "y": 180
+    }
+  }
+}

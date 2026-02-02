@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "mtryum",
+	"version": "${version}",
+	"name": "Yomi的MTR实用拓展",
+	"description": "A MTR practical expansion by yomi_307.  一个由yomi_307制作的实用的MTR附属模组。",
+	"authors": [
+		"yomi_307"
+	],
+	"contact": {
+		"homepage": "https://yomi-china.github.io/"
+	},
+	"icon": "assets/mtryum/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.yomi.mtryum.Mtryum"
+		],
+		"client": [
+			"com.yomi.mtryum.MtryumClient"
+		]
+	},
+	"mixins": [
+		"mtryum.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.9",
+		"minecraft": "~1.18.2",
+		"java": ">=8",
+		"fabric": "*",
+		"mtr": "<=4.0.0"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
