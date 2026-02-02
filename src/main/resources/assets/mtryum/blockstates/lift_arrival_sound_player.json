@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "mtryum:block/lift_arrival_sound_player"
+    },
+    "facing=south": {
+      "model": "mtryum:block/lift_arrival_sound_player",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "mtryum:block/lift_arrival_sound_player",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "mtryum:block/lift_arrival_sound_player",
+      "y": 270
+    }
+  }
+}

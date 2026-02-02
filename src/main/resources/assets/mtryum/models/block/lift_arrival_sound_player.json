@@ -1,0 +1,50 @@
+{
+  "credit": "Made by yomi_307",
+  "textures": {
+    "0": "mtryum:block/lift_arrival_sound_player",
+    "particle": "mtryum:block/lift_arrival_sound_player"
+  },
+  "elements": [
+    {
+      "from": [
+        15.99,
+        5,
+        5
+      ],
+      "to": [
+        15.99,
+        11,
+        11
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          15.99,
+          8,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}

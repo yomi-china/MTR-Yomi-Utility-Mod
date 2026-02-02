@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "mtryum:block/mall_escalator_step"
+    },
+    "facing=east": {
+      "model": "mtryum:block/mall_escalator_step",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "mtryum:block/mall_escalator_step",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "mtryum:block/mall_escalator_step",
+      "y": 270
+    }
+  }
+}
