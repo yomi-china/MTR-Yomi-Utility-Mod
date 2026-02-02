@@ -118,8 +118,8 @@ public class TKClassicLiftButtonsBlock extends BlockLiftButtons {
                     boolean isUpButton = relativeY > 0.3;
 
                     BlockEntity blockEntity = world.getBlockEntity(pos);
-                    if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity) {
-                        ((MitsubishiStyleLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
+                    if (blockEntity instanceof TKClassicLiftButtonsBlockEntity) {
+                        ((TKClassicLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.PASS;
