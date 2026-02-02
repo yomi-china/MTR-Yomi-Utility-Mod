@@ -13,8 +13,8 @@
   "item.mtryum.tk_style_lift_buttons": "蒂森经典风格电梯按钮",
   "item.mtryum.mod_logo": "MTR-YUM模组图标",
   "item.mtryum.onboard_tool": "随时上车工具",
-  "itemGroup.mtryum.block_group": "Yomi的MTR实用拓展：方块",
-  "itemGroup.mtryum.tool_group": "Yomi的MTR实用拓展：工具",
+  "itemGroup.mtryum_block_group": "Yomi的MTR实用拓展：方块",
+  "itemGroup.mtryum_tool_group": "Yomi的MTR实用拓展：工具",
   "msg.mtryum.connection_complete": "自动连接完成！成功连接 %d 个楼层~",
   "msg.mtryum.invalid_base_track": "基准电梯楼层轨道不存在",
   "msg.mtryum.no_base_track": "请先选择基准电梯楼层轨道",
@@ -32,5 +32,6 @@
   "tooltip.mtryum.floor_monitor.line1": "刷右击以锁定",
   "tooltip.mtryum.floor_monitor.line2": "空手右击调整颜色",
   "tooltip.mtryum.lift_arrival_light.line1": "使用MTR自带的电梯按钮连接器进行连接；当电梯到站，此灯闪烁",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右击调整音效，刷子右击预览音效"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右击调整音效，刷子右击预览音效",
+  "screen.mtryum.set_style_title": "设置样式"
 }

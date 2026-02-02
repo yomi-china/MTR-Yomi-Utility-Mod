@@ -13,8 +13,8 @@
   "item.mtryum.tk_style_lift_buttons": "蒂森風格電梯按鈕",
   "item.mtryum.mod_logo": "MTR-YUM模組圖標",
   "item.mtryum.onboard_tool": "隨時上車工具",
-  "itemGroup.mtryum.block_group": "Yomi的MTR實用擴展：方塊",
-  "itemGroup.mtryum.tool_group": "Yomi的MTR實用擴展：工具",
+  "itemGroup.mtryum_block_group": "Yomi的MTR實用擴展：方塊",
+  "itemGroup.mtryum_tool_group": "Yomi的MTR實用擴展：工具",
   "msg.mtryum.connection_complete": "自動連接完成！成功連接 %d 個樓層~",
   "msg.mtryum.invalid_base_track": "基準電梯樓層軌道不存在",
   "msg.mtryum.no_base_track": "請先選擇基準電梯樓層軌道",
@@ -32,5 +32,6 @@
   "tooltip.mtryum.floor_monitor.line1": "刷右擊以鎖定",
   "tooltip.mtryum.floor_monitor.line2": "空手右擊調整顏色",
   "tooltip.mtryum.lift_arrival_light.line1": "使用MTR自帶的電梯按鈕連接器進行連接；當電梯到站，此燈閃爍",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右擊調整音效，刷子右擊預覽音效"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右擊調整音效，刷子右擊預覽音效",
+  "screen.mtryum.set_style_title": "設定樣式"
 }

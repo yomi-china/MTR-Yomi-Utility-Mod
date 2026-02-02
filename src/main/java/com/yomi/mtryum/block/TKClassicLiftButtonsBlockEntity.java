@@ -52,6 +52,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
 
                 if (railwayData != null) {
                     for (Lift lift : railwayData.lifts) {
+
                         if (lift.hasFloor(trackPos)) {
                             lift.pressButton(trackPos.getY());
 
@@ -66,7 +67,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
                         }
                     }
                 } else {
-                    LOGGER.error("MTRYUM Call lift:RailwayData is null");
+                    LOGGER.error("Call lift:RailwayData is null");
                 }
             }
         }
@@ -94,23 +95,13 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
 
     public void liftArrived() {
         if (level == null) {
-            LOGGER.error("MTRYUM liftArrived:Level is null");
+            LOGGER.error("liftArrived:Level is null");
             return;
         }
-
-        // 确保只在服务端执行
-        if (!level.isClientSide) {
-            upButtonPressed = false;
-            downButtonPressed = false;
-            setChanged();
-            syncData();
-        }
-    }
-
-    // 添加一个只更新客户端状态的方法
-    public void updateButtonStates(boolean upPressed, boolean downPressed) {
-        this.upButtonPressed = upPressed;
-        this.downButtonPressed = downPressed;
+        upButtonPressed = false;
+        downButtonPressed = false;
+        setChanged();
+        syncData();
     }
 
     public boolean isUpButtonPressed() {
@@ -123,9 +114,5 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
 
     public void updateLiftDirection(Lift.LiftDirection direction) {
         liftDirection = direction;
-    }
-
-    public Lift.LiftDirection getLiftDirection() {
-        return liftDirection;
     }
 }

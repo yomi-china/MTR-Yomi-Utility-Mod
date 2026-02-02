@@ -13,11 +13,13 @@ public class MtryumItemGroup {
             .appendItems(stacks -> {
                 stacks.add(new ItemStack(MtryumItems.LIFT_FLOOR_SETTER));
                 stacks.add(new ItemStack(MtryumItems.LIFT_BUTTON_AUTO_CONNECTOR));
+                stacks.add(new ItemStack(MtryumItems.ONBOARD_TOOL));
             })
             .build();
     public static final CreativeModeTab BLOCK_GROUP = FabricItemGroupBuilder.create(new ResourceLocation(Mtryum.MOD_ID, "block_group"))
             .icon(() -> new ItemStack(MtryumItems.MOD_LOGO))
             .appendItems(stacks -> {
+                stacks.add(new ItemStack(MtryumItems.LIFT_ARRIVAL_LIGHT));
                 stacks.add(new ItemStack(MtryumItems.LIFT_ARRIVAL_SOUND_PLAYER));
                 stacks.add(new ItemStack(MtryumBlocks.LIFT_FLOOR_MONITOR));
                 stacks.add(new ItemStack(MtryumBlocks.MLFM));

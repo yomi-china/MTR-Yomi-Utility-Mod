@@ -125,6 +125,10 @@ public class LiftArrivalLightBlock extends BlockLiftPanelBase {
 
     }
 
+    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+        return state.getValue(LIT) ? 15 : 0;
+    }
+
     public enum Position implements StringRepresentable {
         CENTER("center"),
         RIGHT("right");
@@ -141,7 +145,7 @@ public class LiftArrivalLightBlock extends BlockLiftPanelBase {
         }
     }
 
-    public static class Entity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
+    public static class Entity extends TileEntityLiftPanel1Base {
         public Entity(BlockPos pos, BlockState state) {
             super(MtryumBlockEntities.LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY, pos, state, false);
         }

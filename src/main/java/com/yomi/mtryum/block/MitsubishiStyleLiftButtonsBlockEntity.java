@@ -21,6 +21,7 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
     private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
     public static final Logger LOGGER = LoggerFactory.getLogger("MSLB");
 
+
     public MitsubishiStyleLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
     }
@@ -52,6 +53,7 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
 
                 if (railwayData != null) {
                     for (Lift lift : railwayData.lifts) {
+
                         if (lift.hasFloor(trackPos)) {
                             lift.pressButton(trackPos.getY());
 
@@ -97,18 +99,10 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
             LOGGER.error("MTRYUM liftArrived:Level is null");
             return;
         }
-
-        if (!level.isClientSide) {
-            upButtonPressed = false;
-            downButtonPressed = false;
-            setChanged();
-            syncData();
-        }
-    }
-
-    public void updateButtonStates(boolean upPressed, boolean downPressed) {
-        this.upButtonPressed = upPressed;
-        this.downButtonPressed = downPressed;
+        upButtonPressed = false;
+        downButtonPressed = false;
+        setChanged();
+        syncData();
     }
 
     public boolean isUpButtonPressed() {
@@ -121,9 +115,5 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
 
     public void updateLiftDirection(Lift.LiftDirection direction) {
         liftDirection = direction;
-    }
-
-    public Lift.LiftDirection getLiftDirection() {
-        return liftDirection;
     }
 }

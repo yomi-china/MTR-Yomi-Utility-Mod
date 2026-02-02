@@ -59,11 +59,9 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
         try {
             final ResourceLocation clickedblockId = Registry.BLOCK.getKey(state.getBlock());
 
-            // 阶段1：检测并记录轨道
             if (LIFT_TRACK_ID.equals(clickedblockId.toString())) {
                 handleTrackConnection(context, compoundTag, clickedPos);
             }
-            // 阶段2：检测并连接设备
             else if (isConnectableBlock(clickedblockId)) {
                 handleDeviceConnection(context, world, compoundTag, clickedPos);
             }

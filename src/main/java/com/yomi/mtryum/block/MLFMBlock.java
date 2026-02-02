@@ -104,6 +104,7 @@ public class MLFMBlock extends BlockLiftButtons {
             }
             return InteractionResult.sidedSuccess(world.isClientSide());
         }
+
         // 空手
         else if (stack.isEmpty() && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             MtryumClient.scheduleFMScreenOpen(pos);

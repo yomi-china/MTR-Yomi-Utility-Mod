@@ -1,15 +1,16 @@
 package com.yomi.mtryum;
 
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
-import com.yomi.mtryum.block.LiftFloorMonitorEntity;
+import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
-import com.yomi.mtryum.render.DynamicFontTextureManager;
+import com.yomi.mtryum.render.CustomFontManager;
+import com.yomi.mtryum.render.CustomFontRenderer;
 import com.yomi.mtryum.render.LiftArrivalLightRenderer;
-import com.yomi.mtryum.render.LiftFloorMonitorRenderer;
 import com.yomi.mtryum.render.MLFMRender;
 import com.yomi.mtryum.render.MitsubishiStyleLiftButtonsRenderer;
+import com.yomi.mtryum.render.TKClassicFloorMonitorRenderer;
 import com.yomi.mtryum.render.TKClassicLiftButtonsRenderer;
 import com.yomi.mtryum.screen.LiftArrivalSoundPlayerScreen;
 import com.yomi.mtryum.screen.LiftFloorMonitorScreen;
@@ -71,7 +72,7 @@ public class MtryumClient implements ClientModInitializer {
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.LIFT_FLOOR_MONITOR,
-                ctx -> new LiftFloorMonitorRenderer()
+                ctx -> new TKClassicFloorMonitorRenderer()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.MLFM_ENTITY,
@@ -79,18 +80,20 @@ public class MtryumClient implements ClientModInitializer {
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY,
-                ctx -> new MitsubishiStyleLiftButtonsRenderer()
+                MitsubishiStyleLiftButtonsRenderer::new
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY,
                 TKClassicLiftButtonsRenderer::new
         );
-        DynamicFontTextureManager.getInstance().initialize();
+        CustomFontManager fontManager = CustomFontManager.getInstance();
+        fontManager.initialize();
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
                 .registerReloadListener(new SimpleSynchronousResourceReloadListener() {
                     @Override
                     public void onResourceManagerReload(ResourceManager resourceManager) {
-                        DynamicFontTextureManager.getInstance().clearCache();
+                        CustomFontManager.getInstance().clearCache();
+                        CustomFontRenderer.cleanupAll();
                     }
 
                     @Override
@@ -105,7 +108,7 @@ public class MtryumClient implements ClientModInitializer {
                     if (pendingFMScreenPos != null) {
                         if (client.level != null) {
                             BlockEntity entity = client.level.getBlockEntity(pendingFMScreenPos);
-                            if (entity instanceof LiftFloorMonitorEntity) {
+                            if (entity instanceof TKClassicFloorMonitorEntity) {
                                 client.setScreen(new LiftFloorMonitorScreen(pendingFMScreenPos));
                             }
                         }
