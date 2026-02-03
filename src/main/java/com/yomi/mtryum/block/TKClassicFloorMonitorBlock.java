@@ -7,7 +7,6 @@ import mtr.mappings.BlockEntityMapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -34,17 +33,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
-public class LiftFloorMonitorBlock extends BlockLiftButtons {
+public class TKClassicFloorMonitorBlock extends BlockLiftButtons {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final ResourceLocation BRUSH_ITEM_ID = new ResourceLocation("mtr", "brush");
 
-    private static final VoxelShape NORTH = Block.box(0, 8, 0, 16, 12, 1);
-    private static final VoxelShape SOUTH = Block.box(0, 8, 15, 16, 12, 16);
-    private static final VoxelShape EAST = Block.box(15, 8, 0, 16, 12, 16);
-    private static final VoxelShape WEST = Block.box(0, 8, 0, 1, 12, 16);
+    private static final VoxelShape NORTH = Block.box(0, 8, 0, 16, 12, 1);//东市买骏马
+    private static final VoxelShape SOUTH = Block.box(0, 8, 15, 16, 12, 16);//西市买鞍鞯
+    private static final VoxelShape EAST = Block.box(15, 8, 0, 16, 12, 16);//南市买辔头
+    private static final VoxelShape WEST = Block.box(0, 8, 0, 1, 12, 16);//北市买长鞭
 
-    public LiftFloorMonitorBlock() {
+    public TKClassicFloorMonitorBlock() {
         super();
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
@@ -58,7 +57,7 @@ public class LiftFloorMonitorBlock extends BlockLiftButtons {
 
     @Override
     public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
-        return new LiftFloorMonitorEntity(MtryumBlockEntities.LIFT_FLOOR_MONITOR, pos, state);
+        return new TKClassicFloorMonitorEntity(MtryumBlockEntities.LIFT_FLOOR_MONITOR, pos, state);
     }
 
     @Override
@@ -91,7 +90,7 @@ public class LiftFloorMonitorBlock extends BlockLiftButtons {
         if (BuiltInRegistries.ITEM.getKey(item).equals(BRUSH_ITEM_ID)) {
             if (!world.isClientSide()) {
                 BlockEntity entity = world.getBlockEntity(pos);
-                if (entity instanceof LiftFloorMonitorEntity tile) {
+                if (entity instanceof TKClassicFloorMonitorEntity tile) {
                     // 切换锁定状态
                     tile.toggleLock();
                     world.sendBlockUpdated(pos, state, state, 3);
@@ -120,6 +119,4 @@ public class LiftFloorMonitorBlock extends BlockLiftButtons {
     public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
 
     }
-
-
 }

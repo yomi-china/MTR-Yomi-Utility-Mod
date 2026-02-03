@@ -1,7 +1,7 @@
 package com.yomi.mtryum.screen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -31,7 +31,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
             }
         }
 
-        // 创建输入框
         soundIndexInput = new EditBox(
                 this.font,
                 this.width / 2 - 100,
@@ -44,7 +43,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         soundIndexInput.setValue(String.valueOf(currentSoundIndex));
         addRenderableWidget(soundIndexInput);
 
-        // 创建确认按钮
         Button confirmButton = Button.builder(
                 Component.translatable("screen.mtryum.lift_arrival_sound_player.confirm"),
                 button -> saveAndClose()
@@ -73,7 +71,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         this.renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, partialTick);
 
-        // 绘制标题
         drawCenteredString(
                 poseStack,
                 this.font,
@@ -83,11 +80,10 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
                 0xFFFFFF
         );
 
-        // 绘制说明文本
         drawString(
                 poseStack,
                 this.font,
-                Component.translatable("screen.mtryum.lift_arrival_sound_player.desc").getString(),
+                Component.translatable("screen.mtryum.lift_arrival_sound_player.desc"),
                 this.width / 2 - 100,
                 this.height / 2 - 40,
                 0xAAAAAA

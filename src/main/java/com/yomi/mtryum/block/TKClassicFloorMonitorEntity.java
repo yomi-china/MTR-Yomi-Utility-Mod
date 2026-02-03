@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LiftFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
+public class TKClassicFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
 
     private BlockPos trackPosition;
     private boolean isLocked = false;
@@ -16,7 +16,7 @@ public class LiftFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLiftPan
     private int arrowStyle = 1;
     private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
 
-    public LiftFloorMonitorEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public TKClassicFloorMonitorEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
     }
 

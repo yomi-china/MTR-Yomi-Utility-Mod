@@ -31,7 +31,6 @@ public class LiftFloorSetterItem {
         BlockState state = world.getBlockState(startPos);
         String blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
 
-        // 新增：判断是否为sound player
         if (blockId.equals(SOUND_PLAYER_BLOCK_ID)) {
             int selectedSound = getSoundIndexFromBlockEntity(world, startPos);
             if (selectedSound > 0) {

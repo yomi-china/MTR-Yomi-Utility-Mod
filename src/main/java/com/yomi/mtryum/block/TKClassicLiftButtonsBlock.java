@@ -35,11 +35,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
+public class TKClassicLiftButtonsBlock extends BlockLiftButtons {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    public MitsubishiStyleLiftButtonsBlock() {
+    public TKClassicLiftButtonsBlock() {
         super();
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
@@ -50,9 +50,9 @@ public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return type == MtryumBlockEntities.MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY ?
+        return type == MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY ?
                 (world.isClientSide ? null : (level1, blockPos, blockState, t) ->
-                        MitsubishiStyleLiftButtonsBlockEntity.serverTick(level1, blockPos, blockState, (MitsubishiStyleLiftButtonsBlockEntity) t)) :
+                        TKClassicLiftButtonsBlockEntity.serverTick(level1, blockPos, blockState, (TKClassicLiftButtonsBlockEntity) t)) :
                 null;
     }
 
@@ -90,12 +90,12 @@ public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
 
     @Override
     public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
-        return new MitsubishiStyleLiftButtonsBlockEntity(pos, state);
+        return new TKClassicLiftButtonsBlockEntity(pos, state);
     }
 
     @Override
     public BlockEntityType<? extends BlockEntityMapper> getType() {
-        return MtryumBlockEntities.MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY;
+        return MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY;
     }
 
     @Override
@@ -118,8 +118,8 @@ public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
                     boolean isUpButton = relativeY > 0.3;
 
                     BlockEntity blockEntity = world.getBlockEntity(pos);
-                    if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity) {
-                        ((MitsubishiStyleLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
+                    if (blockEntity instanceof TKClassicLiftButtonsBlockEntity) {
+                        ((TKClassicLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
                         return InteractionResult.SUCCESS;
                     }
                     return InteractionResult.PASS;

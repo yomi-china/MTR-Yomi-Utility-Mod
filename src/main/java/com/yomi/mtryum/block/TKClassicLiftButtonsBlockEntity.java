@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
+public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
 
     private static final String KEY_UP_PRESSED = "up_pressed";
     private static final String KEY_DOWN_PRESSED = "down_pressed";
@@ -21,12 +21,12 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
     private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
     public static final Logger LOGGER = LoggerFactory.getLogger("MSLB");
 
-    public MitsubishiStyleLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public TKClassicLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
     }
 
-    public MitsubishiStyleLiftButtonsBlockEntity(BlockPos pos, BlockState state) {
-        this(MtryumBlockEntities.MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY, pos, state);
+    public TKClassicLiftButtonsBlockEntity(BlockPos pos, BlockState state) {
+        this(MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY, pos, state);
     }
 
     @Override
@@ -67,13 +67,13 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
                         }
                     }
                 } else {
-                    LOGGER.error("MTRYUM Call lift:RailwayData is null");
+                    LOGGER.error("Call lift:RailwayData is null");
                 }
             }
         }
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, MitsubishiStyleLiftButtonsBlockEntity entity) {
+    public static void serverTick(Level level, BlockPos pos, BlockState state, TKClassicLiftButtonsBlockEntity entity) {
         if (level != null && !level.isClientSide) {
             BlockPos trackPos = entity.getTrackPosition(level);
             if (trackPos != null) {
@@ -95,7 +95,7 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
 
     public void liftArrived() {
         if (level == null) {
-            LOGGER.error("MTRYUM liftArrived:Level is null");
+            LOGGER.error("liftArrived:Level is null");
             return;
         }
         upButtonPressed = false;

@@ -51,11 +51,12 @@ public class SetSoundIndexPacket {
     }
 
     public static void receive(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
+        System.out.println("Received SetSoundIndexPacket");
         BlockPos pos = buf.readBlockPos();
         int soundIndex = buf.readInt();
 
         server.execute(() -> {
-            ServerLevel world = (ServerLevel) player.level;
+            ServerLevel world = (ServerLevel) player.level();
             if (world.hasChunkAt(pos)) {
                 BlockEntity entity = world.getBlockEntity(pos);
                 if (entity instanceof LiftArrivalSoundPlayerEntity) {

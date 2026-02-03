@@ -7,7 +7,6 @@ import mtr.mappings.BlockEntityMapper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -104,6 +103,7 @@ public class MLFMBlock extends BlockLiftButtons {
             }
             return InteractionResult.sidedSuccess(world.isClientSide());
         }
+
         // 空手
         else if (stack.isEmpty() && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             MtryumClient.scheduleFMScreenOpen(pos);
