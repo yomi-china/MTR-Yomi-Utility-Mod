@@ -8,7 +8,8 @@
     "yomi_307"
   ],
   "contact": {
-    "homepage": "https://yomi-china.github.io/"
+    "homepage": "https://yomi-china.github.io/mod-mtryum/",
+    "sources": "https://github.com/yomi-china/MTR-Yomi-Utility-Mod/"
   },
   "icon": "assets/mtryum/icon.png",
   "environment": "*",
@@ -25,10 +26,10 @@
   ],
   "depends": {
     "fabricloader": ">=0.14.9",
-    "minecraft": "~1.19.4",
+    "minecraft": "~1.19.2",
     "java": ">=17",
     "fabric-api": "*",
-    "mtr": "<=4.0.0-beta-8"
+    "mtr": "*"
   },
   "suggests": {
     "another-mod": "*"

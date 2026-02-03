@@ -1,15 +1,18 @@
 {
-  "block.mtryum.mitsubishi_floor_monitor": "三菱风格电梯楼层显示器",
+  "block.mtryum.mitsubishi_floor_monitor": "三菱经典风格电梯楼层显示器",
   "block.mtryum.lift_arrival_light": "电梯到站灯",
   "block.mtryum.lift_arrival_sound_player": "电梯到站提示音播放器",
   "block.mtryum.lift_floor_monitor": "蒂森风格电梯楼层显示器",
-  "block.mtryum.mitsubishi_style_lift_buttons": "三菱凌云3风格电梯按钮",
-  "item.mtryum.mitsubishi_floor_monitor": "三菱风格电梯楼层显示器",
+  "block.mtryum.mitsubishi_style_lift_buttons": "三菱经典风格电梯按钮",
+  "block.mtryum.tk_style_lift_buttons": "蒂森经典风格电梯按钮",
+  "item.mtryum.mitsubishi_floor_monitor": "三菱经典风格电梯楼层显示器",
   "item.mtryum.lift_button_auto_connector": "电梯按钮自动连接器",
   "item.mtryum.lift_floor_monitor": "蒂森风格电梯楼层显示器",
   "item.mtryum.lift_floor_setter": "电梯楼层自动设置器",
-  "item.mtryum.mitsubishi_style_lift_buttons": "三菱凌云3风格电梯按钮",
+  "item.mtryum.mitsubishi_style_lift_buttons": "三菱经典风格电梯按钮",
+  "item.mtryum.tk_style_lift_buttons": "蒂森经典风格电梯按钮",
   "item.mtryum.mod_logo": "MTR-YUM模组图标",
+  "item.mtryum.onboard_tool": "随时上车工具",
   "itemGroup.mtryum_block_group": "Yomi的MTR实用拓展：方块",
   "itemGroup.mtryum_tool_group": "Yomi的MTR实用拓展：工具",
   "msg.mtryum.connection_complete": "自动连接完成！成功连接 %d 个楼层~",
@@ -29,5 +32,6 @@
   "tooltip.mtryum.floor_monitor.line1": "刷右击以锁定",
   "tooltip.mtryum.floor_monitor.line2": "空手右击调整颜色",
   "tooltip.mtryum.lift_arrival_light.line1": "使用MTR自带的电梯按钮连接器进行连接；当电梯到站，此灯闪烁",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右击调整音效，刷子右击预览音效"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右击调整音效，刷子右击预览音效",
+  "screen.mtryum.set_style_title": "设置样式"
 }

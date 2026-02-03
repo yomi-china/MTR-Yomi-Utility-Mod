@@ -3,13 +3,16 @@
   "block.mtryum.lift_arrival_light": "Lift Arrival Light",
   "block.mtryum.lift_arrival_sound_player": "Lift Arrival Sound Player",
   "block.mtryum.lift_floor_monitor": "ThyssenKrupp Style Lift Floor Monitor",
-  "block.mtryum.mitsubishi_style_lift_buttons": "Mitsubishi LingYun 3 style lift button",
+  "block.mtryum.mitsubishi_style_lift_buttons": "Mitsubishi style lift button",
+  "block.mtryum.tk_style_lift_buttons": "ThyssenKrupp Style lift button",
   "item.mtryum.mitsubishi_floor_monitor": "Mitsubishi Style Lift Floor Monitor",
   "item.mtryum.lift_button_auto_connector": "Lift Button Auto Connector",
   "item.mtryum.lift_floor_monitor": "ThyssenKrupp Style Lift Floor Monitor",
   "item.mtryum.lift_floor_setter": "Lift Floor Auto Setter",
-  "item.mtryum.mitsubishi_style_lift_buttons": "Mitsubishi LingYun 3 style lift button",
+  "item.mtryum.mitsubishi_style_lift_buttons": "Mitsubishi style lift button",
+  "item.mtryum.tk_style_lift_buttons": "ThyssenKrupp Style lift button",
   "item.mtryum.mod_logo": "MTR-YUM Logo",
+  "item.mtryum.onboard_tool": "Onboard Tool",
   "itemGroup.mtryum_block_group": "MTR Yomi's Utility Mod: Blocks",
   "itemGroup.mtryum_tool_group": "MTR Yomi's Utility Mod: Tools",
   "msg.mtryum.connection_complete": "Successfully connected %d floors！~",
@@ -29,5 +32,6 @@
   "tooltip.mtryum.floor_monitor.line1": "Lock:Click with MTR brush",
   "tooltip.mtryum.floor_monitor.line2": "Change color:Click with empty Hand",
   "tooltip.mtryum.lift_arrival_light.line1": " Use MTR-Lift Buttons Link Connector to connect",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": ""
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "",
+  "screen.mtryum.set_style_title": "Set Style"
 }
