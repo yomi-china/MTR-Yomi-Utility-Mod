@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mtryum:item/lift_button_auto_connector"
+  }
+}
