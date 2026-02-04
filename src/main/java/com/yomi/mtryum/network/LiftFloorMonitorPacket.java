@@ -28,7 +28,7 @@ public class LiftFloorMonitorPacket {
         int color = buf.readInt();
         
         server.execute(() -> {
-            if (player.level() instanceof ServerLevel level) {
+            if (player.level instanceof ServerLevel level) {
                 if (level.getBlockEntity(pos) instanceof TKClassicFloorMonitorEntity tile) {
                     tile.setTextColor(color);
                 }
@@ -43,7 +43,7 @@ public class LiftFloorMonitorPacket {
         int style = buf.readInt();
         
         server.execute(() -> {
-            if (player.level() instanceof ServerLevel level) {
+            if (player.level instanceof ServerLevel level) {
                 if (level.getBlockEntity(pos) instanceof TKClassicFloorMonitorEntity tile) {
                     tile.setArrowStyle(style);
                 }

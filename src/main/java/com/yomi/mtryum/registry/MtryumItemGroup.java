@@ -12,7 +12,7 @@ public class MtryumItemGroup {
 
     static {
         TOOL_GROUP = FabricItemGroup.builder(new ResourceLocation("mtryum", "tool_group"))
-                .title(Component.translatable("itemGroup.mtryum_tool_group"))
+                .title(Component.translatable("itemGroup.mtryum.tool_group"))
                 .icon(() -> new ItemStack(MtryumItems.MOD_LOGO))
                 .displayItems((parameters, output) -> {
                     output.accept(new ItemStack(MtryumItems.LIFT_FLOOR_SETTER));
@@ -22,7 +22,7 @@ public class MtryumItemGroup {
                 .build();
 
         BLOCK_GROUP = FabricItemGroup.builder(new ResourceLocation("mtryum", "block_group"))
-                .title(Component.translatable("itemGroup.mtryum_block_group"))
+                .title(Component.translatable("itemGroup.mtryum.block_group"))
                 .icon(() -> new ItemStack(MtryumItems.MOD_LOGO))
                 .displayItems((parameters, output) -> {
                     output.accept(new ItemStack(MtryumItems.LIFT_ARRIVAL_LIGHT));
