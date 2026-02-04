@@ -101,7 +101,9 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
         upButtonPressed = false;
         downButtonPressed = false;
         setChanged();
-        syncData();
+        if (!level.isClientSide()) {
+            syncData();
+        }
     }
 
     public boolean isUpButtonPressed() {

@@ -101,7 +101,9 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
         upButtonPressed = false;
         downButtonPressed = false;
         setChanged();
-        syncData();
+        if (!level.isClientSide()) {
+            syncData();
+        }
     }
 
     public boolean isUpButtonPressed() {

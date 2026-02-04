@@ -14,7 +14,7 @@ public class MtryumItemGroup {
             BuiltInRegistries.CREATIVE_MODE_TAB,
             new ResourceLocation(Mtryum.MOD_ID, "tool_group"),
             FabricItemGroup.builder()
-                    .title(Component.translatable("itemGroup.mtryum_tool_group"))
+                    .title(Component.translatable("itemGroup.mtryum.tool_group"))
                     .icon(() -> new ItemStack(MtryumItems.MOD_LOGO))
                     .displayItems((parameters, output) -> {
                         output.accept(MtryumItems.LIFT_FLOOR_SETTER);
@@ -29,7 +29,7 @@ public class MtryumItemGroup {
             BuiltInRegistries.CREATIVE_MODE_TAB,
             new ResourceLocation(Mtryum.MOD_ID, "block_group"),
             FabricItemGroup.builder()
-                    .title(Component.translatable("itemGroup.mtryum_block_group"))
+                    .title(Component.translatable("itemGroup.mtryum.block_group"))
                     .icon(() -> new ItemStack(MtryumItems.MOD_LOGO))
                     .displayItems((parameters, output) -> {
                         output.accept(new ItemStack(MtryumItems.LIFT_ARRIVAL_LIGHT));
