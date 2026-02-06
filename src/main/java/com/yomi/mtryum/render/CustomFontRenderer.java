@@ -17,7 +17,7 @@ import org.joml.Matrix4f;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomFontRenderer {
+public class  CustomFontRenderer {
     private static final Map<String, CustomFontRenderer> INSTANCES = new HashMap<>();
 
     private final String fontName;

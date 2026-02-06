@@ -7,6 +7,7 @@ import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
 import com.yomi.mtryum.render.CustomFontManager;
 import com.yomi.mtryum.render.LiftArrivalLightRenderer;
+import com.yomi.mtryum.render.OTIS3StyleLiftButtonsRenderer;
 import com.yomi.mtryum.render.TKClassicFloorMonitorRenderer;
 import com.yomi.mtryum.render.MLFMRender;
 import com.yomi.mtryum.render.MitsubishiStyleLiftButtonsRenderer;
@@ -66,6 +67,10 @@ public class MtryumClient implements ClientModInitializer {
                 MtryumBlocks.TK_STYLE_LIFT_BUTTONS,
                 RenderType.cutout()
         );
+        BlockRenderLayerMap.INSTANCE.putBlock(
+                MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS,
+                RenderType.cutout()
+        );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY,
                 LiftArrivalLightRenderer::new
@@ -85,6 +90,10 @@ public class MtryumClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY,
                 TKClassicLiftButtonsRenderer::new
+        );
+        BlockEntityRendererRegistry.register(
+                MtryumBlockEntities.OTIS3_STYLE_LIFT_BUTTONS_ENTITY,
+                OTIS3StyleLiftButtonsRenderer::new
         );
         CustomFontManager fontManager = CustomFontManager.getInstance();
         fontManager.initialize();

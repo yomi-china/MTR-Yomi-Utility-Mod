@@ -40,7 +40,7 @@ public class CustomFontManager implements ResourceManagerReloadListener {
             // 加载字体
             loadFont("mitsubishi-modern", "assets/mtryum/fonts/mitsubishi-modern.ttf", 80);
             loadFont("old-thyssenkrupp", "assets/mtryum/fonts/old-thyssenkrupp.ttf", 60);
-            // loadFont("new-thyssenkrupp", "assets/mtryum/fonts/new-thyssenkrupp.ttf", 60);
+            loadFont("otis-series-1", "assets/mtryum/fonts/otis-series-1.ttf", 60);
 
             Mtryum.LOGGER.info("Font initialization complete! Loaded {} fonts", fontCache.size());
         } catch (Exception e) {
