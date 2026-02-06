@@ -32,6 +32,7 @@ public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRende
 
         this.baseYOffset = -0.135f;
         this.floorNumberY = 0.78f;
+        this.floorNumberXOffset = 0.5f;
         this.arrowY = 0.88f;
         this.buttonUpY = 0.48f;
         this.buttonDownY = 0.35f;

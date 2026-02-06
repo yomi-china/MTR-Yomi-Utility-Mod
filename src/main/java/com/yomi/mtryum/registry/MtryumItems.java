@@ -17,6 +17,7 @@ public class MtryumItems {
     public static final Item LIFT_ARRIVAL_SOUND_PLAYER = registerBlockItem("lift_arrival_sound_player", MtryumBlocks.LIFT_ARRIVAL_SOUND_PLAYER_BLOCK);
     public static final Item MITSUBISHI_STYLE_LIFT_BUTTONS = registerBlockItem("mitsubishi_style_lift_buttons", MtryumBlocks.MITSUBISHI_STYLE_LIFT_BUTTONS);
     public static final Item TK_STYLE_LIFT_BUTTONS = registerBlockItem("tk_style_lift_buttons", MtryumBlocks.TK_STYLE_LIFT_BUTTONS);
+    public static final Item OTIS3_STYLE_LIFT_BUTTONS = registerBlockItem("otis_3200_style_lift_buttons", MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS);
     public static final Item LIFT_FLOOR_MONITOR = registerBlockItem("lift_floor_monitor", MtryumBlocks.LIFT_FLOOR_MONITOR);
     public static final Item MLFM = registerBlockItem("mitsubishi_floor_monitor", MtryumBlocks.MLFM);
     public static final Item ONBOARD_TOOL = registerItem("onboard_tool", new Item(new FabricItemSettings().stacksTo(1)));

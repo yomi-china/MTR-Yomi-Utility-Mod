@@ -11,40 +11,27 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TKClassicLiftButtonsBlock extends AbstractLiftButtonsBlock {
+public class OTIS3StyleLiftButtonsBlock extends AbstractLiftButtonsBlock {
 
     @Override
     public BlockEntityType<? extends BlockEntityMapper> getBlockEntityType() {
-        return MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY;
+        return MtryumBlockEntities.OTIS3_STYLE_LIFT_BUTTONS_ENTITY;
     }
 
     @Override
     public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
-        return new TKClassicLiftButtonsBlockEntity(pos, state);
+        return new OTIS3StyleLiftButtonsBlockEntity(pos, state);
     }
 
     @Override
     protected void getServerTicker(Level level, BlockPos pos, BlockState state, BlockLiftPanelBase.TileEntityLiftPanel1Base entity) {
-        TKClassicLiftButtonsBlockEntity.serverTick(level, pos, state, (TKClassicLiftButtonsBlockEntity) entity);
-    }
-
-    @Override
-    protected void handleSpecialLogic(BlockState state, Level world, BlockPos pos, BlockEntity blockEntity) {
-        if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity liftEntity) {
-            if (liftEntity.isLegacy() && !liftEntity.isAutoUnlocked()) {
-                boolean isLocked = IBlock.getStatePropertySafe(state, UNLOCKED);
-                if (!isLocked) {
-                    world.setBlockAndUpdate(pos, state.setValue(UNLOCKED, true));
-                    liftEntity.markAsAutoUnlocked();
-                }
-            }
-        }
+        OTIS3StyleLiftButtonsBlockEntity.serverTick(level, pos, state, (OTIS3StyleLiftButtonsBlockEntity) entity);
     }
 
     @Override
     protected InteractionResult handleCallLift(BlockEntity blockEntity, boolean isUpButton) {
-        if (blockEntity instanceof TKClassicLiftButtonsBlockEntity) {
-            ((TKClassicLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
+        if (blockEntity instanceof OTIS3StyleLiftButtonsBlockEntity) {
+            ((OTIS3StyleLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;

@@ -25,20 +25,22 @@ public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TK
 
         this.baseYOffset = -0.135f;
         this.floorNumberY = 0.675f;
-        this.arrowY = 0.75f;
+        this.floorNumberXOffset = 0.49f;
+        this.arrowY = 0.745f;
+        this.buttonX = 0.492f;
         this.buttonUpY = 0.47f;
         this.buttonDownY = 0.36f;
 
-        this.buttonSize = 0.06f;
+        this.buttonSize = 0.07f;
         this.arrowWidth = 0.125f;
         this.arrowHeight = 0.125f;
         this.depthOffset = 0.0015f;
 
-        this.floorScaleTwoChars = 0.0012f;
-        this.floorScaleThreeChars = 0.0010f;
+        this.floorScaleTwoChars = 0.0011f;
+        this.floorScaleThreeChars = 0.0008f;
         this.floorScaleExtraReduction = 0.00015f;
         this.floorScaleMin = 0.0003f;
-        this.arrowScale = 0.0012f;
+        this.arrowScale = 0.0011f;
 
         this.arrowRenderMode = ArrowRenderMode.FONT;
 

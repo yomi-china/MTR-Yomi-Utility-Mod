@@ -3,6 +3,7 @@ package com.yomi.mtryum.registry;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
+import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlockEntity;
 import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.block.MLFMEntity;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlockEntity;
@@ -20,6 +21,7 @@ public class MtryumBlockEntities {
     public static BlockEntityType<MLFMEntity> MLFM_ENTITY;
     public static BlockEntityType<MitsubishiStyleLiftButtonsBlockEntity> MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY;
     public static BlockEntityType<TKClassicLiftButtonsBlockEntity> TK_STYLE_LIFT_BUTTONS_ENTITY;
+    public static BlockEntityType<OTIS3StyleLiftButtonsBlockEntity> OTIS3_STYLE_LIFT_BUTTONS_ENTITY;
 
     public static void register() {
         LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY = Registry.register(
@@ -68,6 +70,14 @@ public class MtryumBlockEntities {
                 FabricBlockEntityTypeBuilder.create(
                         TKClassicLiftButtonsBlockEntity::new,
                         MtryumBlocks.TK_STYLE_LIFT_BUTTONS
+                ).build(null)
+        );
+        OTIS3_STYLE_LIFT_BUTTONS_ENTITY = Registry.register(
+                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                new ResourceLocation(Mtryum.MOD_ID, "otis_3200_style_lift_buttons"),
+                FabricBlockEntityTypeBuilder.create(
+                        OTIS3StyleLiftButtonsBlockEntity::new,
+                        MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS
                 ).build(null)
         );
     }

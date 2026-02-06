@@ -8,7 +8,7 @@
   "item.mtryum.mitsubishi_floor_monitor": "Mitsubishi Style Lift Floor Monitor",
   "item.mtryum.lift_button_auto_connector": "Lift Button Auto Connector",
   "item.mtryum.lift_floor_monitor": "ThyssenKrupp Style Lift Floor Monitor",
-  "item.mtryum.lift_floor_setter": "Lift Floor Auto Setter",
+  "item.mtryum.lift_floor_setter": "Lift Auto Setter",
   "item.mtryum.mitsubishi_style_lift_buttons": "Mitsubishi style lift button",
   "item.mtryum.tk_style_lift_buttons": "ThyssenKrupp Style lift button",
   "item.mtryum.mod_logo": "MTR-YUM Logo",
@@ -34,5 +34,13 @@
   "tooltip.mtryum.floor_monitor.line2": "Change color:Click with empty Hand",
   "tooltip.mtryum.lift_arrival_light.line1": " Use MTR-Lift Buttons Link Connector to connect",
   "tooltip.mtryum.lift_arrival_sound_player.line1": "",
-  "screen.mtryum.set_style_title": "Set Style"
+  "screen.mtryum.set_style_title": "Set Style",
+  "item.mtryum.lift_floor_setter.elevator_start": "§7Starting elevator floor configuration...",
+  "item.mtryum.lift_floor_setter.elevator_complete": "§7Elevator floors configured successfully!",
+  "item.mtryum.lift_floor_setter.elevator_progress": "Configured §e%1$s §7floor(s)",
+  "item.mtryum.lift_floor_setter.sound_start": "§7Applying sound settings to elevator...",
+  "item.mtryum.lift_floor_setter.sound_complete": "§7Sound settings applied successfully!",
+  "item.mtryum.lift_floor_setter.sound_progress": "§7Updated §e%1$s §7sound player(s)",
+  "item.mtryum.lift_floor_setter.no_sound_found": "§7No sound index found on this block",
+  "item.mtryum.lift_floor_setter.wrong_block": "§7This block cannot be configured"
 }

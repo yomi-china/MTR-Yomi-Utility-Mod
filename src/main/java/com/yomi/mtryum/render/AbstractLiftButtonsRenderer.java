@@ -45,7 +45,9 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     // 位置相关
     protected float baseYOffset = -0.135f;
     protected float floorNumberY = 0.78f;
+    protected float floorNumberXOffset = 0.5f;
     protected float arrowY = 0.88f;
+    protected float buttonX = 0.5f;
     protected float buttonUpY = 0.48f;
     protected float buttonDownY = 0.35f;
     
@@ -82,16 +84,18 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     }
 
     public AbstractLiftButtonsRenderer(BlockEntityRendererProvider.Context context,
-                                      ResourceLocation buttonNormalTexture,
-                                      ResourceLocation buttonPressedTexture,
-                                      ResourceLocation arrowTexture,
-                                      String fontName,
-                                      ArrowRenderMode arrowRenderMode) {
+                                       ResourceLocation buttonNormalTexture,
+                                       ResourceLocation buttonPressedTexture,
+                                       ResourceLocation arrowTexture,
+                                       String fontName,
+                                       ArrowRenderMode arrowRenderMode,
+                                       float floorNumberXOffset) {
         this.buttonNormalTexture = buttonNormalTexture;
         this.buttonPressedTexture = buttonPressedTexture;
         this.arrowTexture = arrowTexture;
         this.fontName = fontName;
         this.arrowRenderMode = arrowRenderMode;
+        this.floorNumberXOffset = floorNumberXOffset;
     }
 
     @NotNull
@@ -108,6 +112,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     }
 
     protected void liftArrived(T entity) {
+
     }
 
     @Override
@@ -183,14 +188,14 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     }
 
     protected void renderFloorNumber(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                    String floor, int light) {
+                                     String floor, int light) {
         if (floor == null || floor.isEmpty()) {
             floor = defaultFloorText;
         }
-        
+
         matrices.pushPose();
 
-        matrices.translate(0.5f, floorNumberY, depthOffset);
+        matrices.translate(floorNumberXOffset, floorNumberY, depthOffset);
 
         float scale = calculateFloorNumberScale(floor);
         matrices.scale(scale, -scale, scale);
@@ -208,7 +213,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 true,
                 fontName
         );
-        
+
         matrices.popPose();
     }
 
@@ -323,12 +328,17 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     }
 
     protected void renderButton(PoseStack matrices, MultiBufferSource vertexConsumers,
-                               float minY, float maxY,
-                               boolean isPressed, boolean rotate180,
-                               int light, int overlay, Direction facing) {
-        
+                                float minY, float maxY,
+                                boolean isPressed, boolean rotate180,
+                                int light, int overlay, Direction facing) {
+
         ResourceLocation texture = isPressed ? buttonPressedTexture : buttonNormalTexture;
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.entityCutout(texture));
+
+        float centerX = buttonX;
+        float halfWidth = buttonSize / 2;
+        float minX = centerX - halfWidth;
+        float maxX = centerX + halfWidth;
 
         float uStart, uEnd;
         if (facing == Direction.SOUTH || facing == Direction.WEST) {
@@ -338,17 +348,16 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
             uStart = 0.0f;
             uEnd = 1.0f;
         }
-        
+
         matrices.pushPose();
-        
+
         if (rotate180) {
-            float centerX = 0.5f;
             float centerY = (minY + maxY) / 2.0f;
             matrices.translate(centerX, centerY, 0);
             matrices.mulPose(Axis.ZP.rotationDegrees(180));
             matrices.translate(-centerX, -centerY, 0);
         }
-        
+
         var matrix = matrices.last().pose();
         var normal = matrices.last().normal();
         float normalZ = 1.0f;
@@ -356,39 +365,39 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         int r = (buttonTintColor >> 16) & 0xFF;
         int g = (buttonTintColor >> 8) & 0xFF;
         int b = buttonTintColor & 0xFF;
-        
-        vertexConsumer.vertex(matrix, 0.4625f, minY, depthOffset)
+
+        vertexConsumer.vertex(matrix, minX, minY, depthOffset)
                 .color(r, g, b, 255)
                 .uv(uStart, 1.0f)
                 .overlayCoords(overlay)
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
-        vertexConsumer.vertex(matrix, 0.4625f, maxY, depthOffset)
+
+        vertexConsumer.vertex(matrix, minX, maxY, depthOffset)
                 .color(r, g, b, 255)
                 .uv(uStart, 0.0f)
                 .overlayCoords(overlay)
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
-        vertexConsumer.vertex(matrix, 0.5375f, maxY, depthOffset)
+
+        vertexConsumer.vertex(matrix, maxX, maxY, depthOffset)
                 .color(r, g, b, 255)
                 .uv(uEnd, 0.0f)
                 .overlayCoords(overlay)
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
-        vertexConsumer.vertex(matrix, 0.5375f, minY, depthOffset)
+
+        vertexConsumer.vertex(matrix, maxX, minY, depthOffset)
                 .color(r, g, b, 255)
                 .uv(uEnd, 1.0f)
                 .overlayCoords(overlay)
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
+
         matrices.popPose();
     }
 
