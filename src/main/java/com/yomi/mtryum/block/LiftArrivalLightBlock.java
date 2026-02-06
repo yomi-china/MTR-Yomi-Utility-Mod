@@ -124,10 +124,6 @@ public class LiftArrivalLightBlock extends BlockLiftPanelBase {
 
     }
 
-    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-        return state.getValue(LIT) ? 15 : 0;
-    }
-
     public enum Position implements StringRepresentable {
         CENTER("center"),
         RIGHT("right");
