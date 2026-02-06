@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yomi.mtryum.Mtryum;
+import mtr.block.BlockLiftTrackFloor;
 import mtr.client.ClientData;
 import mtr.data.Lift;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,6 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -434,8 +437,8 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                 final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
                 
-                if (blockEntity instanceof mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
-                    floorNumber = ((mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
+                if (blockEntity instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
+                    floorNumber = ((BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
                     liftDirection = lift.getLiftDirection();
                     updateLiftDirection(entity, liftDirection);
                     
@@ -448,6 +451,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 }
             }
         }
+
         
         return new LiftData(floorNumber, liftDirection, isTopFloor, isBottomFloor);
     }
@@ -480,11 +484,11 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     }
 
     private static class DirectionPropertyCache {
-        private static net.minecraft.world.level.block.state.properties.Property<Direction> directionProperty;
+        private static Property<Direction> directionProperty;
         
-        public static net.minecraft.world.level.block.state.properties.Property<Direction> getDirectionProperty(String propertyName) {
+        public static Property<Direction> getDirectionProperty(String propertyName) {
             if (directionProperty == null) {
-                directionProperty = net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+                directionProperty = BlockStateProperties.HORIZONTAL_FACING;
             }
             return directionProperty;
         }

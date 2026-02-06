@@ -21,6 +21,7 @@
   "msg.mtryum.screen_locked": "屏幕已锁定",
   "msg.mtryum.screen_unlocked": "屏幕已解锁",
   "msg.mtryum.track_selected": "已记录基准轨道位置：[%d, %d, %d]",
+  "screen.mtryum.lift_arrival_sound_player.preview": "试听",
   "screen.mtryum.lift_arrival_sound_player.confirm": "确认",
   "screen.mtryum.lift_arrival_sound_player.desc": "请输入1-9的数字选择提示音",
   "screen.mtryum.lift_arrival_sound_player.input_hint": "输入1-9的数字对应不同声音，使用MTR的“刷”右击可预览选定声音",

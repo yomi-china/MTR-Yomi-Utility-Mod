@@ -34,6 +34,9 @@ public class MtryumSounds {
     public static final SoundEvent LIFT_ARRIVAL_SOUND_9 = SoundEvent.createVariableRangeEvent(
             new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_9")
     );
+    public static final SoundEvent LIFT_ARRIVAL_SOUND_10 = SoundEvent.createVariableRangeEvent(
+            new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_10")
+    );
 
     public static void register() {
         Registry.register(BuiltInRegistries.SOUND_EVENT, new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_1"), LIFT_ARRIVAL_SOUND_1);
@@ -45,5 +48,6 @@ public class MtryumSounds {
         Registry.register(BuiltInRegistries.SOUND_EVENT, new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_7"), LIFT_ARRIVAL_SOUND_7);
         Registry.register(BuiltInRegistries.SOUND_EVENT, new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_8"), LIFT_ARRIVAL_SOUND_8);
         Registry.register(BuiltInRegistries.SOUND_EVENT, new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_9"), LIFT_ARRIVAL_SOUND_9);
+        Registry.register(BuiltInRegistries.SOUND_EVENT, new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_10"), LIFT_ARRIVAL_SOUND_10);
     }
 }

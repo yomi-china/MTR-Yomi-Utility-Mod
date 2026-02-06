@@ -66,6 +66,9 @@ public class LiftArrivalSoundPlayerEntity extends BlockLiftPanelBase.TileEntityL
             case 9:
                 level.playSound(null, worldPosition, MtryumSounds.LIFT_ARRIVAL_SOUND_9, SoundSource.BLOCKS, 1.0F, 1.0F);
                 break;
+            case 10:
+                level.playSound(null, worldPosition, MtryumSounds.LIFT_ARRIVAL_SOUND_10, SoundSource.BLOCKS, 1.0F, 1.0F);
+                break;
             default:
                 level.playSound(null, worldPosition, MtryumSounds.LIFT_ARRIVAL_SOUND_1, SoundSource.BLOCKS, 1.0F, 1.0F);
                 break;

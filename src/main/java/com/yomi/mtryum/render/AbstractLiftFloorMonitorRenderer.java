@@ -3,6 +3,7 @@ package com.yomi.mtryum.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import mtr.block.BlockLiftTrackFloor;
 import mtr.client.ClientData;
 import mtr.data.Lift;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -72,13 +73,14 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         String floorNumber = "??";
 
         // 获取电梯数据
-        for (Lift lift : ClientData.LIFTS) {
+        for (Lift lift : mtr.client.ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                 final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
 
-                if (blockEntity instanceof mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
-                    floorNumber = ((mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
+                if (blockEntity instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
+                    floorNumber = ((BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
+                    // 更新电梯方向
                     liftDirection = lift.getLiftDirection();
                     updateLiftDirection(entity, liftDirection);
                     break;

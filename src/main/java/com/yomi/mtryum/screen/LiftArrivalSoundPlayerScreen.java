@@ -1,17 +1,22 @@
 package com.yomi.mtryum.screen;
 
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
+import com.yomi.mtryum.registry.MtryumSounds;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class LiftArrivalSoundPlayerScreen extends Screen {
     private final BlockPos pos;
     private EditBox soundIndexInput;
+    private int currentSoundIndex = 1;
+    private Button minusButton;
+    private Button plusButton;
 
     public LiftArrivalSoundPlayerScreen(BlockPos pos) {
         super(Component.translatable("screen.mtryum.lift_arrival_sound_player.title"));
@@ -22,8 +27,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
     protected void init() {
         super.init();
 
-        int currentSoundIndex = 1;
-
         if (minecraft != null && minecraft.level != null) {
             BlockEntity entity = minecraft.level.getBlockEntity(pos);
             if (entity instanceof LiftArrivalSoundPlayerEntity tile) {
@@ -31,36 +34,155 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
             }
         }
 
-        // 创建输入框
+        int centerX = this.width / 2;
+        int centerY = this.height / 2;
+
+        int buttonWidth = 25;
+        int inputWidth = 50;
+        int spacing = 10;
+
+        int totalWidth = buttonWidth * 2 + inputWidth + spacing * 2;
+        int startX = centerX - totalWidth / 2;
+
+        // 减号按钮
+        minusButton = Button.builder(
+                Component.literal("-"),
+                button -> decrementSoundIndex()
+        ).bounds(
+                startX,
+                centerY - 30,
+                buttonWidth, 20
+        ).build();
+        addRenderableWidget(minusButton);
+
+        // 输入框
         soundIndexInput = new EditBox(
                 this.font,
-                this.width / 2 - 100,
-                this.height / 2 - 20,
-                200, 20,
+                startX + buttonWidth + spacing,
+                centerY - 30,
+                inputWidth, 20,
                 Component.translatable("screen.mtryum.lift_arrival_sound_player.input_label")
         );
-        soundIndexInput.setMaxLength(1);
-        soundIndexInput.setFilter(s -> s.isEmpty() || s.matches("[1-9]"));
+        soundIndexInput.setMaxLength(2);
+        soundIndexInput.setFilter(s -> {
+            if (s.isEmpty()) return true;
+            try {
+                int value = Integer.parseInt(s);
+                return value >= 1 && value <= 10;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        });
         soundIndexInput.setValue(String.valueOf(currentSoundIndex));
         soundIndexInput.setHint(Component.translatable("screen.mtryum.lift_arrival_sound_player.input_hint"));
+        soundIndexInput.setResponder(text -> {
+            // 当输入框内容变化时，更新按钮状态
+            updateButtonsState();
+        });
         addRenderableWidget(soundIndexInput);
 
-        // 创建确认按钮
+        // 加号按钮
+        plusButton = Button.builder(
+                Component.literal("+"),
+                button -> incrementSoundIndex()
+        ).bounds(
+                startX + buttonWidth + spacing + inputWidth + spacing,
+                centerY - 30,
+                buttonWidth, 20
+        ).build();
+        addRenderableWidget(plusButton);
+
+        updateButtonsState();
+
+        // 试听按钮
+        Button previewButton = Button.builder(
+                Component.translatable("screen.mtryum.lift_arrival_sound_player.preview"),
+                button -> previewSound()
+        ).bounds(
+                centerX - 105,
+                centerY + 10,
+                100, 20
+        ).build();
+        addRenderableWidget(previewButton);
+
+        // 确认按钮
         Button confirmButton = Button.builder(
                 Component.translatable("screen.mtryum.lift_arrival_sound_player.confirm"),
                 button -> saveAndClose()
         ).bounds(
-                this.width / 2 - 50,
-                this.height / 2 + 30,
+                centerX + 5,
+                centerY + 10,
                 100, 20
         ).build();
         addRenderableWidget(confirmButton);
     }
 
+    private void decrementSoundIndex() {
+        try {
+            int currentValue = Integer.parseInt(soundIndexInput.getValue());
+            if (currentValue > 1) {
+                soundIndexInput.setValue(String.valueOf(currentValue - 1));
+                updateButtonsState();
+            }
+        } catch (NumberFormatException e) {
+            // 如果输入无效，重置为1
+            soundIndexInput.setValue("1");
+            updateButtonsState();
+        }
+    }
+
+    private void incrementSoundIndex() {
+        try {
+            int currentValue = Integer.parseInt(soundIndexInput.getValue());
+            if (currentValue < 10) {
+                soundIndexInput.setValue(String.valueOf(currentValue + 1));
+                updateButtonsState();
+            }
+        } catch (NumberFormatException e) {
+            // 如果输入无效，重置为1
+            soundIndexInput.setValue("1");
+            updateButtonsState();
+        }
+    }
+
+    private void updateButtonsState() {
+        try {
+            int currentValue = Integer.parseInt(soundIndexInput.getValue());
+            minusButton.active = currentValue > 1;
+            plusButton.active = currentValue < 10;
+        } catch (NumberFormatException e) {
+            // 输入无效时禁用两个按钮
+            minusButton.active = false;
+            plusButton.active = false;
+        }
+    }
+
+    private void previewSound() {
+        try {
+            int soundIndex = Integer.parseInt(soundIndexInput.getValue());
+            if (minecraft != null && minecraft.level != null && soundIndex >= 1 && soundIndex <= 10) {
+                switch (soundIndex) {
+                    case 1 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_1, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 2 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_2, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 3 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_3, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 4 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_4, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 5 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_5, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 6 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_6, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 7 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_7, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 8 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_8, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 9 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_9, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                    case 10 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_10, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+                }
+            }
+        } catch (NumberFormatException e) {
+            // 忽略
+        }
+    }
+
     private void saveAndClose() {
         try {
             int soundIndex = Integer.parseInt(soundIndexInput.getValue());
-            if (minecraft != null) {
+            if (soundIndex >= 1 && soundIndex <= 10 && minecraft != null) {
                 com.yomi.mtryum.network.SetSoundIndexPacket.send(pos, soundIndex);
             }
         } catch (NumberFormatException e) {
@@ -88,7 +210,7 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
                 this.font,
                 Component.translatable("screen.mtryum.lift_arrival_sound_player.desc").getString(),
                 this.width / 2 - 100,
-                this.height / 2 - 40,
+                this.height / 2 - 70,
                 0xAAAAAA
         );
     }

@@ -96,7 +96,7 @@ public class LiftFloorMonitorScreen extends Screen {
             ClientPlayNetworking.send(LiftFloorMonitorPacket.SET_COLOR, buf);
 
         } catch (NumberFormatException e) {
-            System.out.println("无效颜色代码: " + colorInput.getValue());
+            System.out.println("Invalid color code:" + colorInput.getValue());
         }
         this.onClose();
     }
@@ -135,7 +135,7 @@ public class LiftFloorMonitorScreen extends Screen {
         // 绘制说明文本
         guiGraphics.drawString(
                 this.font,
-                "十六进制颜色代码 (常用: 白FFFFFF, 红FF0000)",
+                "颜色代码 (常用: 白FFFFFF, 红FF0000)",
                 this.width / 2 - 100,
                 this.height / 2 - 40,
                 0xAAAAAA

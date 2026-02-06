@@ -21,6 +21,7 @@
   "msg.mtryum.screen_locked": "Screen locked",
   "msg.mtryum.screen_unlocked": "Screen unlocked",
   "msg.mtryum.track_selected": "Base track recorded at [%d, %d, %d]",
+  "screen.mtryum.lift_arrival_sound_player.preview": "Preview",
   "screen.mtryum.lift_arrival_sound_player.confirm": "Confirm",
   "screen.mtryum.lift_arrival_sound_player.desc": "Enter a number 1-9 to select the arrival sound",
   "screen.mtryum.lift_arrival_sound_player.input_hint": "Enter a number 1-9 for different sounds. Use MTR's brush to preview.",

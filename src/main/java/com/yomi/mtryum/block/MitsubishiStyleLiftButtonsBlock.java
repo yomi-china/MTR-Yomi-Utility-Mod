@@ -100,9 +100,27 @@ public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity liftEntity) {
+            // 如果是旧版本方块且未自动解锁，且当前是锁定状态，则自动解锁
+            if (liftEntity.isLegacy() && !liftEntity.isAutoUnlocked()) {
+                boolean isLocked = IBlock.getStatePropertySafe(state, UNLOCKED);
+                if (!isLocked) {
+                    // 自动解锁
+                    world.setBlockAndUpdate(pos, state.setValue(UNLOCKED, true));
+                    liftEntity.markAsAutoUnlocked();
+
+                    state = state.setValue(UNLOCKED, true);
+                }
+            }
+        }
+
+        final BlockState finalState = state;
+        final BlockPos finalPos = pos;
+
         final InteractionResult result = IBlock.checkHoldingBrush(world, player, () -> {
-            final boolean unlocked = !IBlock.getStatePropertySafe(state, UNLOCKED);
-            world.setBlockAndUpdate(pos, state.setValue(UNLOCKED, unlocked));
+            final boolean unlocked = !IBlock.getStatePropertySafe(finalState, UNLOCKED);
+            world.setBlockAndUpdate(finalPos, finalState.setValue(UNLOCKED, unlocked));
             player.displayClientMessage(unlocked ? Text.translatable("gui.mtr.lift_buttons_unlocked") : Text.translatable("gui.mtr.lift_buttons_locked"), true);
         });
 
@@ -112,12 +130,11 @@ public class MitsubishiStyleLiftButtonsBlock extends BlockLiftButtons {
             if (player.isHolding(Items.LIFT_BUTTONS_LINK_CONNECTOR.get()) || player.isHolding(Items.LIFT_BUTTONS_LINK_REMOVER.get())) {
                 return InteractionResult.PASS;
             } else {
-                final boolean unlocked = IBlock.getStatePropertySafe(state, UNLOCKED);
+                final boolean unlocked = IBlock.getStatePropertySafe(finalState, UNLOCKED);
                 if (unlocked) {
                     double relativeY = hit.getLocation().y - pos.getY();
                     boolean isUpButton = relativeY > 0.3;
 
-                    BlockEntity blockEntity = world.getBlockEntity(pos);
                     if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity) {
                         ((MitsubishiStyleLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
                         return InteractionResult.SUCCESS;

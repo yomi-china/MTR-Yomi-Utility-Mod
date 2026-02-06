@@ -25,22 +25,7 @@ public class SetSoundIndexPacket {
     }
 
     public static void registerClient() {
-        ClientPlayNetworking.registerGlobalReceiver(ID, (client, handler, buf, responseSender) -> {
-            receiveClient(client, buf);
-        });
-    }
 
-    public static void receiveClient(net.minecraft.client.Minecraft client, FriendlyByteBuf buf) {
-        BlockPos pos = buf.readBlockPos();
-        int soundIndex = buf.readInt();
-        client.execute(() -> {
-            if (client.level != null) {
-                BlockEntity entity = client.level.getBlockEntity(pos);
-                if (entity instanceof LiftArrivalSoundPlayerEntity tile) {
-                    tile.setSoundIndex(soundIndex);
-                }
-            }
-        });
     }
 
     public static void send(BlockPos pos, int soundIndex) {
@@ -51,7 +36,6 @@ public class SetSoundIndexPacket {
     }
 
     public static void receive(MinecraftServer server, ServerPlayer player, ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender) {
-        System.out.println("Received SetSoundIndexPacket");
         BlockPos pos = buf.readBlockPos();
         int soundIndex = buf.readInt();
 

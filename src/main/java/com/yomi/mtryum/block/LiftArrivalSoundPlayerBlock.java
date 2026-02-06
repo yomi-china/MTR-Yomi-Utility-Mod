@@ -74,20 +74,10 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // 空手试听
-        if (stack.isEmpty()) {
-            if (!world.isClientSide) {
-                BlockEntity be = world.getBlockEntity(pos);
-                if (be instanceof LiftArrivalSoundPlayerEntity entity) {
-                    entity.playArrivalSound();
-                }
-            }
-            return InteractionResult.sidedSuccess(world.isClientSide);
-        }
-
+        // 使用刷子打开配置界面
         if (stack.getItem().getDescriptionId().equals("item.mtr.brush") && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             MtryumClient.scheduleASPScreenOpen(pos);
-            return InteractionResult.sidedSuccess(world.isClientSide());
+            return InteractionResult.sidedSuccess(world.isClientSide);
         }
 
         return super.use(state, world, pos, player, hand, hit);

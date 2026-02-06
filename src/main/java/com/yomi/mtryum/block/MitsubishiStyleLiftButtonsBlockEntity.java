@@ -16,10 +16,16 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
 
     private static final String KEY_UP_PRESSED = "up_pressed";
     private static final String KEY_DOWN_PRESSED = "down_pressed";
+    // 旧版兼容
+    private static final String KEY_IS_LEGACY = "is_legacy";
+    private static final String KEY_AUTO_UNLOCKED = "auto_unlocked";
+
     private boolean upButtonPressed;
     private boolean downButtonPressed;
+    private boolean isLegacy = false; // 是否为旧版本方块
+    private boolean autoUnlocked = false; // 是否已经自动解锁过
     private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
-    public static final Logger LOGGER = LoggerFactory.getLogger("MSLB");
+    public static final Logger LOGGER = LoggerFactory.getLogger("MitsubishiStyleLiftButtons");
 
     public MitsubishiStyleLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
@@ -34,6 +40,9 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
         super.readCompoundTag(compoundTag);
         upButtonPressed = compoundTag.getBoolean(KEY_UP_PRESSED);
         downButtonPressed = compoundTag.getBoolean(KEY_DOWN_PRESSED);
+
+        isLegacy = !compoundTag.contains(KEY_IS_LEGACY) || compoundTag.getBoolean(KEY_IS_LEGACY);
+        autoUnlocked = compoundTag.getBoolean(KEY_AUTO_UNLOCKED);
     }
 
     @Override
@@ -41,6 +50,9 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
         super.writeCompoundTag(compoundTag);
         compoundTag.putBoolean(KEY_UP_PRESSED, upButtonPressed);
         compoundTag.putBoolean(KEY_DOWN_PRESSED, downButtonPressed);
+
+        compoundTag.putBoolean(KEY_IS_LEGACY, isLegacy);
+        compoundTag.putBoolean(KEY_AUTO_UNLOCKED, autoUnlocked);
     }
 
     public void callLift(boolean callUp) {
@@ -67,7 +79,7 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
                         }
                     }
                 } else {
-                    LOGGER.error("MTRYUM Call lift:RailwayData is null");
+                    LOGGER.error("Call lift:RailwayData is null");
                 }
             }
         }
@@ -116,5 +128,19 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
 
     public void updateLiftDirection(Lift.LiftDirection direction) {
         liftDirection = direction;
+    }
+
+    public boolean isLegacy() {
+        return isLegacy;
+    }
+
+    public boolean isAutoUnlocked() {
+        return autoUnlocked;
+    }
+
+    public void markAsAutoUnlocked() {
+        this.autoUnlocked = true;
+        this.isLegacy = false;
+        setChanged();
     }
 }

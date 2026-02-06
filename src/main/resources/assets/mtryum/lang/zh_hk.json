@@ -21,6 +21,7 @@
   "msg.mtryum.screen_locked": "螢幕已鎖定",
   "msg.mtryum.screen_unlocked": "螢幕已解鎖",
   "msg.mtryum.track_selected": "已記錄基準軌道位置：[%d, %d, %d]",
+  "screen.mtryum.lift_arrival_sound_player.preview": "試聽",
   "screen.mtryum.lift_arrival_sound_player.confirm": "確認",
   "screen.mtryum.lift_arrival_sound_player.desc": "請輸入1-9的數字選擇提示音",
   "screen.mtryum.lift_arrival_sound_player.input_hint": "輸入1-9的數字對應不同聲音，使用MTR的「刷」右擊可預覽選定聲音",

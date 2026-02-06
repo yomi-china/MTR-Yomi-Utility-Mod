@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.yomi.mtryum.block.TKClassicFloorMonitorBlock;
 import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
+import mtr.block.BlockLiftTrackFloor;
 import mtr.data.Lift;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -37,13 +38,13 @@ public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClas
         Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
         // 获取电梯数据
         String floorNumber = "--";
-        for (mtr.data.Lift lift : mtr.client.ClientData.LIFTS) {
+        for (Lift lift : mtr.client.ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                 final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
 
-                if (blockEntity instanceof mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
-                    floorNumber = ((mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
+                if (blockEntity instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
+                    floorNumber = ((BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
                     // 更新电梯方向
                     liftDirection = lift.getLiftDirection();
                     entity.updateLiftDirection(liftDirection);
