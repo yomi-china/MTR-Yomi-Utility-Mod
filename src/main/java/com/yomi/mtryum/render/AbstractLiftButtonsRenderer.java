@@ -27,36 +27,37 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 
-    
+
     // 纹理相关
     protected ResourceLocation buttonNormalTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_normal.png");
     protected ResourceLocation buttonPressedTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_pressed.png");
     protected ResourceLocation arrowTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_arrow.png");
-    
+
     // 颜色相关
     protected int floorNumberColor = 0xFFFFFFFF;
     protected int arrowColor = 0xFFFFFFFF;
     protected int buttonTintColor = 0xFFFFFF;
-    
+
     // 字体相关
     protected String fontName = "default";
     protected String defaultFloorText = "??";
-    
+
     // 位置相关
     protected float baseYOffset = -0.135f;
     protected float floorNumberY = 0.78f;
     protected float floorNumberXOffset = 0.5f;
+    protected float arrowX = 0.5f;
     protected float arrowY = 0.88f;
     protected float buttonX = 0.5f;
     protected float buttonUpY = 0.48f;
     protected float buttonDownY = 0.35f;
-    
+
     // 尺寸相关
     protected float buttonSize = 0.075f;
     protected float arrowWidth = 0.125f;
     protected float arrowHeight = 0.125f;
     protected float depthOffset = 0.002f;
-    
+
     // 缩放相关
     protected float floorScaleTwoChars = 0.0009f;// 2个字符的缩放
     protected float floorScaleThreeChars = 0.00085f;// 3个字符的缩放
@@ -73,6 +74,9 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
     // 单按钮时位置
     protected float singleButtonOffset = 0.06f;
+
+    // 自动补齐一位数楼层数字
+    protected boolean autoPadSingleDigit = false;
 
     public enum ArrowRenderMode {
         TEXTURE,
@@ -98,6 +102,26 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         this.floorNumberXOffset = floorNumberXOffset;
     }
 
+    /**
+     * 新的构造函数，包含自动补齐功能选项
+     */
+    public AbstractLiftButtonsRenderer(BlockEntityRendererProvider.Context context,
+                                       ResourceLocation buttonNormalTexture,
+                                       ResourceLocation buttonPressedTexture,
+                                       ResourceLocation arrowTexture,
+                                       String fontName,
+                                       ArrowRenderMode arrowRenderMode,
+                                       float floorNumberXOffset,
+                                       boolean autoPadSingleDigit) {
+        this.buttonNormalTexture = buttonNormalTexture;
+        this.buttonPressedTexture = buttonPressedTexture;
+        this.arrowTexture = arrowTexture;
+        this.fontName = fontName;
+        this.arrowRenderMode = arrowRenderMode;
+        this.floorNumberXOffset = floorNumberXOffset;
+        this.autoPadSingleDigit = autoPadSingleDigit;
+    }
+
     @NotNull
     protected abstract String getFacingPropertyName();
 
@@ -115,59 +139,89 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
     }
 
+    /**
+     * 子类可以重写此方法来自定义是否启用自动补齐功能
+     * @return 是否启用自动补齐一位数楼层数字
+     */
+    protected boolean shouldPadSingleDigit() {
+        return autoPadSingleDigit;
+    }
+
+    /**
+     * 如果需要自动补齐，处理楼层数字字符串
+     * 一位数（长度为1）时在末尾补一个空格，两位数及以上保持不变
+     * @param floorNumber 原始楼层数字字符串
+     * @return 处理后的字符串
+     */
+    protected String processFloorNumber(String floorNumber) {
+        if (!shouldPadSingleDigit() || floorNumber == null || floorNumber.isEmpty()) {
+            return floorNumber;
+        }
+
+        // 一位数（长度为1）时在末尾补一个空格
+        if (floorNumber.length() == 1) {
+            return floorNumber + " ";
+        }
+
+        return floorNumber;
+    }
+
     @Override
     public void render(T entity, float tickDelta, PoseStack matrices,
-                      MultiBufferSource vertexConsumers, int light, int overlay) {
+                       MultiBufferSource vertexConsumers, int light, int overlay) {
         if (entity == null || entity.getLevel() == null) return;
-        
+
         // 获取按钮状态
         boolean upPressed = isUpButtonPressed(entity);
         boolean downPressed = isDownButtonPressed(entity);
-        
+
         // 轨道位置
         final Level world = entity.getLevel();
         final BlockPos trackPosition = getTrackPosition(entity, world);
         if (trackPosition == null) return;
-        
+
         // 电梯数据
         LiftData liftData = getLiftData(entity, world, trackPosition);
         if (liftData == null || liftData.floorNumber.isEmpty()) return;
-        
+
         // 检查是否到达
         checkLiftArrival(entity, world, trackPosition);
-        
+
         // 方块朝向
         BlockState state = entity.getBlockState();
         Direction facing = getFacingFromState(state);
         if (facing == null) return;
 
         applyBaseTransform(matrices, facing);
-        
+
+        // 处理楼层数字（自动补齐）
+        String processedFloorNumber = processFloorNumber(liftData.floorNumber);
+
         // 渲染
         renderAllElements(matrices, vertexConsumers, light, overlay,
-                liftData.floorNumber, liftData.liftDirection,
+                processedFloorNumber, liftData.liftDirection,
                 upPressed, downPressed, facing,
                 liftData.isTopFloor, liftData.isBottomFloor);
-        
+
         matrices.popPose();
     }
-    
+
     // 核心渲染逻辑
 
     protected void renderAllElements(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                    int light, int overlay, String floorNumber,
-                                    Lift.LiftDirection liftDirection,
-                                    boolean upPressed, boolean downPressed,
-                                    Direction facing, boolean isTopFloor, boolean isBottomFloor) {
-        
+                                     int light, int overlay, String floorNumber,
+                                     Lift.LiftDirection liftDirection,
+                                     boolean upPressed, boolean downPressed,
+                                     Direction facing, boolean isTopFloor, boolean isBottomFloor) {
+
         // 渲染楼层数字
         renderFloorNumber(matrices, vertexConsumers, floorNumber, light);
-        
+
         // 渲染方向箭头
         if (liftDirection != Lift.LiftDirection.NONE) {
             renderDirectionArrow(matrices, vertexConsumers, liftDirection, light, overlay);
         }
-        
+
         // 渲染上按钮
         if (!isTopFloor) {
             float yOffset = (isBottomFloor && !isTopFloor) ? -singleButtonOffset : 0f;
@@ -176,7 +230,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                     buttonUpY + buttonSize / 2 + yOffset,
                     upPressed, false, light, overlay, facing);
         }
-        
+
         // 渲染下按钮
         if (!isBottomFloor) {
             float yOffset = (isTopFloor && !isBottomFloor) ? singleButtonOffset : 0f;
@@ -219,7 +273,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
     protected float calculateFloorNumberScale(String floor) {
         int length = floor.length();
-        
+
         if (length <= 2) {
             return floorScaleTwoChars;
         } else if (length == 3) {
@@ -232,8 +286,8 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
     // 两种箭头渲染方式
     protected void renderDirectionArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                       Lift.LiftDirection direction, int light, int overlay) {
-        
+                                        Lift.LiftDirection direction, int light, int overlay) {
+
         if (arrowRenderMode == ArrowRenderMode.TEXTURE) {
             renderTextureArrow(matrices, vertexConsumers, direction, light, overlay);
         } else {
@@ -242,30 +296,30 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     }
 
     protected void renderTextureArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                     Lift.LiftDirection direction, int light, int overlay) {
-        
+                                      Lift.LiftDirection direction, int light, int overlay) {
+
         boolean rotateArrow = direction == Lift.LiftDirection.DOWN;
-        
+
         matrices.pushPose();
-        
-        float centerX = 0.5f;
+
+        float centerX = this.arrowX;
         float minX = centerX - arrowWidth / 2;
         float maxX = centerX + arrowWidth / 2;
         float minY = arrowY - arrowHeight / 2;
         float maxY = arrowY + arrowHeight / 2;
-        
+
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.entityCutout(arrowTexture));
-        
+
         if (rotateArrow) {
             matrices.translate(centerX, (minY + maxY) / 2.0f, 0);
             matrices.mulPose(Axis.ZP.rotationDegrees(180));
             matrices.translate(-centerX, -(minY + maxY) / 2.0f, 0);
         }
-        
+
         var matrix = matrices.last().pose();
         var normal = matrices.last().normal();
         float normalZ = 1.0f;
-        
+
         vertexConsumer.vertex(matrix, minX, minY, depthOffset)
                 .color(255, 255, 255, 255)
                 .uv(0.0f, 1.0f)
@@ -273,7 +327,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
+
         vertexConsumer.vertex(matrix, minX, maxY, depthOffset)
                 .color(255, 255, 255, 255)
                 .uv(0.0f, 0.0f)
@@ -281,7 +335,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
+
         vertexConsumer.vertex(matrix, maxX, maxY, depthOffset)
                 .color(255, 255, 255, 255)
                 .uv(1.0f, 0.0f)
@@ -289,7 +343,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
+
         vertexConsumer.vertex(matrix, maxX, minY, depthOffset)
                 .color(255, 255, 255, 255)
                 .uv(1.0f, 1.0f)
@@ -297,21 +351,21 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 .uv2(light)
                 .normal(normal, 0, 0, normalZ)
                 .endVertex();
-        
+
         matrices.popPose();
     }
 
     protected void renderFontArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                  Lift.LiftDirection direction, int light) {
-        
+                                   Lift.LiftDirection direction, int light) {
+
         String arrowText = direction == Lift.LiftDirection.UP ? arrowUpText : arrowDownText;
-        
+
         matrices.pushPose();
-        
-        matrices.translate(0.5f, arrowY, depthOffset);
+
+        matrices.translate(this.arrowX, arrowY, depthOffset);
         matrices.scale(arrowScale, -arrowScale, arrowScale);
         matrices.mulPose(Axis.YP.rotationDegrees(180));
-        
+
         CustomFontRenderer.renderText(
                 matrices,
                 vertexConsumers,
@@ -323,7 +377,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 true,
                 fontName
         );
-        
+
         matrices.popPose();
     }
 
@@ -411,7 +465,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
     protected void applyBaseTransform(PoseStack matrices, Direction facing) {
         matrices.pushPose();
-        
+
         switch (facing) {
             case SOUTH:
                 matrices.translate(0, baseYOffset, 0.99);
@@ -438,22 +492,22 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         boolean isTopFloor = false;
         boolean isBottomFloor = false;
         String floorNumber = defaultFloorText;
-        
+
         int currentFloorY = trackPosition.getY();
-        
+
         for (Lift lift : ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                 final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
-                
+
                 if (blockEntity instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
                     floorNumber = ((BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
                     liftDirection = lift.getLiftDirection();
                     updateLiftDirection(entity, liftDirection);
-                    
+
                     boolean[] hasButton = new boolean[2];
                     lift.hasUpDownButtonForFloor(currentFloorY, hasButton);
-                    
+
                     isTopFloor = !hasButton[0];
                     isBottomFloor = !hasButton[1];
                     break;
@@ -461,7 +515,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
             }
         }
 
-        
+
         return new LiftData(floorNumber, liftDirection, isTopFloor, isBottomFloor);
     }
 
@@ -482,9 +536,9 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         public final Lift.LiftDirection liftDirection;
         public final boolean isTopFloor;
         public final boolean isBottomFloor;
-        
-        public LiftData(String floorNumber, Lift.LiftDirection liftDirection, 
-                       boolean isTopFloor, boolean isBottomFloor) {
+
+        public LiftData(String floorNumber, Lift.LiftDirection liftDirection,
+                        boolean isTopFloor, boolean isBottomFloor) {
             this.floorNumber = floorNumber;
             this.liftDirection = liftDirection;
             this.isTopFloor = isTopFloor;
@@ -494,7 +548,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
     private static class DirectionPropertyCache {
         private static Property<Direction> directionProperty;
-        
+
         public static Property<Direction> getDirectionProperty(String propertyName) {
             if (directionProperty == null) {
                 directionProperty = BlockStateProperties.HORIZONTAL_FACING;

@@ -14,8 +14,11 @@ public class MLFMRender extends AbstractLiftFloorMonitorRenderer<MLFMEntity> {
 
     public MLFMRender() {
         this.arrowTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_arrow.png");
-        this.arrowRenderMode = ArrowRenderMode.TEXTURE;
+        this.arrowRenderMode = ArrowRenderMode.TEXT;
         this.floorColor = 0xFFFF8C00;
+        this.arrowTextColor = 0xFFFF8C00;
+        this.arrowTextScale = 0.0009f;
+        this.arrowYOffset = 0.78f;
     }
 
     @Override

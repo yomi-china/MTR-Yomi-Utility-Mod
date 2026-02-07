@@ -62,12 +62,12 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
 
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        // 可以在这里添加放置时的通用逻辑
+
     }
 
     @Override
     public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-        // 可以在这里添加破坏时的通用逻辑
+
     }
 
     @Override
@@ -91,7 +91,6 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
 
-        // 调用子类的特殊处理（如旧版本兼容性检查）
         handleSpecialLogic(state, world, pos, blockEntity);
 
         final BlockState finalState = state;
@@ -114,7 +113,6 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
                     double relativeY = hit.getLocation().y - pos.getY();
                     boolean isUpButton = relativeY > 0.3;
 
-                    // 这里需要子类实现具体的 callLift 调用
                     return handleCallLift(blockEntity, isUpButton);
                 } else {
                     return InteractionResult.FAIL;
@@ -123,18 +121,15 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
         }
     }
 
-    // 抽象方法，子类必须实现
     public abstract BlockEntityType<? extends BlockEntityMapper> getBlockEntityType();
 
     public abstract BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state);
 
     protected abstract void getServerTicker(Level level, BlockPos pos, BlockState state, BlockLiftPanelBase.TileEntityLiftPanel1Base entity);
 
-    // 处理调用电梯的具体逻辑
     protected abstract InteractionResult handleCallLift(BlockEntity blockEntity, boolean isUpButton);
 
-    // 可选的特殊逻辑处理，子类可以重写
     protected void handleSpecialLogic(BlockState state, Level world, BlockPos pos, BlockEntity blockEntity) {
-        // 默认不执行任何特殊逻辑
+
     }
 }

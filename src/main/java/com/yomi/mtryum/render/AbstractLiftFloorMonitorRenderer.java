@@ -27,17 +27,17 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
     
     // 纹理相关
     protected ResourceLocation arrowTexture = new ResourceLocation("mtryum", "textures/block/lift_arrow.png");
-    protected int arrowColor = 0xFFFFFFFF;
+    protected int arrowColor = 0xFF0000FF;
     
     // 字体相关
     protected String arrowUpText = "<";
     protected String arrowDownText = ">";
     protected String arrowFont = "mitsubishi-modern";
-    protected int arrowTextColor = 0xFFFFFFFF;
+    protected int arrowTextColor = 0xFF0000FF;
     
     // 楼层字体相关
     protected String floorFont = "mitsubishi-modern";
-    protected int floorColor = 0xFFFF8C00;
+    protected int floorColor = 0xFF0000FF;
     
     // 位置相关
     protected float floorYOffset = 0.78f;

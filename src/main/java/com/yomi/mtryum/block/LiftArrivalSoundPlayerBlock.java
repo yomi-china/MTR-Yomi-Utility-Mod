@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -33,11 +34,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
+    // 添加 unlocked 属性但不使用它
+    public static final BooleanProperty UNLOCKED = BooleanProperty.create("unlocked");
 
     public LiftArrivalSoundPlayerBlock() {
         super();
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
+                .setValue(UNLOCKED, true) // 设置为 true 避免问题
         );
     }
 
@@ -57,12 +61,12 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, UNLOCKED);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection());
+        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(UNLOCKED, true);
     }
 
     @Override

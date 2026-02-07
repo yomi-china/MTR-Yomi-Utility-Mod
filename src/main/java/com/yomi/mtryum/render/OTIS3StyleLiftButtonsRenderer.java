@@ -28,10 +28,10 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
         this.buttonTintColor = 0xFFFFFF;
 
         this.fontName = "otis-series-1";
-        this.defaultFloorText = "??";
+        this.defaultFloorText = "--";
 
         this.baseYOffset = -0.135f;
-        this.floorNumberY = 0.78f;
+        this.floorNumberY = 0.71f;
         this.floorNumberXOffset = 0.5f;
         this.arrowY = 0.88f;
         this.buttonUpY = 0.48f;
@@ -42,7 +42,7 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
         this.arrowHeight = 0.125f;
         this.depthOffset = 0.002f;
 
-        this.floorScaleTwoChars = 0.0009f;
+        this.floorScaleTwoChars = 0.002f;
         this.floorScaleThreeChars = 0.00085f;
         this.floorScaleExtraReduction = 0.0001f;
         this.floorScaleMin = 0.0001f;
@@ -55,6 +55,8 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
         this.arrowDownText = ">";
 
         this.singleButtonOffset = 0.06f;
+
+        this.autoPadSingleDigit = true;
     }
 
     @Override
