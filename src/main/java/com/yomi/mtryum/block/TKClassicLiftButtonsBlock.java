@@ -43,7 +43,7 @@ public class TKClassicLiftButtonsBlock extends AbstractLiftButtonsBlock {
 
     @Override
     protected void getServerTicker(Level level, BlockPos pos, BlockState state, BlockLiftPanelBase.TileEntityLiftPanel1Base entity) {
-        TKClassicLiftButtonsBlockEntity.serverTick(level, pos, state, (TKClassicLiftButtonsBlockEntity) entity);
+        TKClassicLiftButtonsBlockEntity.serverTick(level, (TKClassicLiftButtonsBlockEntity) entity);
     }
 
     @Override

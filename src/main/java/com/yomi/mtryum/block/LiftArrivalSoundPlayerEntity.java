@@ -10,11 +10,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class LiftArrivalSoundPlayerEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
-    private static final Logger LOGGER = LogManager.getLogger("LiftArrivalSoundPlayer");
     private boolean hasPlayed = false;
     private int soundIndex = 1;
 
@@ -39,9 +36,6 @@ public class LiftArrivalSoundPlayerEntity extends BlockLiftPanelBase.TileEntityL
     public void playArrivalSound() {
         if (level == null || level.isClientSide) return;
         switch (soundIndex) {
-            case 1:
-                level.playSound(null, worldPosition, MtryumSounds.LIFT_ARRIVAL_SOUND_1, SoundSource.BLOCKS, 1.0F, 1.0F);
-                break;
             case 2:
                 level.playSound(null, worldPosition, MtryumSounds.LIFT_ARRIVAL_SOUND_2, SoundSource.BLOCKS, 1.0F, 1.0F);
                 break;
@@ -69,13 +63,14 @@ public class LiftArrivalSoundPlayerEntity extends BlockLiftPanelBase.TileEntityL
             case 10:
                 level.playSound(null, worldPosition, MtryumSounds.LIFT_ARRIVAL_SOUND_10, SoundSource.BLOCKS, 1.0F, 1.0F);
                 break;
+            case 1:
             default:
                 level.playSound(null, worldPosition, MtryumSounds.LIFT_ARRIVAL_SOUND_1, SoundSource.BLOCKS, 1.0F, 1.0F);
                 break;
         }
     }
 
-    public static void LASPTick(Level level, BlockPos pos, BlockState state, LiftArrivalSoundPlayerEntity entity) {
+    public static void LASPTick(LiftArrivalSoundPlayerEntity entity) {
         final Level world = entity.getLevel();
         if (world == null || world.isClientSide) return;
 
@@ -85,7 +80,7 @@ public class LiftArrivalSoundPlayerEntity extends BlockLiftPanelBase.TileEntityL
         final RailwayData railwayData = RailwayData.getInstance(world);
         if (railwayData == null) return;
 
-        Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
+        Lift.LiftDirection liftDirection;
 
         boolean shouldPlay = false;
         for (Lift lift : railwayData.lifts) {
@@ -111,15 +106,6 @@ public class LiftArrivalSoundPlayerEntity extends BlockLiftPanelBase.TileEntityL
 
     public int getSoundIndex() {
         return soundIndex;
-    }
-
-    public void setSoundIndex(int index) {
-        this.soundIndex = index;
-        setChanged();
-
-        if (level != null && !level.isClientSide) {
-            setSoundIndexViaCommand(index);
-        }
     }
 
     public void setSoundIndexViaCommand(int index) {

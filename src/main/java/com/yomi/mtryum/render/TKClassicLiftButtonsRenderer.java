@@ -2,16 +2,16 @@ package com.yomi.mtryum.render;
 
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlockEntity;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TKClassicLiftButtonsBlockEntity> {
 
     private static final ResourceLocation TK_UP_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_up_normal.png");
     private static final ResourceLocation TK_UP_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/tk_up_pressed.png");
 
-    public TKClassicLiftButtonsRenderer(BlockEntityRendererProvider.Context context) {
-        super(context);
+    public TKClassicLiftButtonsRenderer() {
+        super();
 
         this.buttonNormalTexture = TK_UP_NORMAL;
         this.buttonPressedTexture = TK_UP_PRESSED;
@@ -49,10 +49,14 @@ public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TK
         this.arrowDownText = ">";
 
         this.singleButtonOffset = 0.06f;
+
+        this.enableCustomSpacing = true;
+        this.characterSpacing = 2.0f;
+        this.letterSpacingFactor = 1.0f;
     }
 
     @Override
-    protected String getFacingPropertyName() {
+    protected @NotNull String getFacingPropertyName() {
         return "facing";
     }
 
@@ -73,7 +77,7 @@ public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TK
 
     @Override
     protected void updateLiftDirection(TKClassicLiftButtonsBlockEntity entity, mtr.data.Lift.LiftDirection liftDirection) {
-        entity.updateLiftDirection(liftDirection);
+        entity.updateLiftDirection();
     }
 
     @Override

@@ -50,7 +50,7 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
         return type == MtryumBlockEntities.LIFT_ARRIVAL_SOUND_PLAYER_ENTITY ?
                 (world.isClientSide ? null : (level1, blockPos, blockState, t) ->
-                        LiftArrivalSoundPlayerEntity.LASPTick(level1, blockPos, blockState, (LiftArrivalSoundPlayerEntity) t)) :
+                        LiftArrivalSoundPlayerEntity.LASPTick((LiftArrivalSoundPlayerEntity) t)) :
                 null;
     }
 
@@ -81,7 +81,7 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
         // 使用刷子打开配置界面
         if (stack.getItem().getDescriptionId().equals("item.mtr.brush") && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             MtryumClient.scheduleASPScreenOpen(pos);
-            return InteractionResult.sidedSuccess(world.isClientSide);
+            return InteractionResult.sidedSuccess(true);
         }
 
         return super.use(state, world, pos, player, hand, hit);

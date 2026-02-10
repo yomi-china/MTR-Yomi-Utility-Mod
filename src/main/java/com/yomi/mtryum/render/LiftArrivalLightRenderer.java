@@ -6,7 +6,6 @@ import mtr.client.ClientData;
 import mtr.data.Lift;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,9 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 public class LiftArrivalLightRenderer implements BlockEntityRenderer<LiftArrivalLightBlock.Entity> {
 
     private static final int BLINK_INTERVAL_TICKS = 5; // 闪烁间隔
-    private static final double ARRIVAL_THRESHOLD = 0.01; // 到达阈值（电梯Y坐标与楼层Y坐标的差值）
+    private static final double ARRIVAL_THRESHOLD = 1; // 似乎没啥用，因为还没开门
 
-    public LiftArrivalLightRenderer(BlockEntityRendererProvider.Context context) {
+    public LiftArrivalLightRenderer() {
+
     }
 
     @Override

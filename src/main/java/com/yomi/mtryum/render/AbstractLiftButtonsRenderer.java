@@ -10,7 +10,6 @@ import mtr.data.Lift;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -41,6 +40,11 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     // 字体相关
     protected String fontName = "default";
     protected String defaultFloorText = "??";
+
+    // 字符间距相关
+    protected float characterSpacing = 0.0f; // 默认字符间距（像素）
+    protected float letterSpacingFactor = 1.0f; // 字符间距系数
+    protected boolean enableCustomSpacing = false; // 是否启用自定义字符间距
 
     // 位置相关
     protected float baseYOffset = -0.135f;
@@ -83,43 +87,8 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         FONT
     }
 
-    public AbstractLiftButtonsRenderer(BlockEntityRendererProvider.Context context) {
+    public AbstractLiftButtonsRenderer() {
 
-    }
-
-    public AbstractLiftButtonsRenderer(BlockEntityRendererProvider.Context context,
-                                       ResourceLocation buttonNormalTexture,
-                                       ResourceLocation buttonPressedTexture,
-                                       ResourceLocation arrowTexture,
-                                       String fontName,
-                                       ArrowRenderMode arrowRenderMode,
-                                       float floorNumberXOffset) {
-        this.buttonNormalTexture = buttonNormalTexture;
-        this.buttonPressedTexture = buttonPressedTexture;
-        this.arrowTexture = arrowTexture;
-        this.fontName = fontName;
-        this.arrowRenderMode = arrowRenderMode;
-        this.floorNumberXOffset = floorNumberXOffset;
-    }
-
-    /**
-     * 新的构造函数，包含自动补齐功能选项
-     */
-    public AbstractLiftButtonsRenderer(BlockEntityRendererProvider.Context context,
-                                       ResourceLocation buttonNormalTexture,
-                                       ResourceLocation buttonPressedTexture,
-                                       ResourceLocation arrowTexture,
-                                       String fontName,
-                                       ArrowRenderMode arrowRenderMode,
-                                       float floorNumberXOffset,
-                                       boolean autoPadSingleDigit) {
-        this.buttonNormalTexture = buttonNormalTexture;
-        this.buttonPressedTexture = buttonPressedTexture;
-        this.arrowTexture = arrowTexture;
-        this.fontName = fontName;
-        this.arrowRenderMode = arrowRenderMode;
-        this.floorNumberXOffset = floorNumberXOffset;
-        this.autoPadSingleDigit = autoPadSingleDigit;
     }
 
     @NotNull
@@ -148,19 +117,37 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     }
 
     /**
-     * 如果需要自动补齐，处理楼层数字字符串
-     * 一位数（长度为1）时在末尾补一个空格，两位数及以上保持不变
-     * @param floorNumber 原始楼层数字字符串
-     * @return 处理后的字符串
+     * 子类可以重写此方法来自定义是否启用自定义字符间距
+     * @return 是否启用自定义字符间距
      */
+    protected boolean shouldEnableCustomSpacing() {
+        return enableCustomSpacing;
+    }
+
+    /**
+     * 子类可以重写此方法来自定义字符间距
+     * @return 字符间距值
+     */
+    protected float getCharacterSpacing() {
+        return characterSpacing;
+    }
+
+    /**
+     * 子类可以重写此方法来自定义字符间距系数
+     * @return 字符间距系数
+     */
+    protected float getLetterSpacingFactor() {
+        return letterSpacingFactor;
+    }
+
     protected String processFloorNumber(String floorNumber) {
         if (!shouldPadSingleDigit() || floorNumber == null || floorNumber.isEmpty()) {
             return floorNumber;
         }
 
-        // 一位数（长度为1）时在末尾补一个空格
+        // 一位数时在末尾补一个空格
         if (floorNumber.length() == 1) {
-            return floorNumber + " ";
+            return " " + floorNumber;
         }
 
         return floorNumber;
@@ -185,7 +172,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         if (liftData == null || liftData.floorNumber.isEmpty()) return;
 
         // 检查是否到达
-        checkLiftArrival(entity, world, trackPosition);
+        checkLiftArrival(entity, trackPosition);
 
         // 方块朝向
         BlockState state = entity.getBlockState();
@@ -256,6 +243,9 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
         matrices.mulPose(Axis.YP.rotationDegrees(180));
 
+        float spacing = shouldEnableCustomSpacing() ? getCharacterSpacing() : 0.0f;
+        float spacingFactor = shouldEnableCustomSpacing() ? getLetterSpacingFactor() : 1.0f;
+
         CustomFontRenderer.renderText(
                 matrices,
                 vertexConsumers,
@@ -265,7 +255,9 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 1.0f,
                 light,
                 true,
-                fontName
+                fontName,
+                spacing,
+                spacingFactor
         );
 
         matrices.popPose();
@@ -366,6 +358,9 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         matrices.scale(arrowScale, -arrowScale, arrowScale);
         matrices.mulPose(Axis.YP.rotationDegrees(180));
 
+        float spacing = shouldEnableCustomSpacing() ? getCharacterSpacing() : 0.0f;
+        float spacingFactor = shouldEnableCustomSpacing() ? getLetterSpacingFactor() : 1.0f;
+
         CustomFontRenderer.renderText(
                 matrices,
                 vertexConsumers,
@@ -375,7 +370,9 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                 1.0f,
                 light,
                 true,
-                fontName
+                fontName,
+                spacing,
+                spacingFactor
         );
 
         matrices.popPose();
@@ -519,7 +516,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         return new LiftData(floorNumber, liftDirection, isTopFloor, isBottomFloor);
     }
 
-    protected void checkLiftArrival(T entity, Level world, BlockPos trackPosition) {
+    protected void checkLiftArrival(T entity, BlockPos trackPosition) {
         for (Lift lift : ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();

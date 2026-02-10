@@ -39,11 +39,6 @@ public class  CustomFontRenderer {
         return INSTANCES.computeIfAbsent(fontName, CustomFontRenderer::new);
     }
 
-    // 向后兼容
-    public static CustomFontRenderer getInstance() {
-        return getInstance("mitsubishi-modern");
-    }
-
     public void initialize() {
         if (initialized) return;
 
@@ -135,6 +130,7 @@ public class  CustomFontRenderer {
         atlasImage.close();
     }
 
+    // 保持向后兼容的重载方法
     public static void renderText(
             PoseStack poseStack,
             MultiBufferSource buffer,
@@ -145,6 +141,22 @@ public class  CustomFontRenderer {
             int light,
             boolean centered,
             String fontName
+    ) {
+        renderText(poseStack, buffer, text, color, x, y, z, scale, light, centered, fontName, 0.0f, 1.0f);
+    }
+
+    public static void renderText(
+            PoseStack poseStack,
+            MultiBufferSource buffer,
+            String text,
+            int color,
+            float x, float y, float z,
+            float scale,
+            int light,
+            boolean centered,
+            String fontName,
+            float characterSpacing,
+            float letterSpacingFactor
     ) {
         if (text == null || text.isEmpty()) return;
 
@@ -164,14 +176,26 @@ public class  CustomFontRenderer {
         int blue = color & 0xFF;
         if (alpha == 0) alpha = 255;
 
-        // 计算文本总宽度
+        // 计算文本总宽度（考虑字符间距）
         float totalWidth = 0;
         float spacingFactor = 0.8f;
 
-        for (char c : text.toCharArray()) {
+        // 如果启用了自定义间距，使用letterSpacingFactor
+        if (letterSpacingFactor != 1.0f) {
+            spacingFactor *= letterSpacingFactor;
+        }
+
+        // 计算总宽度时考虑字符间距
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
             CharInfo info = renderer.charMap.get(c);
             if (info == null) continue;
             totalWidth += info.width * scale * spacingFactor;
+
+            // 除了最后一个字符，添加字符间距
+            if (i < text.length() - 1) {
+                totalWidth += characterSpacing * scale;
+            }
         }
 
         // 调整起始位置
@@ -187,12 +211,17 @@ public class  CustomFontRenderer {
         Matrix4f matrix = poseStack.last().pose();
         VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.text(renderer.fontAtlas));
 
-        // 渲染每个字符
-        for (char c : text.toCharArray()) {
+        // 渲染每个字符（应用字符间距）
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
             CharInfo info = renderer.charMap.get(c);
             if (info == null) {
-                // 跳过不支持的字符
-                currentX += 5 * scale * spacingFactor; // 默认宽度
+                // 跳过不支持的字符，并添加默认间距
+                currentX += 5 * scale * spacingFactor;
+                // 如果不是最后一个字符，添加字符间距
+                if (i < text.length() - 1) {
+                    currentX += characterSpacing * scale;
+                }
                 continue;
             }
 
@@ -228,22 +257,14 @@ public class  CustomFontRenderer {
                     .uv2(light)
                     .endVertex();
 
+            // 移动到下一个字符位置
             currentX += charWidth * spacingFactor;
-        }
-    }
 
-    // 向后兼容的重载方法
-    public static void renderText(
-            PoseStack poseStack,
-            MultiBufferSource buffer,
-            String text,
-            int color,
-            float x, float y, float z,
-            float scale,
-            int light,
-            boolean centered
-    ) {
-        renderText(poseStack, buffer, text, color, x, y, z, scale, light, centered, "mitsubishi-modern");
+            // 如果不是最后一个字符，添加字符间距
+            if (i < text.length() - 1) {
+                currentX += characterSpacing * scale;
+            }
+        }
     }
 
     private static class CharInfo {

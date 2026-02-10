@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import mtr.block.BlockLiftTrackFloor;
-import mtr.client.ClientData;
 import mtr.data.Lift;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -96,7 +95,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         applyFacingTransform(matrices, facing);
 
         renderFloorAndArrow(matrices, vertexConsumers, light, overlay,
-                floorNumber, liftDirection, facing);
+                floorNumber, liftDirection);
 
         matrices.popPose();
     }
@@ -127,7 +126,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
 
     protected void renderFloorAndArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
                                      int light, int overlay, String floorNumber,
-                                     Lift.LiftDirection liftDirection, Direction facing) {
+                                     Lift.LiftDirection liftDirection) {
         // 渲染楼层数字
         renderFloorNumber(matrices, vertexConsumers, floorNumber, light);
 
@@ -143,7 +142,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         if (arrowRenderMode == ArrowRenderMode.TEXTURE) {
             renderTextureArrow(matrices, vertexConsumers, light, overlay, isDown);
         } else {
-            renderTextArrow(matrices, vertexConsumers, light, overlay, isDown);
+            renderTextArrow(matrices, vertexConsumers, light, isDown);
         }
     }
     
@@ -209,7 +208,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
     }
     
     protected void renderTextArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                 int light, int overlay, boolean isDown) {
+                                   int light, boolean isDown) {
         String arrowText = isDown ? arrowDownText : arrowUpText;
         
         matrices.pushPose();

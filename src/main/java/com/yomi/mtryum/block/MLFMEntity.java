@@ -1,7 +1,6 @@
 package com.yomi.mtryum.block;
 
 import mtr.block.BlockLiftPanelBase;
-import mtr.data.Lift;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -12,7 +11,6 @@ public class MLFMEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
 
     private BlockPos trackPosition;
     private boolean isLocked = false;
-    private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
 
     public MLFMEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
@@ -62,7 +60,6 @@ public class MLFMEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
         return trackPosition;
     }
 
-    public void updateLiftDirection(Lift.LiftDirection direction) {
-        liftDirection = direction;
+    public void updateLiftDirection() {
     }
 }

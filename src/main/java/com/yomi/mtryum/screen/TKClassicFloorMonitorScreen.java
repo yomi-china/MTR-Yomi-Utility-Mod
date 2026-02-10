@@ -13,14 +13,16 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class LiftFloorMonitorScreen extends Screen {
+public class TKClassicFloorMonitorScreen extends Screen {
     private final BlockPos pos;
     private EditBox colorInput;
     private Button style1Button;
     private Button style2Button;
+    private Button lockButton;
     private int currentStyle = 1;
+    private boolean isLocked = false;
 
-    public LiftFloorMonitorScreen(BlockPos pos) {
+    public TKClassicFloorMonitorScreen(BlockPos pos) {
         super(Component.translatable("screen.mtryum.set_style_title"));
         this.pos = pos;
     }
@@ -35,6 +37,7 @@ public class LiftFloorMonitorScreen extends Screen {
             if (entity instanceof TKClassicFloorMonitorEntity tile) {
                 currentColor = tile.getTextColor();
                 currentStyle = tile.getArrowStyle();
+                isLocked = tile.isLocked();
             }
         }
 
@@ -81,7 +84,17 @@ public class LiftFloorMonitorScreen extends Screen {
         ).build();
         addRenderableWidget(style2Button);
 
-        // 初始选中状态
+        // 创建锁定按钮
+        lockButton = Button.builder(
+                Component.literal(isLocked ? "已锁定" : "已解锁"),
+                button -> toggleLock()
+        ).bounds(
+                this.width / 2 - 50,
+                this.height / 2 + 110,
+                100, 20
+        ).build();
+        addRenderableWidget(lockButton);
+
         updateButtonStyles();
     }
 
@@ -89,7 +102,6 @@ public class LiftFloorMonitorScreen extends Screen {
         try {
             int newColor = Integer.parseInt(colorInput.getValue(), 16);
 
-            // 发送颜色设置到服务端
             FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
             buf.writeBlockPos(pos);
             buf.writeInt(newColor);
@@ -102,15 +114,22 @@ public class LiftFloorMonitorScreen extends Screen {
     }
 
     private void setStyle(int style) {
-        // 发送样式设置到服务端
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeBlockPos(pos);
         buf.writeInt(style);
         ClientPlayNetworking.send(LiftFloorMonitorPacket.SET_ARROW_STYLE, buf);
 
-        // 更新本地缓存和按钮状态
         currentStyle = style;
         updateButtonStyles();
+    }
+
+    private void toggleLock() {
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        buf.writeBlockPos(pos);
+        ClientPlayNetworking.send(LiftFloorMonitorPacket.TOGGLE_LOCK, buf);
+
+        isLocked = !isLocked;
+        lockButton.setMessage(Component.literal(isLocked ? "已锁定" : "已解锁"));
     }
 
     private void updateButtonStyles() {

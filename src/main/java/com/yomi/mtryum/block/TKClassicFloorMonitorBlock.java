@@ -23,7 +23,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -88,24 +87,10 @@ public class TKClassicFloorMonitorBlock extends BlockLiftButtons {
         final Item item = stack.getItem();
 
         if (BuiltInRegistries.ITEM.getKey(item).equals(BRUSH_ITEM_ID)) {
-            if (!world.isClientSide()) {
-                BlockEntity entity = world.getBlockEntity(pos);
-                if (entity instanceof TKClassicFloorMonitorEntity tile) {
-                    // 切换锁定状态
-                    tile.toggleLock();
-                    world.sendBlockUpdated(pos, state, state, 3);
-                    player.displayClientMessage(
-                            Component.translatable(tile.isLocked() ? "msg.mtryum.screen_locked" : "msg.mtryum.screen_unlocked"),
-                            true
-                    );
-                }
+            if (world.isClientSide && hand == InteractionHand.MAIN_HAND) {
+                MtryumClient.scheduleFMScreenOpen(pos);
+                return InteractionResult.sidedSuccess(world.isClientSide());
             }
-            return InteractionResult.sidedSuccess(world.isClientSide());
-        }
-        // 空手
-        else if (stack.isEmpty() && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
-            MtryumClient.scheduleFMScreenOpen(pos);
-            return InteractionResult.sidedSuccess(world.isClientSide());
         }
         return super.use(state, world, pos, player, hand, hit);
     }

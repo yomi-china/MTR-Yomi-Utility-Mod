@@ -24,7 +24,6 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
     private boolean downButtonPressed;
     private boolean isLegacy = false; // 是否为旧版本方块
     private boolean autoUnlocked = false; // 是否已经自动解锁过
-    private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
     public static final Logger LOGGER = LoggerFactory.getLogger("TKStyleLiftButtons");
 
     public TKClassicLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -85,7 +84,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
         }
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, TKClassicLiftButtonsBlockEntity entity) {
+    public static void serverTick(Level level, TKClassicLiftButtonsBlockEntity entity) {
         if (level != null && !level.isClientSide) {
             BlockPos trackPos = entity.getTrackPosition(level);
             if (trackPos != null) {
@@ -126,21 +125,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
         return downButtonPressed;
     }
 
-    public void updateLiftDirection(Lift.LiftDirection direction) {
-        liftDirection = direction;
+    public void updateLiftDirection() {
     }
 
-    public boolean isLegacy() {
-        return isLegacy;
-    }
-
-    public boolean isAutoUnlocked() {
-        return autoUnlocked;
-    }
-
-    public void markAsAutoUnlocked() {
-        this.autoUnlocked = true;
-        this.isLegacy = false;
-        setChanged();
-    }
 }

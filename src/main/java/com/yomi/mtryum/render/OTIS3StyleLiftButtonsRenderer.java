@@ -4,21 +4,21 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<OTIS3StyleLiftButtonsBlockEntity> {
 
     private static final ResourceLocation OTIS3_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_normal.png");
     private static final ResourceLocation OTIS3_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_pressed.png");
 
-    public OTIS3StyleLiftButtonsRenderer(BlockEntityRendererProvider.Context context) {
-        super(context);
+    public OTIS3StyleLiftButtonsRenderer() {
+        super();
 
         this.buttonNormalTexture = OTIS3_BUTTON_NORMAL;
         this.buttonPressedTexture = OTIS3_BUTTON_PRESSED;
@@ -31,7 +31,7 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
         this.defaultFloorText = "--";
 
         this.baseYOffset = -0.135f;
-        this.floorNumberY = 0.71f;
+        this.floorNumberY = 0.7f;
         this.floorNumberXOffset = 0.5f;
         this.arrowY = 0.88f;
         this.buttonUpY = 0.48f;
@@ -57,10 +57,14 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
         this.singleButtonOffset = 0.06f;
 
         this.autoPadSingleDigit = true;
+
+        this.enableCustomSpacing = true;
+        this.characterSpacing = 4.0f;
+        this.letterSpacingFactor = 1.0f;
     }
 
     @Override
-    protected String getFacingPropertyName() {
+    protected @NotNull String getFacingPropertyName() {
         return "facing";
     }
 
@@ -81,7 +85,7 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
 
     @Override
     protected void updateLiftDirection(OTIS3StyleLiftButtonsBlockEntity entity, mtr.data.Lift.LiftDirection liftDirection) {
-        entity.updateLiftDirection(liftDirection);
+        entity.updateLiftDirection();
     }
 
     @Override

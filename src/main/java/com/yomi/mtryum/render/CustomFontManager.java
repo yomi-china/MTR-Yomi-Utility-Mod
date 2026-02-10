@@ -121,11 +121,6 @@ public class CustomFontManager implements ResourceManagerReloadListener {
         return texture;
     }
 
-    // 向后兼容
-    public FontTexture getStringTexture(String text, int color) {
-        return getStringTexture(text, color, "mitsubishi-modern");
-    }
-
     private FontTexture generateStringTexture(String text, int color, String fontName) {
         try {
             Font font = getFont(fontName);

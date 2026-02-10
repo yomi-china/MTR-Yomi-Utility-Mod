@@ -25,7 +25,7 @@ public class MitsubishiStyleLiftButtonsBlock extends AbstractLiftButtonsBlock {
 
     @Override
     protected void getServerTicker(Level level, BlockPos pos, BlockState state, BlockLiftPanelBase.TileEntityLiftPanel1Base entity) {
-        MitsubishiStyleLiftButtonsBlockEntity.serverTick(level, pos, state, (MitsubishiStyleLiftButtonsBlockEntity) entity);
+        MitsubishiStyleLiftButtonsBlockEntity.serverTick(level, (MitsubishiStyleLiftButtonsBlockEntity) entity);
     }
 
     @Override

@@ -4,21 +4,21 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<MitsubishiStyleLiftButtonsBlockEntity> {
 
     private static final ResourceLocation MITSUBISHI_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_normal.png");
     private static final ResourceLocation MITSUBISHI_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_pressed.png");
 
-    public MitsubishiStyleLiftButtonsRenderer(BlockEntityRendererProvider.Context context) {
-        super(context);
+    public MitsubishiStyleLiftButtonsRenderer() {
+        super();
 
         this.buttonNormalTexture = MITSUBISHI_BUTTON_NORMAL;
         this.buttonPressedTexture = MITSUBISHI_BUTTON_PRESSED;
@@ -55,10 +55,14 @@ public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRende
         this.arrowDownText = ">";
 
         this.singleButtonOffset = 0.06f;
+
+        this.enableCustomSpacing = true;
+        this.characterSpacing = 2.0f;
+        this.letterSpacingFactor = 1.0f;
     }
 
     @Override
-    protected String getFacingPropertyName() {
+    protected @NotNull String getFacingPropertyName() {
         return "facing";
     }
 
@@ -79,7 +83,7 @@ public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRende
 
     @Override
     protected void updateLiftDirection(MitsubishiStyleLiftButtonsBlockEntity entity, mtr.data.Lift.LiftDirection liftDirection) {
-        entity.updateLiftDirection(liftDirection);
+        entity.updateLiftDirection();
     }
 
     @Override

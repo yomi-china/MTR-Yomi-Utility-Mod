@@ -33,7 +33,7 @@ public class MLFMRender extends AbstractLiftFloorMonitorRenderer<MLFMEntity> {
 
     @Override
     protected void updateLiftDirection(MLFMEntity entity, Lift.LiftDirection direction) {
-        entity.updateLiftDirection(direction);
+        entity.updateLiftDirection();
     }
 
     @Override

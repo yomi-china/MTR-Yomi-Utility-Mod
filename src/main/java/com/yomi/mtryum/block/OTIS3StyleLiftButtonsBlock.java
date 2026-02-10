@@ -2,7 +2,6 @@ package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import mtr.block.BlockLiftPanelBase;
-import mtr.block.IBlock;
 import mtr.mappings.BlockEntityMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,7 +42,7 @@ public class OTIS3StyleLiftButtonsBlock extends AbstractLiftButtonsBlock {
 
     @Override
     protected void getServerTicker(Level level, BlockPos pos, BlockState state, BlockLiftPanelBase.TileEntityLiftPanel1Base entity) {
-        OTIS3StyleLiftButtonsBlockEntity.serverTick(level, pos, state, (OTIS3StyleLiftButtonsBlockEntity) entity);
+        OTIS3StyleLiftButtonsBlockEntity.serverTick(level, (OTIS3StyleLiftButtonsBlockEntity) entity);
     }
 
     @Override

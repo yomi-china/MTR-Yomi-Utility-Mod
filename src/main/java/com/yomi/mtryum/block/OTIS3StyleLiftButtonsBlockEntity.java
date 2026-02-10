@@ -19,7 +19,6 @@ public class OTIS3StyleLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnt
 
     private boolean upButtonPressed;
     private boolean downButtonPressed;
-    private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
     public static final Logger LOGGER = LoggerFactory.getLogger("OTIS3StyleLiftButtons");
 
     public OTIS3StyleLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -74,7 +73,7 @@ public class OTIS3StyleLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnt
         }
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, OTIS3StyleLiftButtonsBlockEntity entity) {
+    public static void serverTick(Level level, OTIS3StyleLiftButtonsBlockEntity entity) {
         if (level != null && !level.isClientSide) {
             BlockPos trackPos = entity.getTrackPosition(level);
             if (trackPos != null) {
@@ -115,7 +114,6 @@ public class OTIS3StyleLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnt
         return downButtonPressed;
     }
 
-    public void updateLiftDirection(Lift.LiftDirection direction) {
-        liftDirection = direction;
+    public void updateLiftDirection() {
     }
 }

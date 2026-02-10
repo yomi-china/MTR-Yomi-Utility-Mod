@@ -24,7 +24,6 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
     private boolean downButtonPressed;
     private boolean isLegacy = false; // 是否为旧版本方块
     private boolean autoUnlocked = false; // 是否已经自动解锁过
-    private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
     public static final Logger LOGGER = LoggerFactory.getLogger("MitsubishiStyleLiftButtons");
 
     public MitsubishiStyleLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -85,7 +84,7 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
         }
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, MitsubishiStyleLiftButtonsBlockEntity entity) {
+    public static void serverTick(Level level, MitsubishiStyleLiftButtonsBlockEntity entity) {
         if (level != null && !level.isClientSide) {
             BlockPos trackPos = entity.getTrackPosition(level);
             if (trackPos != null) {
@@ -126,8 +125,8 @@ public class MitsubishiStyleLiftButtonsBlockEntity extends BlockLiftPanelBase.Ti
         return downButtonPressed;
     }
 
-    public void updateLiftDirection(Lift.LiftDirection direction) {
-        liftDirection = direction;
+    public void updateLiftDirection() {
+
     }
 
     public boolean isLegacy() {

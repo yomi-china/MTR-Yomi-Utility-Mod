@@ -1,7 +1,6 @@
 package com.yomi.mtryum.block;
 
 import mtr.block.BlockLiftPanelBase;
-import mtr.data.Lift;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -14,7 +13,6 @@ public class TKClassicFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLi
     private boolean isLocked = false;
     private int textColor = 0xFF0000;
     private int arrowStyle = 1;
-    private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
 
     public TKClassicFloorMonitorEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
@@ -95,7 +93,6 @@ public class TKClassicFloorMonitorEntity extends BlockLiftPanelBase.TileEntityLi
         syncData();
     }
 
-    public void updateLiftDirection(Lift.LiftDirection direction) {
-        liftDirection = direction;
+    public void updateLiftDirection() {
     }
 }
