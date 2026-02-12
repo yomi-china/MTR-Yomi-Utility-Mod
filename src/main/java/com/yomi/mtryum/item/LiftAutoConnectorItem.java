@@ -37,6 +37,10 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
     private static final String ID3 = "mtr:lift_panel_odd_1";
     private static final String ID4 = "mtr:lift_panel_odd_2";
     private static final String ID5 = "mtryum:lift_arrival_light";
+    private static final String ID6 = "mtryum:otis_3200_style_lift_buttons";
+    private static final String ID7 = "mtryum:lift_floor_monitor";
+    private static final String ID8 = "mtryum:mitsubishi_floor_monitor";
+    private static final String ID9 = "mtryum:tk_style_lift_buttons";
 
     public LiftAutoConnectorItem() {
         super(true);
@@ -179,7 +183,11 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
                 idStr.equals(ID2) ||
                 idStr.equals(ID3) ||
                 idStr.equals(ID4) ||
-                idStr.equals(ID5);
+                idStr.equals(ID5) ||
+                idStr.equals(ID6) ||
+                idStr.equals(ID7) ||
+                idStr.equals(ID8) ||
+                idStr.equals(ID9);
     }
 
     @Override
