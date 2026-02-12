@@ -20,8 +20,8 @@ public class Mtryum implements ModInitializer {
     @Override
     public void onInitialize() {
         MtryumBlocks.register();
-        MtryumItems.register();
         MtryumBlockEntities.register();
+        MtryumItems.register();
         MtryumItemGroup.register();
         MtryumSounds.register();
         SetSoundIndexPacket.register();

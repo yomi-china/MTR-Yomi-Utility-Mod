@@ -21,6 +21,7 @@ public class MtryumItems {
     public static final Item LIFT_FLOOR_MONITOR = registerBlockItem("lift_floor_monitor", MtryumBlocks.LIFT_FLOOR_MONITOR);
     public static final Item MLFM = registerBlockItem("mitsubishi_floor_monitor", MtryumBlocks.MLFM);
     public static final Item ONBOARD_TOOL = registerItem("onboard_tool", new Item(new FabricItemSettings().stacksTo(1)));
+    public static final Item OPAQUE_LIFT_DOOR_1 = registerBlockItem("opaque_lift_door_1", MtryumBlocks.OPAQUE_LIFT_DOOR_1);
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Mtryum.MOD_ID, name), item);

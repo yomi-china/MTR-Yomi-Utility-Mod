@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north,half=lower,side=left": { "model": "mtryum:block/opaque_lift_door_1_bottom_left" },
+    "facing=north,half=lower,side=right": { "model": "mtryum:block/opaque_lift_door_1_bottom_right" },
+    "facing=north,half=upper,side=left": { "model": "mtryum:block/opaque_lift_door_1_top_left" },
+    "facing=north,half=upper,side=right": { "model": "mtryum:block/opaque_lift_door_1_top_right" },
+    "facing=east,half=lower,side=left": { "model": "mtryum:block/opaque_lift_door_1_bottom_left", "y": 90 },
+    "facing=east,half=lower,side=right": { "model": "mtryum:block/opaque_lift_door_1_bottom_right", "y": 90 },
+    "facing=east,half=upper,side=left": { "model": "mtryum:block/opaque_lift_door_1_top_left", "y": 90 },
+    "facing=east,half=upper,side=right": { "model": "mtryum:block/opaque_lift_door_1_top_right", "y": 90 },
+    "facing=south,half=lower,side=left": { "model": "mtryum:block/opaque_lift_door_1_bottom_left", "y": 180 },
+    "facing=south,half=lower,side=right": { "model": "mtryum:block/opaque_lift_door_1_bottom_right", "y": 180 },
+    "facing=south,half=upper,side=left": { "model": "mtryum:block/opaque_lift_door_1_top_left", "y": 180 },
+    "facing=south,half=upper,side=right": { "model": "mtryum:block/opaque_lift_door_1_top_right", "y": 180 },
+    "facing=west,half=lower,side=left": { "model": "mtryum:block/opaque_lift_door_1_bottom_left", "y": 270 },
+    "facing=west,half=lower,side=right": { "model": "mtryum:block/opaque_lift_door_1_bottom_right", "y": 270 },
+    "facing=west,half=upper,side=left": { "model": "mtryum:block/opaque_lift_door_1_top_left", "y": 270 },
+    "facing=west,half=upper,side=right": { "model": "mtryum:block/opaque_lift_door_1_top_right", "y": 270 }
+  }
+}

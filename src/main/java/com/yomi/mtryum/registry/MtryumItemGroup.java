@@ -39,6 +39,7 @@ public class MtryumItemGroup {
                         output.accept(new ItemStack(MtryumItems.MITSUBISHI_STYLE_LIFT_BUTTONS));
                         output.accept(new ItemStack(MtryumItems.TK_STYLE_LIFT_BUTTONS));
                         output.accept(new ItemStack(MtryumItems.OTIS3_STYLE_LIFT_BUTTONS));
+                        output.accept(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
                     })
                     .build()
     );

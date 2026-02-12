@@ -4,10 +4,12 @@ import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerBlock;
 import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlock;
+import com.yomi.mtryum.block.OpaqueLiftDoorBlock;
 import com.yomi.mtryum.block.TKClassicFloorMonitorBlock;
 import com.yomi.mtryum.block.MLFMBlock;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlock;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlock;
+import mtr.block.BlockLiftDoor;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +23,7 @@ public class MtryumBlocks {
     public static final Block MITSUBISHI_STYLE_LIFT_BUTTONS = new MitsubishiStyleLiftButtonsBlock();
     public static final Block TK_STYLE_LIFT_BUTTONS = new TKClassicLiftButtonsBlock();
     public static final Block OTIS3_STYLE_LIFT_BUTTONS = new OTIS3StyleLiftButtonsBlock();
+    public static final Block OPAQUE_LIFT_DOOR_1 = new BlockLiftDoor();
 
 
     public static void register() {
@@ -58,6 +61,11 @@ public class MtryumBlocks {
                 BuiltInRegistries.BLOCK,
                 new ResourceLocation(Mtryum.MOD_ID, "otis_3200_style_lift_buttons"),
                 OTIS3_STYLE_LIFT_BUTTONS
+        );
+        Registry.register(
+                BuiltInRegistries.BLOCK,
+                new ResourceLocation(Mtryum.MOD_ID, "opaque_lift_door_1"),
+                OPAQUE_LIFT_DOOR_1
         );
     }
 }

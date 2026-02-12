@@ -44,5 +44,6 @@
   "item.mtryum.lift_floor_setter.sound_complete": "音效设置应用成功！",
   "item.mtryum.lift_floor_setter.sound_progress": "已更新 $s 个音效播放器",
   "item.mtryum.lift_floor_setter.no_sound_found": "此方块上未找到音效索引",
-  "item.mtryum.lift_floor_setter.wrong_block": "此方块无法配置"
+  "item.mtryum.lift_floor_setter.wrong_block": "此方块无法配置",
+  "block.mtryum.opaque_lift_door_1": "用不了，别放"
 }

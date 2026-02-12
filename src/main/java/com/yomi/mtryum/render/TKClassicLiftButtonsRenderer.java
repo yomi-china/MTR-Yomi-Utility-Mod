@@ -37,11 +37,11 @@ public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TK
         this.arrowHeight = 0.125f;
         this.depthOffset = 0.0015f;
 
-        this.floorScaleTwoChars = 0.0011f;
-        this.floorScaleThreeChars = 0.0008f;
+        this.floorScaleTwoChars = 0.0009f;
+        this.floorScaleThreeChars = 0.0007f;
         this.floorScaleExtraReduction = 0.00015f;
         this.floorScaleMin = 0.0003f;
-        this.arrowScale = 0.0011f;
+        this.arrowScale = 0.0009f;
 
         this.arrowRenderMode = ArrowRenderMode.FONT;
 
@@ -49,6 +49,8 @@ public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TK
         this.arrowDownText = ">";
 
         this.singleButtonOffset = 0.06f;
+
+        this.autoPadSingleDigit = true;
 
         this.enableCustomSpacing = true;
         this.characterSpacing = 2.0f;
