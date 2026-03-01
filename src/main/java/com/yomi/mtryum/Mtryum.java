@@ -5,7 +5,7 @@ import com.yomi.mtryum.network.LiftFloorMonitorPacket;
 import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
-import com.yomi.mtryum.registry.MtryumItemGroup;
+import com.yomi.mtryum.registry.MtryumItemGroups;
 import com.yomi.mtryum.registry.MtryumItems;
 import com.yomi.mtryum.registry.MtryumSounds;
 import net.fabricmc.api.ModInitializer;
@@ -22,7 +22,7 @@ public class Mtryum implements ModInitializer {
         MtryumBlocks.register();
         MtryumBlockEntities.register();
         MtryumItems.register();
-        MtryumItemGroup.register();
+        MtryumItemGroups.register();
         MtryumSounds.register();
         SetSoundIndexPacket.register();
         LiftFloorMonitorPacket.register();

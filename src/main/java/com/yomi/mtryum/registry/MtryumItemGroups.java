@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-public class MtryumItemGroup {
+public class MtryumItemGroups {
     public static final CreativeModeTab TOOL_GROUP = Registry.register(
             BuiltInRegistries.CREATIVE_MODE_TAB,
             new ResourceLocation(Mtryum.MOD_ID, "tool_group"),
