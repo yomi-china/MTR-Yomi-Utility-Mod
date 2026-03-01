@@ -1,17 +1,14 @@
 {
-  "required": false,
+  "required": true,
   "minVersion": "0.8",
   "package": "com.yomi.mtryum.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "mtryum.refmap.json",
-  "client": [
-    //"TrainMixin"
+  "mixins": [
+    "TrainServerMixin"
   ],
-  "server": [
-    //"TrainMixin",
-    //"TrainServerMixin",
-    //"VehicleRidingServerMixin"
-  ],
+  "client": [],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
   }

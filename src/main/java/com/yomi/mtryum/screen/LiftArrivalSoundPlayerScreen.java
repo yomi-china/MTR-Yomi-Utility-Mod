@@ -44,7 +44,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         int totalWidth = buttonWidth * 2 + inputWidth + spacing * 2;
         int startX = centerX - totalWidth / 2;
 
-        // 减号按钮
         minusButton = Button.builder(
                 Component.literal("-"),
                 button -> decrementSoundIndex()
@@ -55,7 +54,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         ).build();
         addRenderableWidget(minusButton);
 
-        // 输入框
         soundIndexInput = new EditBox(
                 this.font,
                 startX + buttonWidth + spacing,
@@ -76,12 +74,10 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         soundIndexInput.setValue(String.valueOf(currentSoundIndex));
         soundIndexInput.setHint(Component.translatable("screen.mtryum.lift_arrival_sound_player.input_hint"));
         soundIndexInput.setResponder(text -> {
-            // 当输入框内容变化时，更新按钮状态
             updateButtonsState();
         });
         addRenderableWidget(soundIndexInput);
 
-        // 加号按钮
         plusButton = Button.builder(
                 Component.literal("+"),
                 button -> incrementSoundIndex()
@@ -94,7 +90,7 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
 
         updateButtonsState();
 
-        // 试听按钮
+        // 1.3.0版本已将试听移植此处，解决了玩家误触的问题（
         Button previewButton = Button.builder(
                 Component.translatable("screen.mtryum.lift_arrival_sound_player.preview"),
                 button -> previewSound()
@@ -105,7 +101,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
         ).build();
         addRenderableWidget(previewButton);
 
-        // 确认按钮
         Button confirmButton = Button.builder(
                 Component.translatable("screen.mtryum.lift_arrival_sound_player.confirm"),
                 button -> saveAndClose()
@@ -125,7 +120,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
                 updateButtonsState();
             }
         } catch (NumberFormatException e) {
-            // 如果输入无效，重置为1
             soundIndexInput.setValue("1");
             updateButtonsState();
         }
@@ -139,7 +133,6 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
                 updateButtonsState();
             }
         } catch (NumberFormatException e) {
-            // 如果输入无效，重置为1
             soundIndexInput.setValue("1");
             updateButtonsState();
         }
@@ -174,8 +167,8 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
                     case 10 -> minecraft.level.playLocalSound(pos, MtryumSounds.LIFT_ARRIVAL_SOUND_10, SoundSource.BLOCKS, 1.0F, 1.0F, false);
                 }
             }
-        } catch (NumberFormatException e) {
-            // 忽略
+        } catch (NumberFormatException ignored) {
+
         }
     }
 

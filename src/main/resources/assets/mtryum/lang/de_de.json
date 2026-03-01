@@ -34,5 +34,14 @@
   "tooltip.mtryum.floor_monitor.line2": "Mit leerer Hand rechtsklicken, um Farbe anzupassen",
   "tooltip.mtryum.lift_arrival_light.line1": "Mit dem mitgelieferten MTR-Aufzugstasten-Verbinder verbinden; blinkt bei Aufzugsankunft.",
   "tooltip.mtryum.lift_arrival_sound_player.line1": "Mit leerer Hand rechtsklicken, um Ton anzupassen, mit Bürste rechtsklicken für Vorschau",
-  "screen.mtryum.set_style_title": "Stil einstellen"
+  "screen.mtryum.set_style_title": "Stil einstellen",
+  "block.mtryum.otis_3200_style_lift_buttons": "Otis 3200-Stil Aufzugstasten",
+  "item.mtryum.otis_3200_style_lift_buttons": "Otis 3200-Stil Aufzugstasten",
+  "block.mtryum.opaque_lift_door_1": "Unbrauchbar, nicht platzieren",
+  "tooltip.mtryum.auto_connector.shift_hint": "Bei Verwendung muss die Schleichtaste gedrückt werden",
+  "msg.mtryum.clicked_track": "Aufzugsschiene ausgewählt: [%d, %d, %d]",
+  "msg.mtryum.clicked_device": "Aufzugskomponente ausgewählt: [%d, %d, %d]",
+  "msg.mtryum.clicked_invalid": "Angeklickter Block ist keine Schiene oder verbindbare Komponente: [%d, %d, %d]",
+  "msg.mtryum.invalid_pair": "Ungültiges Paar: [%d, %d, %d] und [%d, %d, %d]",
+  "msg.mtryum.connecting_start": "Automatische Verbindung wird gestartet: Schiene [%d, %d, %d] → Komponente [%d, %d, %d]"
 }

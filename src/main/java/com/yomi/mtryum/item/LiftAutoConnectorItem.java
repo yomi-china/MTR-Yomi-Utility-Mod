@@ -2,6 +2,7 @@ package com.yomi.mtryum.item;
 
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerBlock;
+import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlock;
 import mtr.block.BlockLiftButtons;
 import mtr.block.BlockLiftPanelBase;
@@ -28,7 +29,6 @@ import java.util.List;
 public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
 
     private static final Logger LOGGER = LogManager.getLogger("LiftAutoConnector");
-    private static final String KEY_OFFSET = "offset";
     private static final int MAX_FLOORS = 512;
     private static final String LIFT_TRACK_ID = "mtr:lift_track_floor_1";
     private static final String BUTTON_ID = "mtr:lift_buttons_1";
@@ -48,99 +48,106 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
 
     @Override
     protected void onStartClick(UseOnContext context, CompoundTag compoundTag) {
+        final Level world = context.getLevel();
+        final BlockPos pos = context.getClickedPos();
+        final BlockState state = world.getBlockState(pos);
+        final ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
 
+        if (world.isClientSide) return;
+
+        String key;
+        if (state.getBlock() instanceof BlockLiftTrackFloor) {
+            key = "msg.mtryum.clicked_track";
+        } else if (isConnectableBlock(blockId)) {
+            key = "msg.mtryum.clicked_device";
+        } else {
+            key = "msg.mtryum.clicked_invalid";
+        }
+
+        if (context.getPlayer() != null) {
+            context.getPlayer().displayClientMessage(
+                    Component.translatable(key, pos.getX(), pos.getY(), pos.getZ()),
+                    false
+            );
+        }
     }
 
     @Override
     protected void onEndClick(UseOnContext context, BlockPos posEnd, CompoundTag compoundTag) {
         final Level world = context.getLevel();
-        final BlockPos clickedPos = context.getClickedPos();
-        BlockState state = world.getBlockState(clickedPos);
+        final BlockPos posCurrent = context.getClickedPos(); // 第二次点击的位置
 
         if (world.isClientSide) return;
 
-        try {
-            final ResourceLocation clickedblockId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
+        BlockPos trackPos = null;
+        BlockPos devicePos = null;
 
-            if (LIFT_TRACK_ID.equals(clickedblockId.toString())) {
-                handleTrackConnection(context, compoundTag, clickedPos);
+        BlockState stateEnd = world.getBlockState(posEnd);
+        BlockState stateCurrent = world.getBlockState(posCurrent);
+
+        boolean isEndTrack = stateEnd.getBlock() instanceof BlockLiftTrackFloor;
+        boolean isCurrentTrack = stateCurrent.getBlock() instanceof BlockLiftTrackFloor;
+        boolean isEndDevice = isConnectableBlock(BuiltInRegistries.BLOCK.getKey(stateEnd.getBlock()));
+        boolean isCurrentDevice = isConnectableBlock(BuiltInRegistries.BLOCK.getKey(stateCurrent.getBlock()));
+
+        if (isEndTrack && isCurrentDevice) {
+            trackPos = posEnd;
+            devicePos = posCurrent;
+        } else if (isEndDevice && isCurrentTrack) {
+            trackPos = posCurrent;
+            devicePos = posEnd;
+        } else {
+            // 无效
+            if (context.getPlayer() != null) {
+                context.getPlayer().displayClientMessage(
+                        Component.translatable("msg.mtryum.invalid_pair",
+                                posEnd.getX(), posEnd.getY(), posEnd.getZ(),
+                                posCurrent.getX(), posCurrent.getY(), posCurrent.getZ()),
+                        false
+                );
             }
-            else if (isConnectableBlock(clickedblockId)) {
-                handleDeviceConnection(context, world, compoundTag, clickedPos);
-            }
-        } catch (Exception e) {
-            LOGGER.error("操作失败: ", e);
+            return;
         }
-    }
 
-    // 记录基准轨道位置并计算初始偏移
-    private void handleTrackConnection(UseOnContext context, CompoundTag compoundTag, BlockPos trackPos) {
-        compoundTag.putLong("base_track", trackPos.asLong());
+        // 开始连接
         if (context.getPlayer() != null) {
             context.getPlayer().displayClientMessage(
-                    Component.translatable("msg.mtryum.track_selected",
-                            trackPos.getX(), trackPos.getY(), trackPos.getZ()),
+                    Component.translatable("msg.mtryum.connecting_start",
+                            trackPos.getX(), trackPos.getY(), trackPos.getZ(),
+                            devicePos.getX(), devicePos.getY(), devicePos.getZ()),
                     false
             );
         }
-        LOGGER.info("基准轨道已记录: {}", trackPos);
-    }
 
-    // 计算偏移并连接所有楼层
-    private void handleDeviceConnection(UseOnContext context, Level level, CompoundTag compoundTag, BlockPos buttonPos) {
-        if (!compoundTag.contains("base_track")) {
-            LOGGER.warn("未检测到基准轨道数据");
-            if (context.getPlayer() != null) {
-                context.getPlayer().displayClientMessage(
-                        Component.translatable("msg.mtryum.no_base_track"),
-                        false
-                );
-            }
-            return;
-        }
-
-        final BlockPos baseTrack = BlockPos.of(compoundTag.getLong("base_track"));
-        if (!(level.getBlockState(baseTrack).getBlock() instanceof BlockLiftTrackFloor)) {
-            LOGGER.error("基准轨道已失效: {}", baseTrack);
-            if (context.getPlayer() != null) {
-                context.getPlayer().displayClientMessage(
-                        Component.translatable("msg.mtryum.invalid_base_track"),
-                        false
-                );
-            }
-            return;
-        }
-
-        // 计算xyz偏移量
-        final BlockPos offset = buttonPos.subtract(baseTrack);
-        compoundTag.putIntArray(KEY_OFFSET, new int[]{offset.getX(), offset.getY(), offset.getZ()});
+        // 计算偏移
+        final BlockPos offset = devicePos.subtract(trackPos);
         LOGGER.info("偏移量计算: {}", offset);
 
-        // 遍历所有上层轨道
+        // 连接当前楼层
         int connected = 0;
-        BlockPos currentTrack = baseTrack;
-        while (connected < MAX_FLOORS) {
-            final BlockPos upperTrack = findNextTrack(level, currentTrack);
-            if (upperTrack == null) break;
-
-            // 应用xyz偏移量
-            final BlockPos targetButton = upperTrack.offset(offset);
-            if (connectDevice(level, upperTrack, targetButton)) {
-                connected++;
-                LOGGER.debug("成功连接: {} → {}", upperTrack, targetButton);
-            }
-
-            currentTrack = upperTrack;
+        if (connectDevice(world, trackPos, devicePos)) {
+            connected++;
         }
+
+        // 向上遍历所有楼层
+        BlockPos currentTrack = trackPos;
+        while (connected < MAX_FLOORS) {
+            BlockPos nextTrack = findNextTrack(world, currentTrack);
+            if (nextTrack == null) break;
+
+            BlockPos targetDevice = nextTrack.offset(offset);
+            if (connectDevice(world, nextTrack, targetDevice)) {
+                connected++;
+            }
+            currentTrack = nextTrack;
+        }
+
         if (context.getPlayer() != null) {
             context.getPlayer().displayClientMessage(
-                    Component.translatable("msg.mtryum.connection_complete",
-                            connected),
+                    Component.translatable("msg.mtryum.connection_complete", connected),
                     false
             );
         }
-        compoundTag.remove("base_track");
-        compoundTag.remove(KEY_OFFSET);
     }
 
     // 查找下一个轨道
@@ -154,9 +161,9 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
         return null;
     }
 
-    private boolean connectDevice(Level world, BlockPos trackPos, BlockPos buttonPos) {
+    private boolean connectDevice(Level world, BlockPos trackPos, BlockPos devicePos) {
         try {
-            final BlockEntity be = world.getBlockEntity(buttonPos);
+            final BlockEntity be = world.getBlockEntity(devicePos);
             if (be instanceof BlockLiftButtons.TileEntityLiftButtons) {
                 ((BlockLiftButtons.TileEntityLiftButtons) be).registerFloor(trackPos, true);
                 return true;
@@ -169,9 +176,13 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
                 ((LiftArrivalLightBlock.Entity) be).registerFloor(trackPos, true);
                 return true;
             }
+            if (be instanceof LiftArrivalSoundPlayerEntity) {
+                ((LiftArrivalSoundPlayerEntity) be).registerFloor(trackPos, true);
+                return true;
+            }
             return false;
         } catch (Exception e) {
-            LOGGER.error("连接失败: {} → {}", trackPos, buttonPos, e);
+            LOGGER.error("连接失败: {} → {}", trackPos, devicePos, e);
             return false;
         }
     }
@@ -194,15 +205,6 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.mtryum.auto_connector.line1").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
         tooltip.add(Component.translatable("tooltip.mtryum.auto_connector.line2").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
-    }
-
-    @Override
-    protected boolean clickCondition(UseOnContext context) {
-        final BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-        return state.getBlock() instanceof BlockLiftTrackFloor
-                || state.getBlock() instanceof BlockLiftButtons
-                || state.getBlock() instanceof MitsubishiStyleLiftButtonsBlock
-                || state.getBlock() instanceof LiftArrivalLightBlock
-                || state.getBlock() instanceof LiftArrivalSoundPlayerBlock;
+        tooltip.add(Component.translatable("tooltip.mtryum.auto_connector.shift_hint").setStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
     }
 }
