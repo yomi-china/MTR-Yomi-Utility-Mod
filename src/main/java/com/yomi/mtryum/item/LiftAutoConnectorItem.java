@@ -75,7 +75,7 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
     @Override
     protected void onEndClick(UseOnContext context, BlockPos posEnd, CompoundTag compoundTag) {
         final Level world = context.getLevel();
-        final BlockPos posCurrent = context.getClickedPos(); // 第二次点击的位置
+        final BlockPos posCurrent = context.getClickedPos();
 
         if (world.isClientSide) return;
 
@@ -97,7 +97,6 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
             trackPos = posCurrent;
             devicePos = posEnd;
         } else {
-            // 无效
             if (context.getPlayer() != null) {
                 context.getPlayer().displayClientMessage(
                         Component.translatable("msg.mtryum.invalid_pair",

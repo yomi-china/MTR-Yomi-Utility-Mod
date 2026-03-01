@@ -16,7 +16,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
 
     private static final String KEY_UP_PRESSED = "up_pressed";
     private static final String KEY_DOWN_PRESSED = "down_pressed";
-    // 旧版兼容
+    // 同样烦人的旧版兼容
     private static final String KEY_IS_LEGACY = "is_legacy";
     private static final String KEY_AUTO_UNLOCKED = "auto_unlocked";
 

@@ -42,7 +42,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     protected String defaultFloorText = "??";
 
     // 字符间距相关
-    protected float characterSpacing = 0.0f; // 默认字符间距（像素）
+    protected float characterSpacing = 0.0f; // 默认字符间距
     protected float letterSpacingFactor = 1.0f; // 字符间距系数
     protected boolean enableCustomSpacing = false; // 是否启用自定义字符间距
 

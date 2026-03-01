@@ -34,14 +34,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
-    // 添加 unlocked 属性但不使用它
     public static final BooleanProperty UNLOCKED = BooleanProperty.create("unlocked");
 
     public LiftArrivalSoundPlayerBlock() {
         super();
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(UNLOCKED, true) // 设置为 true 避免问题
+                .setValue(UNLOCKED, true)
         );
     }
 
