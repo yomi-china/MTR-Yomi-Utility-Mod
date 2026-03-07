@@ -14,14 +14,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<OTIS3StyleLiftButtonsBlockEntity> {
 
-    private static final ResourceLocation OTIS3_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_button_normal.png");
-    private static final ResourceLocation OTIS3_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_button_pressed.png");
+    private static final ResourceLocation OTIS3_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_normal.png");
+    private static final ResourceLocation OTIS3_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_pressed.png");
+    private static final ResourceLocation OTIS3_ARROW = new ResourceLocation(Mtryum.MOD_ID, "textures/arrow/otis3_arrow.png");
 
     public OTIS3StyleLiftButtonsRenderer() {
         super();
 
         this.buttonNormalTexture = OTIS3_BUTTON_NORMAL;
         this.buttonPressedTexture = OTIS3_BUTTON_PRESSED;
+        this.arrowTexture = OTIS3_ARROW;
 
         this.floorNumberColor = 0xFFFF8C00;
         this.arrowColor = 0xFFFF8C00;
@@ -33,22 +35,22 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
         this.baseYOffset = -0.135f;
         this.floorNumberY = 0.7f;
         this.floorNumberXOffset = 0.5f;
-        this.arrowY = 0.88f;
+        this.arrowY = 0.75f;
         this.buttonUpY = 0.48f;
         this.buttonDownY = 0.35f;
 
         this.buttonSize = 0.075f;
-        this.arrowWidth = 0.125f;
-        this.arrowHeight = 0.125f;
+        this.arrowWidth = 0.073f;
+        this.arrowHeight = 0.073f;
         this.depthOffset = 0.002f;
 
         this.floorScaleTwoChars = 0.002f;
         this.floorScaleThreeChars = 0.00085f;
         this.floorScaleExtraReduction = 0.0001f;
         this.floorScaleMin = 0.0001f;
-        this.arrowScale = 0.0008f;
+        this.arrowScale = 0.00025f;
 
-        this.arrowRenderMode = ArrowRenderMode.FONT;
+        this.arrowRenderMode = ArrowRenderMode.TEXTURE;
 
 
         this.arrowUpText = "<";

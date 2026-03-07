@@ -20,10 +20,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 通用电梯按钮渲染器抽象类
- * @param <T> 电梯按钮方块实体类型
- */
 public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 
 

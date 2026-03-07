@@ -32,7 +32,7 @@ public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TK
         this.buttonUpY = 0.47f;
         this.buttonDownY = 0.36f;
 
-        this.buttonSize = 0.07f;
+        this.buttonSize = 0.062f;
         this.arrowWidth = 0.125f;
         this.arrowHeight = 0.125f;
         this.depthOffset = 0.0015f;
