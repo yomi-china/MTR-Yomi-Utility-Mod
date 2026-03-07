@@ -28,8 +28,8 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
 
 
     // 纹理相关
-    protected ResourceLocation buttonNormalTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_button_normal.png");
-    protected ResourceLocation buttonPressedTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_button_pressed.png");
+    protected ResourceLocation buttonNormalTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_normal.png");
+    protected ResourceLocation buttonPressedTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_pressed.png");
     protected ResourceLocation arrowTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/arrow/mitsubshi_arrow.png");
 
     // 颜色相关

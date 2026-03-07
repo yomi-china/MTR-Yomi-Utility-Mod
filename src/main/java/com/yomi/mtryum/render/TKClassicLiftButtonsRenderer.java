@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TKClassicLiftButtonsBlockEntity> {
 
-    private static final ResourceLocation TK_UP_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/tk_up_normal.png");
-    private static final ResourceLocation TK_UP_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/tk_up_pressed.png");
+    private static final ResourceLocation TK_UP_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/tk_normal.png");
+    private static final ResourceLocation TK_UP_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/tk_pressed.png");
 
     public TKClassicLiftButtonsRenderer() {
         super();
