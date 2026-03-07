@@ -25,7 +25,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
     protected int arrowRenderMode = ArrowRenderMode.TEXTURE;
     
     // 纹理相关
-    protected ResourceLocation arrowTexture = new ResourceLocation("mtryum", "textures/block/lift_arrow.png");
+    protected ResourceLocation arrowTexture = new ResourceLocation("mtryum", "textures/block/mitsubshi_arrow.png");
     protected int arrowColor = 0xFF0000FF;
     
     // 字体相关

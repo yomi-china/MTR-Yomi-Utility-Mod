@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<MitsubishiStyleLiftButtonsBlockEntity> {
 
-    private static final ResourceLocation MITSUBISHI_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_normal.png");
-    private static final ResourceLocation MITSUBISHI_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_pressed.png");
+    private static final ResourceLocation MITSUBISHI_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_button_normal.png");
+    private static final ResourceLocation MITSUBISHI_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_button_pressed.png");
 
     public MitsubishiStyleLiftButtonsRenderer() {
         super();

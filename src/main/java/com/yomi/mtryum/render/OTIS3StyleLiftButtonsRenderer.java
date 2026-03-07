@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<OTIS3StyleLiftButtonsBlockEntity> {
 
-    private static final ResourceLocation OTIS3_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_normal.png");
-    private static final ResourceLocation OTIS3_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/block/lift_button_pressed.png");
+    private static final ResourceLocation OTIS3_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_button_normal.png");
+    private static final ResourceLocation OTIS3_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_button_pressed.png");
 
     public OTIS3StyleLiftButtonsRenderer() {
         super();
