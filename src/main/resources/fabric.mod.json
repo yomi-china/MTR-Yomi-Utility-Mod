@@ -1,36 +1,37 @@
 {
-	"schemaVersion": 1,
-	"id": "mtryum",
-	"version": "${version}",
-	"name": "Yomi的MTR实用拓展",
-	"description": "A MTR practical expansion by yomi_307.  一个由yomi_307制作的实用的MTR附属模组。",
-	"authors": [
-		"yomi_307"
-	],
-	"contact": {
-		"homepage": "https://yomi-china.github.io/"
-	},
-	"icon": "assets/mtryum/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"com.yomi.mtryum.Mtryum"
-		],
-		"client": [
-			"com.yomi.mtryum.MtryumClient"
-		]
-	},
-	"mixins": [
-		"mtryum.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.14.9",
-		"minecraft": "~1.17.1",
-		"java": ">=8",
-		"fabric": "*",
-		"mtr": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+  "schemaVersion": 1,
+  "id": "mtryum",
+  "version": "${version}",
+  "name": "MTR Yomi Utility Mod",
+  "description": "A MTR practical expansion by yomi_307.  一个由yomi_307制作的实用的MTR附属模组。",
+  "authors": [
+    "yomi_307"
+  ],
+  "contact": {
+    "homepage": "https://yomi-china.github.io/mod-mtryum/",
+    "sources": "https://github.com/yomi-china/MTR-Yomi-Utility-Mod/"
+  },
+  "icon": "assets/mtryum/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.yomi.mtryum.Mtryum"
+    ],
+    "client": [
+      "com.yomi.mtryum.MtryumClient"
+    ]
+  },
+  "mixins": [
+    "mtryum.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "minecraft": "~1.17.1",
+    "java": ">=17",
+    "fabric": "*",
+    "mtr": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }

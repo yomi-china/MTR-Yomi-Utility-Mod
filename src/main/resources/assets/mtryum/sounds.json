@@ -70,5 +70,13 @@
       }
     ],
     "subtitle": "subtitles.mtryum.lift_arrival"
+  },
+  "lift_arrival_sound_10": {
+    "sounds": [
+      {
+        "name": "mtryum:lift_arrival_sound_10"
+      }
+    ],
+    "subtitle": "subtitles.mtryum.lift_arrival"
   }
 }

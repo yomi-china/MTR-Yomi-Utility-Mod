@@ -16,10 +16,15 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
 
     private static final String KEY_UP_PRESSED = "up_pressed";
     private static final String KEY_DOWN_PRESSED = "down_pressed";
+    // 同样烦人的旧版兼容
+    private static final String KEY_IS_LEGACY = "is_legacy";
+    private static final String KEY_AUTO_UNLOCKED = "auto_unlocked";
+
     private boolean upButtonPressed;
     private boolean downButtonPressed;
-    private Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
-    public static final Logger LOGGER = LoggerFactory.getLogger("MSLB");
+    private boolean isLegacy = false; // 是否为旧版本方块
+    private boolean autoUnlocked = false; // 是否已经自动解锁过
+    public static final Logger LOGGER = LoggerFactory.getLogger("TKStyleLiftButtons");
 
     public TKClassicLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state, false);
@@ -34,6 +39,9 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
         super.readCompoundTag(compoundTag);
         upButtonPressed = compoundTag.getBoolean(KEY_UP_PRESSED);
         downButtonPressed = compoundTag.getBoolean(KEY_DOWN_PRESSED);
+
+        isLegacy = !compoundTag.contains(KEY_IS_LEGACY) || compoundTag.getBoolean(KEY_IS_LEGACY);
+        autoUnlocked = compoundTag.getBoolean(KEY_AUTO_UNLOCKED);
     }
 
     @Override
@@ -41,6 +49,9 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
         super.writeCompoundTag(compoundTag);
         compoundTag.putBoolean(KEY_UP_PRESSED, upButtonPressed);
         compoundTag.putBoolean(KEY_DOWN_PRESSED, downButtonPressed);
+
+        compoundTag.putBoolean(KEY_IS_LEGACY, isLegacy);
+        compoundTag.putBoolean(KEY_AUTO_UNLOCKED, autoUnlocked);
     }
 
     public void callLift(boolean callUp) {
@@ -73,7 +84,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
         }
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, TKClassicLiftButtonsBlockEntity entity) {
+    public static void serverTick(Level level, TKClassicLiftButtonsBlockEntity entity) {
         if (level != null && !level.isClientSide) {
             BlockPos trackPos = entity.getTrackPosition(level);
             if (trackPos != null) {
@@ -114,7 +125,7 @@ public class TKClassicLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEnti
         return downButtonPressed;
     }
 
-    public void updateLiftDirection(Lift.LiftDirection direction) {
-        liftDirection = direction;
+    public void updateLiftDirection() {
     }
+
 }

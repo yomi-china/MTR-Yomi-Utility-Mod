@@ -5,8 +5,11 @@ import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerBlock;
 import com.yomi.mtryum.block.MLFMBlock;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlock;
+import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlock;
+import com.yomi.mtryum.block.SmartAnnouncerBlock;
 import com.yomi.mtryum.block.TKClassicFloorMonitorBlock;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlock;
+import mtr.block.BlockLiftDoor;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -18,38 +21,24 @@ public class MtryumBlocks {
     public static final Block MLFM = new MLFMBlock();
     public static final Block MITSUBISHI_STYLE_LIFT_BUTTONS = new MitsubishiStyleLiftButtonsBlock();
     public static final Block TK_STYLE_LIFT_BUTTONS = new TKClassicLiftButtonsBlock();
+    public static final Block OTIS3_STYLE_LIFT_BUTTONS = new OTIS3StyleLiftButtonsBlock();
+    public static final Block OPAQUE_LIFT_DOOR_1 = new BlockLiftDoor();
+    public static final Block SMART_ANNOUNCER = new SmartAnnouncerBlock();
 
 
     public static void register() {
-        Registry.register(
-                Registry.BLOCK,
-                new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_light"),
-                LIFT_ARRIVAL_LIGHT_BLOCK
-        );
-        Registry.register(
-                Registry.BLOCK,
-                new ResourceLocation(Mtryum.MOD_ID, "lift_arrival_sound_player"),
-                LIFT_ARRIVAL_SOUND_PLAYER_BLOCK
-        );
-        Registry.register(
-                Registry.BLOCK,
-                new ResourceLocation(Mtryum.MOD_ID, "lift_floor_monitor"),
-                LIFT_FLOOR_MONITOR
-        );
-        Registry.register(
-                Registry.BLOCK,
-                new ResourceLocation(Mtryum.MOD_ID, "mitsubishi_floor_monitor"),
-                MLFM
-        );
-        Registry.register(
-                Registry.BLOCK,
-                new ResourceLocation(Mtryum.MOD_ID, "mitsubishi_style_lift_buttons"),
-                MITSUBISHI_STYLE_LIFT_BUTTONS
-        );
-        Registry.register(
-                Registry.BLOCK,
-                new ResourceLocation(Mtryum.MOD_ID, "tk_style_lift_buttons"),
-                TK_STYLE_LIFT_BUTTONS
-        );
+        registerBlock("lift_arrival_light", LIFT_ARRIVAL_LIGHT_BLOCK);
+        registerBlock("lift_arrival_sound_player", LIFT_ARRIVAL_SOUND_PLAYER_BLOCK);
+        registerBlock("lift_floor_monitor", LIFT_FLOOR_MONITOR);
+        registerBlock("mitsubishi_floor_monitor", MLFM);
+        registerBlock("mitsubishi_style_lift_buttons", MITSUBISHI_STYLE_LIFT_BUTTONS);
+        registerBlock("tk_style_lift_buttons", TK_STYLE_LIFT_BUTTONS);
+        registerBlock("otis_3200_style_lift_buttons", OTIS3_STYLE_LIFT_BUTTONS);
+        registerBlock("opaque_lift_door_1", OPAQUE_LIFT_DOOR_1);
+        registerBlock("smart_announcer", SMART_ANNOUNCER);
+    }
+
+    private static void registerBlock(String path, Block block) {
+        Registry.register(Registry.BLOCK, new ResourceLocation(Mtryum.MOD_ID, path), block);
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -34,11 +35,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
+    public static final BooleanProperty UNLOCKED = BooleanProperty.create("unlocked");
 
     public LiftArrivalSoundPlayerBlock() {
         super();
         registerDefaultState(defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
+                .setValue(UNLOCKED, true)
         );
     }
 
@@ -47,7 +50,7 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
         return type == MtryumBlockEntities.LIFT_ARRIVAL_SOUND_PLAYER_ENTITY ?
                 (world.isClientSide ? null : (level1, blockPos, blockState, t) ->
-                        LiftArrivalSoundPlayerEntity.LASPTick(level1, blockPos, blockState, (LiftArrivalSoundPlayerEntity) t)) :
+                        LiftArrivalSoundPlayerEntity.LASPTick((LiftArrivalSoundPlayerEntity) t)) :
                 null;
     }
 
@@ -58,12 +61,12 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, UNLOCKED);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection());
+        return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(UNLOCKED, true);
     }
 
     @Override
@@ -75,20 +78,10 @@ public class LiftArrivalSoundPlayerBlock extends BlockLiftButtons {
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // 空手试听
-        if (stack.isEmpty()) {
-            if (!world.isClientSide) {
-                BlockEntity be = world.getBlockEntity(pos);
-                if (be instanceof LiftArrivalSoundPlayerEntity entity) {
-                    entity.playArrivalSound();
-                }
-            }
-            return InteractionResult.sidedSuccess(world.isClientSide);
-        }
-
+        // 使用刷子打开配置界面
         if (stack.getItem().getDescriptionId().equals("item.mtr.brush") && world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             MtryumClient.scheduleASPScreenOpen(pos);
-            return InteractionResult.sidedSuccess(world.isClientSide());
+            return InteractionResult.sidedSuccess(true);
         }
 
         return super.use(state, world, pos, player, hand, hit);
