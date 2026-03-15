@@ -40,13 +40,13 @@ public class LiftArrivalLightBlock extends BlockLiftPanelBase {
     public static final BooleanProperty LIT = BooleanProperty.create("lit");
     private static final ResourceLocation BRUSH_ITEM_ID = new ResourceLocation("mtr", "brush");
 
-    // 居中状态
+    // 居中
     private static final VoxelShape CENTER_EAST = Block.box(15, 3, 3, 16, 13, 13);
     private static final VoxelShape CENTER_WEST = Block.box(0, 3, 3, 1, 13, 13);
     private static final VoxelShape CENTER_SOUTH = Block.box(3, 3, 15, 13, 13, 16);
     private static final VoxelShape CENTER_NORTH = Block.box(3, 3, 0, 13, 13, 1);
 
-    // 靠右状态
+    // 靠右
     private static final VoxelShape RIGHT_EAST = Block.box(15, 3, 11, 16, 13, 21);
     private static final VoxelShape RIGHT_WEST = Block.box(0, 3, -5, 1, 13, 5);
     private static final VoxelShape RIGHT_SOUTH = Block.box(-5, 3, 15, 5, 13, 16);
@@ -124,10 +124,6 @@ public class LiftArrivalLightBlock extends BlockLiftPanelBase {
 
     }
 
-    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-        return state.getValue(LIT) ? 15 : 0;
-    }
-
     public enum Position implements StringRepresentable {
         CENTER("center"),
         RIGHT("right");
@@ -144,7 +140,7 @@ public class LiftArrivalLightBlock extends BlockLiftPanelBase {
         }
     }
 
-    public static class Entity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
+    public static class Entity extends TileEntityLiftPanel1Base {
         public Entity(BlockPos pos, BlockState state) {
             super(MtryumBlockEntities.LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY, pos, state, false);
         }
