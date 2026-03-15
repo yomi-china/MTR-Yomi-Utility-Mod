@@ -6,14 +6,15 @@ import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
 import com.yomi.mtryum.render.CustomFontManager;
-import com.yomi.mtryum.render.CustomFontRenderer;
 import com.yomi.mtryum.render.LiftArrivalLightRenderer;
+import com.yomi.mtryum.render.OTIS3StyleLiftButtonsRenderer;
+import com.yomi.mtryum.render.TKClassicFloorMonitorRenderer;
 import com.yomi.mtryum.render.MLFMRender;
 import com.yomi.mtryum.render.MitsubishiStyleLiftButtonsRenderer;
-import com.yomi.mtryum.render.TKClassicFloorMonitorRenderer;
+import com.yomi.mtryum.render.CustomFontRenderer;
 import com.yomi.mtryum.render.TKClassicLiftButtonsRenderer;
 import com.yomi.mtryum.screen.LiftArrivalSoundPlayerScreen;
-import com.yomi.mtryum.screen.LiftFloorMonitorScreen;
+import com.yomi.mtryum.screen.TKClassicFloorMonitorScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -66,9 +67,13 @@ public class MtryumClient implements ClientModInitializer {
                 MtryumBlocks.TK_STYLE_LIFT_BUTTONS,
                 RenderType.cutout()
         );
+        BlockRenderLayerMap.INSTANCE.putBlock(
+                MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS,
+                RenderType.cutout()
+        );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY,
-                LiftArrivalLightRenderer::new
+                context -> new LiftArrivalLightRenderer()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.LIFT_FLOOR_MONITOR,
@@ -80,11 +85,15 @@ public class MtryumClient implements ClientModInitializer {
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY,
-                MitsubishiStyleLiftButtonsRenderer::new
+                context -> new MitsubishiStyleLiftButtonsRenderer()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY,
-                TKClassicLiftButtonsRenderer::new
+                context1 -> new TKClassicLiftButtonsRenderer()
+        );
+        BlockEntityRendererRegistry.register(
+                MtryumBlockEntities.OTIS3_STYLE_LIFT_BUTTONS_ENTITY,
+                context -> new OTIS3StyleLiftButtonsRenderer()
         );
         CustomFontManager fontManager = CustomFontManager.getInstance();
         fontManager.initialize();
@@ -109,7 +118,7 @@ public class MtryumClient implements ClientModInitializer {
                         if (client.level != null) {
                             BlockEntity entity = client.level.getBlockEntity(pendingFMScreenPos);
                             if (entity instanceof TKClassicFloorMonitorEntity) {
-                                client.setScreen(new LiftFloorMonitorScreen(pendingFMScreenPos));
+                                client.setScreen(new TKClassicFloorMonitorScreen(pendingFMScreenPos));
                             }
                         }
                         pendingFMScreenPos = null;

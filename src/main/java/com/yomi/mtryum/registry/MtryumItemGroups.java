@@ -7,7 +7,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 
-public class MtryumItemGroup {
+public class MtryumItemGroups {
     public static final CreativeModeTab TOOL_GROUP = FabricItemGroupBuilder.create(new ResourceLocation(Mtryum.MOD_ID, "tool_group"))
             .icon(() -> new ItemStack(MtryumItems.MOD_LOGO))
             .appendItems(stacks -> {
@@ -25,6 +25,9 @@ public class MtryumItemGroup {
                 stacks.add(new ItemStack(MtryumBlocks.MLFM));
                 stacks.add(new ItemStack(MtryumBlocks.MITSUBISHI_STYLE_LIFT_BUTTONS));
                 stacks.add(new ItemStack(MtryumBlocks.TK_STYLE_LIFT_BUTTONS));
+                stacks.add(new ItemStack(MtryumItems.OTIS3_STYLE_LIFT_BUTTONS));
+                //stacks.add(new ItemStack(MtryumItems.SMART_ANNOUNCER));
+                //stacks.add(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
             })
             .build();
 

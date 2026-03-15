@@ -3,7 +3,7 @@ package com.yomi.mtryum.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import mtr.client.ClientData;
+import mtr.block.BlockLiftTrackFloor;
 import mtr.data.Lift;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -25,18 +25,18 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
     protected int arrowRenderMode = ArrowRenderMode.TEXTURE;
     
     // 纹理相关
-    protected ResourceLocation arrowTexture = new ResourceLocation("mtryum", "textures/block/lift_arrow.png");
-    protected int arrowColor = 0xFFFFFFFF;
+    protected ResourceLocation arrowTexture = new ResourceLocation("mtryum", "textures/block/mitsubshi_arrow.png");
+    protected int arrowColor = 0xFF0000FF;
     
     // 字体相关
     protected String arrowUpText = "<";
     protected String arrowDownText = ">";
     protected String arrowFont = "mitsubishi-modern";
-    protected int arrowTextColor = 0xFFFFFFFF;
+    protected int arrowTextColor = 0xFF0000FF;
     
     // 楼层字体相关
     protected String floorFont = "mitsubishi-modern";
-    protected int floorColor = 0xFFFF8C00;
+    protected int floorColor = 0xFF0000FF;
     
     // 位置相关
     protected float floorYOffset = 0.78f;
@@ -72,13 +72,14 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         String floorNumber = "??";
 
         // 获取电梯数据
-        for (Lift lift : ClientData.LIFTS) {
+        for (Lift lift : mtr.client.ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                 final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
 
-                if (blockEntity instanceof mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
-                    floorNumber = ((mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
+                if (blockEntity instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
+                    floorNumber = ((BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
+                    // 更新电梯方向
                     liftDirection = lift.getLiftDirection();
                     updateLiftDirection(entity, liftDirection);
                     break;
@@ -94,7 +95,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         applyFacingTransform(matrices, facing);
 
         renderFloorAndArrow(matrices, vertexConsumers, light, overlay,
-                floorNumber, liftDirection, facing);
+                floorNumber, liftDirection);
 
         matrices.popPose();
     }
@@ -125,7 +126,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
 
     protected void renderFloorAndArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
                                      int light, int overlay, String floorNumber,
-                                     Lift.LiftDirection liftDirection, Direction facing) {
+                                     Lift.LiftDirection liftDirection) {
         // 渲染楼层数字
         renderFloorNumber(matrices, vertexConsumers, floorNumber, light);
 
@@ -141,7 +142,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         if (arrowRenderMode == ArrowRenderMode.TEXTURE) {
             renderTextureArrow(matrices, vertexConsumers, light, overlay, isDown);
         } else {
-            renderTextArrow(matrices, vertexConsumers, light, overlay, isDown);
+            renderTextArrow(matrices, vertexConsumers, light, isDown);
         }
     }
     
@@ -207,7 +208,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
     }
     
     protected void renderTextArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                 int light, int overlay, boolean isDown) {
+                                   int light, boolean isDown) {
         String arrowText = isDown ? arrowDownText : arrowUpText;
         
         matrices.pushPose();

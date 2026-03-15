@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "mtryum:block/otis_3200_style_lift_buttons",
+      "y": 0
+    },
+    "facing=east": {
+      "model": "mtryum:block/otis_3200_style_lift_buttons",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "mtryum:block/otis_3200_style_lift_buttons",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "mtryum:block/otis_3200_style_lift_buttons",
+      "y": 270
+    }
+  }
+}

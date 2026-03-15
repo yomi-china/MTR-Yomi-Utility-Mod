@@ -3,10 +3,13 @@ package com.yomi.mtryum.registry;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
+import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlockEntity;
+import com.yomi.mtryum.block.OpaqueLiftDoorBlock;
+import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.block.MLFMEntity;
 import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlockEntity;
-import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlockEntity;
+import com.yomi.mtryum.block.entity.TileEntitySmartAnnouncer;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +22,9 @@ public class MtryumBlockEntities {
     public static BlockEntityType<MLFMEntity> MLFM_ENTITY;
     public static BlockEntityType<MitsubishiStyleLiftButtonsBlockEntity> MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY;
     public static BlockEntityType<TKClassicLiftButtonsBlockEntity> TK_STYLE_LIFT_BUTTONS_ENTITY;
+    public static BlockEntityType<OTIS3StyleLiftButtonsBlockEntity> OTIS3_STYLE_LIFT_BUTTONS_ENTITY;
+    public static BlockEntityType<OpaqueLiftDoorBlock.OpaqueLiftDoorTileEntity> OPAQUE_LIFT_DOOR_TILE_ENTITY;
+    public static BlockEntityType<TileEntitySmartAnnouncer> SMART_ANNOUNCER_TILE_ENTITY;
 
     public static void register() {
         LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY = Registry.register(
@@ -67,6 +73,30 @@ public class MtryumBlockEntities {
                 FabricBlockEntityTypeBuilder.create(
                         TKClassicLiftButtonsBlockEntity::new,
                         MtryumBlocks.TK_STYLE_LIFT_BUTTONS
+                ).build(null)
+        );
+        OTIS3_STYLE_LIFT_BUTTONS_ENTITY = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                new ResourceLocation(Mtryum.MOD_ID, "otis_3200_style_lift_buttons"),
+                FabricBlockEntityTypeBuilder.create(
+                        OTIS3StyleLiftButtonsBlockEntity::new,
+                        MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS
+                ).build(null)
+        );
+        OPAQUE_LIFT_DOOR_TILE_ENTITY = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                new ResourceLocation(Mtryum.MOD_ID, "opaque_lift_door_tile_entity"),
+                FabricBlockEntityTypeBuilder.create(
+                        OpaqueLiftDoorBlock.OpaqueLiftDoorTileEntity::new,
+                        MtryumBlocks.OPAQUE_LIFT_DOOR_1
+                ).build(null)
+        );
+        SMART_ANNOUNCER_TILE_ENTITY = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                new ResourceLocation(Mtryum.MOD_ID, "smart_announcer_tile_entity"),
+                FabricBlockEntityTypeBuilder.create(
+                        TileEntitySmartAnnouncer::new,
+                        MtryumBlocks.SMART_ANNOUNCER
                 ).build(null)
         );
     }
