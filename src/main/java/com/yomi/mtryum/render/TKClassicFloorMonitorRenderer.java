@@ -117,9 +117,9 @@ public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClas
                 false,
                 matrices.last().pose(),
                 buffer,
-                false,
-                15728880,
-                0
+                true,
+                0,
+                15728880
         );
     }
 }
