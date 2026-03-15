@@ -26,8 +26,8 @@ public class MtryumItemGroups {
                 stacks.add(new ItemStack(MtryumBlocks.MITSUBISHI_STYLE_LIFT_BUTTONS));
                 stacks.add(new ItemStack(MtryumBlocks.TK_STYLE_LIFT_BUTTONS));
                 stacks.add(new ItemStack(MtryumItems.OTIS3_STYLE_LIFT_BUTTONS));
-                stacks.add(new ItemStack(MtryumItems.SMART_ANNOUNCER));
-                stacks.add(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
+                //stacks.add(new ItemStack(MtryumItems.SMART_ANNOUNCER));
+                //stacks.add(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
             })
             .build();
 
