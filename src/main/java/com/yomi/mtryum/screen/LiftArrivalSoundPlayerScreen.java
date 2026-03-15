@@ -90,7 +90,7 @@ public class LiftArrivalSoundPlayerScreen extends Screen {
 
         updateButtonsState();
 
-        // 1.3.0版本已将试听移植此处，解决了玩家误触的问题（
+        // 1.3.0版本将试听功能移到了这里，解决了玩家误触的问题：）
         Button previewButton = Button.builder(
                 Component.translatable("screen.mtryum.lift_arrival_sound_player.preview"),
                 button -> previewSound()
