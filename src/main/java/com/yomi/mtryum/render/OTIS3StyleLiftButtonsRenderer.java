@@ -2,7 +2,7 @@ package com.yomi.mtryum.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.yomi.mtryum.Mtryum;
-import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlockEntity;
+import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,43 +12,45 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
-public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<MitsubishiStyleLiftButtonsBlockEntity> {
+public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<OTIS3StyleLiftButtonsBlockEntity> {
 
-    private static final ResourceLocation MITSUBISHI_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_normal.png");
-    private static final ResourceLocation MITSUBISHI_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_pressed.png");
+    private static final ResourceLocation OTIS3_BUTTON_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_normal.png");
+    private static final ResourceLocation OTIS3_BUTTON_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/otis3_pressed.png");
+    private static final ResourceLocation OTIS3_ARROW = new ResourceLocation(Mtryum.MOD_ID, "textures/arrow/otis3_arrow.png");
 
-    public MitsubishiStyleLiftButtonsRenderer() {
+    public OTIS3StyleLiftButtonsRenderer() {
         super();
 
-        this.buttonNormalTexture = MITSUBISHI_BUTTON_NORMAL;
-        this.buttonPressedTexture = MITSUBISHI_BUTTON_PRESSED;
+        this.buttonNormalTexture = OTIS3_BUTTON_NORMAL;
+        this.buttonPressedTexture = OTIS3_BUTTON_PRESSED;
+        this.arrowTexture = OTIS3_ARROW;
 
         this.floorNumberColor = 0xFFFF8C00;
         this.arrowColor = 0xFFFF8C00;
         this.buttonTintColor = 0xFFFFFF;
 
-        this.fontName = "mitsubishi-modern";
-        this.defaultFloorText = "??";
+        this.fontName = "otis-series-1";
+        this.defaultFloorText = "--";
 
         this.baseYOffset = -0.135f;
-        this.floorNumberY = 0.78f;
+        this.floorNumberY = 0.7f;
         this.floorNumberXOffset = 0.5f;
-        this.arrowY = 0.88f;
+        this.arrowY = 0.75f;
         this.buttonUpY = 0.48f;
         this.buttonDownY = 0.35f;
 
         this.buttonSize = 0.075f;
-        this.arrowWidth = 0.125f;
-        this.arrowHeight = 0.125f;
+        this.arrowWidth = 0.073f;
+        this.arrowHeight = 0.073f;
         this.depthOffset = 0.002f;
 
-        this.floorScaleTwoChars = 0.0009f;
+        this.floorScaleTwoChars = 0.002f;
         this.floorScaleThreeChars = 0.00085f;
         this.floorScaleExtraReduction = 0.0001f;
         this.floorScaleMin = 0.0001f;
-        this.arrowScale = 0.0008f;
+        this.arrowScale = 0.00025f;
 
-        this.arrowRenderMode = ArrowRenderMode.FONT;
+        this.arrowRenderMode = ArrowRenderMode.TEXTURE;
 
 
         this.arrowUpText = "<";
@@ -56,8 +58,10 @@ public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRende
 
         this.singleButtonOffset = 0.06f;
 
+        this.autoPadSingleDigit = true;
+
         this.enableCustomSpacing = true;
-        this.characterSpacing = 2.0f;
+        this.characterSpacing = 4.0f;
         this.letterSpacingFactor = 1.0f;
     }
 
@@ -67,27 +71,27 @@ public class MitsubishiStyleLiftButtonsRenderer extends AbstractLiftButtonsRende
     }
 
     @Override
-    protected boolean isUpButtonPressed(MitsubishiStyleLiftButtonsBlockEntity entity) {
+    protected boolean isUpButtonPressed(OTIS3StyleLiftButtonsBlockEntity entity) {
         return entity.isUpButtonPressed();
     }
 
     @Override
-    protected boolean isDownButtonPressed(MitsubishiStyleLiftButtonsBlockEntity entity) {
+    protected boolean isDownButtonPressed(OTIS3StyleLiftButtonsBlockEntity entity) {
         return entity.isDownButtonPressed();
     }
 
     @Override
-    protected BlockPos getTrackPosition(MitsubishiStyleLiftButtonsBlockEntity entity, Level world) {
+    protected BlockPos getTrackPosition(OTIS3StyleLiftButtonsBlockEntity entity, Level world) {
         return entity.getTrackPosition(world);
     }
 
     @Override
-    protected void updateLiftDirection(MitsubishiStyleLiftButtonsBlockEntity entity, mtr.data.Lift.LiftDirection liftDirection) {
+    protected void updateLiftDirection(OTIS3StyleLiftButtonsBlockEntity entity, mtr.data.Lift.LiftDirection liftDirection) {
         entity.updateLiftDirection();
     }
 
     @Override
-    protected void liftArrived(MitsubishiStyleLiftButtonsBlockEntity entity) {
+    protected void liftArrived(OTIS3StyleLiftButtonsBlockEntity entity) {
         entity.liftArrived();
     }
 

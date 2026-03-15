@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.yomi.mtryum.block.TKClassicFloorMonitorBlock;
 import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
+import mtr.block.BlockLiftTrackFloor;
 import mtr.data.Lift;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClassicFloorMonitorEntity> {
     private static final float TEXT_OFFSET = 0.00625F; // 文字偏移
     private static final float TEXT_SCALE = 0.015F; // 文字大小
+    // TODO: 实现动画箭头
     private static final float ARROW_SIZE = 0.25F; // 箭头大小
     private static final float ARROW_OFFSET = 0.03F; // 箭头偏移量
     private static final int FRAME_COUNT = 10; // 箭头每套样式的帧数
@@ -37,16 +39,16 @@ public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClas
         Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
         // 获取电梯数据
         String floorNumber = "--";
-        for (mtr.data.Lift lift : mtr.client.ClientData.LIFTS) {
+        for (Lift lift : mtr.client.ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                 final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
 
-                if (blockEntity instanceof mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
-                    floorNumber = ((mtr.block.BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
+                if (blockEntity instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
+                    floorNumber = ((BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
                     // 更新电梯方向
                     liftDirection = lift.getLiftDirection();
-                    entity.updateLiftDirection(liftDirection);
+                    entity.updateLiftDirection();
                     break;
                 }
             }
@@ -115,9 +117,9 @@ public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClas
                 false,
                 matrices.last().pose(),
                 buffer,
-                true,
-                0,
-                15728880
+                false,
+                15728880,
+                0
         );
     }
 }
