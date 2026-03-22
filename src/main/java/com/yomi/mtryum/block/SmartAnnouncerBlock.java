@@ -11,7 +11,7 @@ public class SmartAnnouncerBlock extends BlockTrainAnnouncer {
 
     @Override
     public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
-        return new SmartAnnouncerEntity(pos, state);
+        return new SmartAnnouncerBlockEntity(pos, state);
     }
 
     @Override
