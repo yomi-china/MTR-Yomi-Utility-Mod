@@ -1,6 +1,5 @@
 package com.yomi.mtryum.block;
 
-import com.yomi.mtryum.block.entity.TileEntitySmartAnnouncer;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import mtr.block.BlockTrainAnnouncer;
 import mtr.mappings.BlockEntityMapper;
@@ -12,7 +11,7 @@ public class SmartAnnouncerBlock extends BlockTrainAnnouncer {
 
     @Override
     public BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEntitySmartAnnouncer(pos, state);
+        return new SmartAnnouncerEntity(pos, state);
     }
 
     @Override

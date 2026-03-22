@@ -1,4 +1,4 @@
-package com.yomi.mtryum.block.entity;
+package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import mtr.block.BlockTrainSensorBase;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class TileEntitySmartAnnouncer extends BlockTrainSensorBase.TileEntityTrainSensorBase {
+public class SmartAnnouncerEntity extends BlockTrainSensorBase.TileEntityTrainSensorBase {
 
     private String message = "";
     private ResourceLocation soundId;
@@ -23,7 +23,7 @@ public class TileEntitySmartAnnouncer extends BlockTrainSensorBase.TileEntityTra
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_SOUND_ID = "sound_id";
 
-    public TileEntitySmartAnnouncer(BlockPos pos, BlockState state) {
+    public SmartAnnouncerEntity(BlockPos pos, BlockState state) {
         super(MtryumBlockEntities.SMART_ANNOUNCER_TILE_ENTITY, pos, state);
     }
 

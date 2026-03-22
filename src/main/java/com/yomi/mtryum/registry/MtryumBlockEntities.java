@@ -9,7 +9,7 @@ import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlockEntity;
 import com.yomi.mtryum.block.OpaqueLiftDoorBlock;
 import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.block.TKClassicLiftButtonsBlockEntity;
-import com.yomi.mtryum.block.entity.TileEntitySmartAnnouncer;
+import com.yomi.mtryum.block.SmartAnnouncerEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,7 +25,7 @@ public class MtryumBlockEntities {
     public static BlockEntityType<TKClassicLiftButtonsBlockEntity> TK_STYLE_LIFT_BUTTONS_ENTITY;
     public static BlockEntityType<OTIS3StyleLiftButtonsBlockEntity> OTIS3_STYLE_LIFT_BUTTONS_ENTITY;
     public static BlockEntityType<OpaqueLiftDoorBlock.OpaqueLiftDoorTileEntity> OPAQUE_LIFT_DOOR_TILE_ENTITY;
-    public static BlockEntityType<TileEntitySmartAnnouncer> SMART_ANNOUNCER_TILE_ENTITY;
+    public static BlockEntityType<SmartAnnouncerEntity> SMART_ANNOUNCER_TILE_ENTITY;
 
     public static void register() {
         LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY = Registry.register(
@@ -96,7 +96,7 @@ public class MtryumBlockEntities {
                 BuiltInRegistries.BLOCK_ENTITY_TYPE,
                 new ResourceLocation(Mtryum.MOD_ID, "smart_announcer_tile_entity"),
                 FabricBlockEntityTypeBuilder.create(
-                        TileEntitySmartAnnouncer::new,
+                        SmartAnnouncerEntity::new,
                         MtryumBlocks.SMART_ANNOUNCER
                 ).build(null)
         );
