@@ -32,19 +32,16 @@ public class LiftArrivalLightRenderer implements BlockEntityRenderer<LiftArrival
         boolean shouldBlink = false;
         for (Lift lift : ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
-                // 获取电梯的实际位置
                 final double liftY = lift.getPositionY();
                 final double floorY = trackPosition.getY();
 
                 final boolean isAtExactFloor = Math.abs(liftY - floorY) < ARRIVAL_THRESHOLD;
 
-                // 检查电梯是否停止移动
                 final boolean isStopped = lift.getLiftDirection() == Lift.LiftDirection.NONE;
 
-                // 只有当电梯精确停在该楼层且停止移动时，才认为是到达
                 if (isAtExactFloor && isStopped) {
                     isLiftArrived = true;
-                    // 计算闪烁状态
+                    // 闪烁状态
                     final long gameTime = world.getGameTime();
                     shouldBlink = (gameTime / BLINK_INTERVAL_TICKS) % 2 == 0;
                     break;
