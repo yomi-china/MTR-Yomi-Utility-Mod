@@ -19,6 +19,8 @@ public class MtryumItemGroups {
                     .displayItems((parameters, output) -> {
                         output.accept(MtryumItems.LIFT_FLOOR_SETTER);
                         output.accept(MtryumItems.LIFT_BUTTON_AUTO_CONNECTOR);
+                        output.accept(MtryumItems.LIFT_PARTS_LINK_CONNECTOR);
+                        output.accept(MtryumItems.LIFT_PARTS_LINK_REMOVER);
                         output.accept(MtryumItems.ONBOARD_TOOL);
 
                     })
@@ -39,8 +41,8 @@ public class MtryumItemGroups {
                         output.accept(new ItemStack(MtryumItems.MITSUBISHI_STYLE_LIFT_BUTTONS));
                         output.accept(new ItemStack(MtryumItems.TK_STYLE_LIFT_BUTTONS));
                         output.accept(new ItemStack(MtryumItems.OTIS3_STYLE_LIFT_BUTTONS));
-                        output.accept(new ItemStack(MtryumItems.SMART_ANNOUNCER));
-                        output.accept(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
+                        //output.accept(new ItemStack(MtryumItems.SMART_ANNOUNCER));
+                        //output.accept(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
                     })
                     .build()
     );

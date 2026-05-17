@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yomi.mtryum.Mtryum;
+import com.yomi.mtryum.block.AbstractLiftButtonsBlockEntity;
 import mtr.block.BlockLiftTrackFloor;
 import mtr.client.ClientData;
 import mtr.data.Lift;
@@ -20,29 +21,28 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
 
-
-    // 纹理相关
+    // 单电梯参数
     protected ResourceLocation buttonNormalTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_normal.png");
     protected ResourceLocation buttonPressedTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_pressed.png");
     protected ResourceLocation arrowTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/arrow/mitsubshi_arrow.png");
 
-    // 颜色相关
     protected int floorNumberColor = 0xFFFFFFFF;
     protected int arrowColor = 0xFFFFFFFF;
     protected int buttonTintColor = 0xFFFFFF;
 
-    // 字体相关
     protected String fontName = "default";
     protected String defaultFloorText = "??";
 
-    // 字符间距相关
-    protected float characterSpacing = 0.0f; // 默认字符间距
-    protected float letterSpacingFactor = 1.0f; // 字符间距系数
-    protected boolean enableCustomSpacing = false; // 是否启用自定义字符间距
+    protected float characterSpacing = 0.0f;
+    protected float letterSpacingFactor = 1.0f;
+    protected boolean enableCustomSpacing = false;
 
-    // 位置相关
     protected float baseYOffset = -0.135f;
     protected float floorNumberY = 0.78f;
     protected float floorNumberXOffset = 0.5f;
@@ -52,100 +52,80 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
     protected float buttonUpY = 0.48f;
     protected float buttonDownY = 0.35f;
 
-    // 尺寸相关
     protected float buttonSize = 0.075f;
     protected float arrowWidth = 0.125f;
     protected float arrowHeight = 0.125f;
     protected float depthOffset = 0.002f;
 
-    // 缩放相关
-    protected float floorScaleTwoChars = 0.0009f;// 2个字符的缩放
-    protected float floorScaleThreeChars = 0.00085f;// 3个字符的缩放
-    protected float floorScaleExtraReduction = 0.0001f;// 每多一个字的缩放减少
-    protected float floorScaleMin = 0.0001f;// 最小缩放
-    protected float arrowScale = 0.0008f;// 箭头缩放
+    protected float floorScaleTwoChars = 0.0009f;
+    protected float floorScaleThreeChars = 0.00085f;
+    protected float floorScaleExtraReduction = 0.0001f;
+    protected float floorScaleMin = 0.0001f;
+    protected float arrowScale = 0.0008f;
 
-    // TODO：动画渲染
     protected ArrowRenderMode arrowRenderMode = ArrowRenderMode.TEXTURE;
-
-    // 很多电梯字体中，上下箭头用大于和小于号来表示
     protected String arrowUpText = "<";
     protected String arrowDownText = ">";
-
-    // 单按钮时位置
     protected float singleButtonOffset = 0.06f;
-
-    // 自动补齐一位数楼层数字
     protected boolean autoPadSingleDigit = false;
 
-    public enum ArrowRenderMode {
-        TEXTURE,
-        FONT
+    //  双电梯参数
+    protected float dualDisplayOffset = 0.18f;
+    protected float dualFloorScaleTwoChars = 0.0006f;
+    protected float dualFloorScaleThreeChars = 0.00055f;
+    protected float dualFloorScaleExtraReduction = 0.00008f;
+    protected float dualFloorScaleMin = 0.0001f;
+    protected float dualArrowScale = 0.0005f;
+    protected float dualArrowWidth = 0.09f;
+    protected float dualArrowHeight = 0.09f;
+
+    public enum ArrowRenderMode { TEXTURE, FONT }
+
+    protected static class LiftDisplayEntry {
+        public final double x;
+        public final double z;
+        public final String floorNumber;
+        public final Lift.LiftDirection direction;
+
+        public LiftDisplayEntry(double x, double z, String floorNumber, Lift.LiftDirection direction) {
+            this.x = x;
+            this.z = z;
+            this.floorNumber = floorNumber;
+            this.direction = direction;
+        }
     }
 
-    public AbstractLiftButtonsRenderer() {
-
-    }
+    public AbstractLiftButtonsRenderer() {}
 
     @NotNull
     protected abstract String getFacingPropertyName();
 
-    protected abstract boolean isUpButtonPressed(T entity);
-
-    protected abstract boolean isDownButtonPressed(T entity);
-
-    protected abstract BlockPos getTrackPosition(T entity, Level world);
-
-    protected void updateLiftDirection(T entity, Lift.LiftDirection liftDirection) {
-
+    protected Direction getFacingFromState(BlockState state) {
+        try {
+            return state.getValue(DirectionPropertyCache.getDirectionProperty(getFacingPropertyName()));
+        } catch (Exception e) {
+            return Direction.NORTH;
+        }
     }
 
-    protected void liftArrived(T entity) {
-
+    protected void applyBaseTransform(PoseStack matrices, Direction facing) {
+        matrices.pushPose();
+        switch (facing) {
+            case SOUTH -> matrices.translate(0, baseYOffset, 0.99);
+            case EAST  -> { matrices.translate(0.99, baseYOffset, 1); matrices.mulPose(Axis.YP.rotationDegrees(90)); }
+            case NORTH -> { matrices.translate(1, baseYOffset, 0.01); matrices.mulPose(Axis.YP.rotationDegrees(180)); }
+            case WEST  -> { matrices.translate(0.01, baseYOffset, 0); matrices.mulPose(Axis.YP.rotationDegrees(270)); }
+        }
     }
 
-    /**
-     * 子类可以重写此方法来自定义是否启用自动补齐功能
-     * @return 是否启用自动补齐一位数楼层数字
-     */
-    protected boolean shouldPadSingleDigit() {
-        return autoPadSingleDigit;
-    }
-
-    /**
-     * 子类可以重写此方法来自定义是否启用自定义字符间距
-     * @return 是否启用自定义字符间距
-     */
-    protected boolean shouldEnableCustomSpacing() {
-        return enableCustomSpacing;
-    }
-
-    /**
-     * 子类可以重写此方法来自定义字符间距
-     * @return 字符间距值
-     */
-    protected float getCharacterSpacing() {
-        return characterSpacing;
-    }
-
-    /**
-     * 子类可以重写此方法来自定义字符间距系数
-     * @return 字符间距系数
-     */
-    protected float getLetterSpacingFactor() {
-        return letterSpacingFactor;
-    }
+    protected boolean shouldPadSingleDigit() { return autoPadSingleDigit; }
+    protected boolean shouldEnableCustomSpacing() { return enableCustomSpacing; }
+    protected float getCharacterSpacing() { return characterSpacing; }
+    protected float getLetterSpacingFactor() { return letterSpacingFactor; }
 
     protected String processFloorNumber(String floorNumber) {
-        if (!shouldPadSingleDigit() || floorNumber == null || floorNumber.isEmpty()) {
-            return floorNumber;
-        }
-
-        // 一位数时在末尾补一个空格
-        if (floorNumber.length() == 1) {
-            return " " + floorNumber;
-        }
-
+        if (!shouldPadSingleDigit() || floorNumber == null || floorNumber.isEmpty()) return floorNumber;
+        if (floorNumber.length() == 1) return " " + floorNumber;
         return floorNumber;
     }
 
@@ -154,398 +134,298 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
                        MultiBufferSource vertexConsumers, int light, int overlay) {
         if (entity == null || entity.getLevel() == null) return;
 
-        // 获取按钮状态
-        boolean upPressed = isUpButtonPressed(entity);
-        boolean downPressed = isDownButtonPressed(entity);
-
-        // 轨道位置
         final Level world = entity.getLevel();
-        final BlockPos trackPosition = getTrackPosition(entity, world);
-        if (trackPosition == null) return;
-
-        // 电梯数据
-        LiftData liftData = getLiftData(entity, world, trackPosition);
-        if (liftData == null || liftData.floorNumber.isEmpty()) return;
-
-        // 检查是否到达
-        checkLiftArrival(entity, trackPosition);
-
-        // 方块朝向
-        BlockState state = entity.getBlockState();
-        Direction facing = getFacingFromState(state);
+        final BlockState state = entity.getBlockState();
+        final Direction facing = getFacingFromState(state);
         if (facing == null) return;
+
+        // -获取所有电梯显示数据
+        final List<LiftDisplayEntry> entries = new ArrayList<>();
+        final boolean[] hasBtnOverall = {false, false};
+        final boolean[] pressedOverall = {false, false};
+        final boolean[] topOverall = {true};
+        final boolean[] bottomOverall = {true};
+        final String[] primaryFloor = {defaultFloorText};
+        final Lift.LiftDirection[] primaryDir = {Lift.LiftDirection.NONE};
+
+        if (entity instanceof AbstractLiftButtonsBlockEntity liftEntity) {
+            liftEntity.forEachTrackPosition(world, (trackPos, trackFloor) -> {
+                for (final Lift lift : ClientData.LIFTS) {
+                    if (lift.hasFloor(trackPos)) {
+                        // 电梯当前所在楼层
+                        final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
+                        final BlockEntity be = world.getBlockEntity(currentFloor);
+                        String floorNumber = defaultFloorText;
+                        if (be instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor tile) {
+                            floorNumber = tile.getFloorNumber();
+                        }
+
+                        final Lift.LiftDirection dir = lift.getLiftDirection();
+                        entries.add(new LiftDisplayEntry(
+                                lift.getPositionX(), lift.getPositionZ(),
+                                floorNumber, dir));
+
+                        // 按钮可见性
+                        boolean[] hasBtn = new boolean[2];
+                        lift.hasUpDownButtonForFloor(trackPos.getY(), hasBtn);
+                        if (hasBtn[0]) hasBtnOverall[0] = true;
+                        if (hasBtn[1]) hasBtnOverall[1] = true;
+
+                        // 按钮按下状态
+                        if (lift.liftInstructions.containsInstruction(trackPos.getY(), true))
+                            pressedOverall[0] = true;
+                        if (lift.liftInstructions.containsInstruction(trackPos.getY(), false))
+                            pressedOverall[1] = true;
+
+                        // 顶层底层判断
+                        if (hasBtn[0]) topOverall[0] = false;
+                        if (hasBtn[1]) bottomOverall[0] = false;
+
+                        if (primaryDir[0] == Lift.LiftDirection.NONE) {
+                            primaryDir[0] = dir;
+                            primaryFloor[0] = floorNumber;
+                        }
+                        break;
+                    }
+                }
+            });
+        }
+
+        entries.sort(Comparator.comparingDouble(entry ->
+                facing.getStepX() * (entry.z - entity.getBlockPos().getZ())
+                        - facing.getStepZ() * (entry.x - entity.getBlockPos().getX())));
 
         applyBaseTransform(matrices, facing);
 
-        // 处理楼层数字（自动补齐）
-        String processedFloorNumber = processFloorNumber(liftData.floorNumber);
-
-        // 渲染
-        renderAllElements(matrices, vertexConsumers, light, overlay,
-                processedFloorNumber, liftData.liftDirection,
-                upPressed, downPressed, facing,
-                liftData.isTopFloor, liftData.isBottomFloor);
+        if (entries.size() >= 2) {
+            // 双电梯
+            renderDualLiftDisplays(matrices, vertexConsumers, light, overlay,
+                    entries.get(0), entries.get(1), facing);
+            renderButtons(matrices, vertexConsumers, light, overlay, facing,
+                    hasBtnOverall[0], hasBtnOverall[1],
+                    pressedOverall[0], pressedOverall[1],
+                    topOverall[0], bottomOverall[0]);
+        } else if (entries.size() == 1) {
+            // 单电梯
+            final LiftDisplayEntry entry = entries.get(0);
+            renderAllElements(matrices, vertexConsumers, light, overlay,
+                    processFloorNumber(entry.floorNumber), entry.direction,
+                    pressedOverall[0], pressedOverall[1],
+                    facing, topOverall[0], bottomOverall[0]);
+        } else {
+            // 无电梯
+            renderAllElements(matrices, vertexConsumers, light, overlay,
+                    defaultFloorText, Lift.LiftDirection.NONE,
+                    false, false, facing, true, true);
+        }
 
         matrices.popPose();
     }
-
-    // 核心渲染逻辑
 
     protected void renderAllElements(PoseStack matrices, MultiBufferSource vertexConsumers,
                                      int light, int overlay, String floorNumber,
                                      Lift.LiftDirection liftDirection,
                                      boolean upPressed, boolean downPressed,
                                      Direction facing, boolean isTopFloor, boolean isBottomFloor) {
+        renderFloorNumberAt(matrices, vertexConsumers, floorNumber, light,
+                floorNumberXOffset, floorNumberY,
+                calculateFloorScale(floorNumber, false));
 
-        // 渲染楼层数字
-        renderFloorNumber(matrices, vertexConsumers, floorNumber, light);
-
-        // 渲染方向箭头
         if (liftDirection != Lift.LiftDirection.NONE) {
-            renderDirectionArrow(matrices, vertexConsumers, liftDirection, light, overlay);
+            renderDirectionArrowAt(matrices, vertexConsumers, liftDirection, light, overlay,
+                    arrowX, arrowY, false);
         }
 
-        // 渲染上按钮
         if (!isTopFloor) {
             float yOffset = (isBottomFloor && !isTopFloor) ? -singleButtonOffset : 0f;
-            renderButton(matrices, vertexConsumers,
+            renderButtonAt(matrices, vertexConsumers,
                     buttonUpY - buttonSize / 2 + yOffset,
                     buttonUpY + buttonSize / 2 + yOffset,
                     upPressed, false, light, overlay, facing);
         }
-
-        // 渲染下按钮
         if (!isBottomFloor) {
             float yOffset = (isTopFloor && !isBottomFloor) ? singleButtonOffset : 0f;
-            renderButton(matrices, vertexConsumers,
+            renderButtonAt(matrices, vertexConsumers,
                     buttonDownY - buttonSize / 2 + yOffset,
                     buttonDownY + buttonSize / 2 + yOffset,
                     downPressed, true, light, overlay, facing);
         }
     }
 
-    protected void renderFloorNumber(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                     String floor, int light) {
-        if (floor == null || floor.isEmpty()) {
-            floor = defaultFloorText;
+    protected void renderDualLiftDisplays(PoseStack matrices, MultiBufferSource vertexConsumers,
+                                          int light, int overlay,
+                                          LiftDisplayEntry left, LiftDisplayEntry right,
+                                          Direction facing) {
+        // 左侧
+        float leftX = 0.5f - dualDisplayOffset;
+        renderFloorNumberAt(matrices, vertexConsumers,
+                processFloorNumber(left.floorNumber), light,
+                leftX, floorNumberY,
+                calculateFloorScale(left.floorNumber, true));
+        if (left.direction != Lift.LiftDirection.NONE) {
+            renderDirectionArrowAt(matrices, vertexConsumers, left.direction, light, overlay,
+                    leftX, arrowY, true);
         }
 
+        // 右
+        float rightX = 0.5f + dualDisplayOffset;
+        renderFloorNumberAt(matrices, vertexConsumers,
+                processFloorNumber(right.floorNumber), light,
+                rightX, floorNumberY,
+                calculateFloorScale(right.floorNumber, true));
+        if (right.direction != Lift.LiftDirection.NONE) {
+            renderDirectionArrowAt(matrices, vertexConsumers, right.direction, light, overlay,
+                    rightX, arrowY, true);
+        }
+    }
+
+    protected void renderButtons(PoseStack matrices, MultiBufferSource vertexConsumers,
+                                 int light, int overlay, Direction facing,
+                                 boolean hasUp, boolean hasDown,
+                                 boolean upPressed, boolean downPressed,
+                                 boolean isTopFloor, boolean isBottomFloor) {
+        if (!isTopFloor && hasUp) {
+            float yOffset = (isBottomFloor && !isTopFloor) ? -singleButtonOffset : 0f;
+            renderButtonAt(matrices, vertexConsumers,
+                    buttonUpY - buttonSize / 2 + yOffset,
+                    buttonUpY + buttonSize / 2 + yOffset,
+                    upPressed, false, light, overlay, facing);
+        }
+        if (!isBottomFloor && hasDown) {
+            float yOffset = (isTopFloor && !isBottomFloor) ? singleButtonOffset : 0f;
+            renderButtonAt(matrices, vertexConsumers,
+                    buttonDownY - buttonSize / 2 + yOffset,
+                    buttonDownY + buttonSize / 2 + yOffset,
+                    downPressed, true, light, overlay, facing);
+        }
+    }
+
+    protected void renderFloorNumberAt(PoseStack matrices, MultiBufferSource vertexConsumers,
+                                       String floor, int light, float x, float y, float scale) {
+        if (floor == null || floor.isEmpty()) floor = defaultFloorText;
         matrices.pushPose();
-
-        matrices.translate(floorNumberXOffset, floorNumberY, depthOffset);
-
-        float scale = calculateFloorNumberScale(floor);
+        matrices.translate(x, y, depthOffset);
         matrices.scale(scale, -scale, scale);
-
         matrices.mulPose(Axis.YP.rotationDegrees(180));
 
         float spacing = shouldEnableCustomSpacing() ? getCharacterSpacing() : 0.0f;
         float spacingFactor = shouldEnableCustomSpacing() ? getLetterSpacingFactor() : 1.0f;
 
-        CustomFontRenderer.renderText(
-                matrices,
-                vertexConsumers,
-                floor,
-                floorNumberColor,
-                0, 0, 0,
-                1.0f,
-                light,
-                true,
-                fontName,
-                spacing,
-                spacingFactor
-        );
-
+        CustomFontRenderer.renderText(matrices, vertexConsumers, floor, floorNumberColor,
+                0, 0, 0, 1.0f, light, true, fontName, spacing, spacingFactor);
         matrices.popPose();
     }
 
-    protected float calculateFloorNumberScale(String floor) {
+    protected float calculateFloorScale(String floor, boolean dual) {
         int length = floor.length();
-
-        if (length <= 2) {
-            return floorScaleTwoChars;
-        } else if (length == 3) {
-            return floorScaleThreeChars;
+        float scaleTwo, scaleThree, scaleExtra, scaleMin;
+        if (dual) {
+            scaleTwo = dualFloorScaleTwoChars;
+            scaleThree = dualFloorScaleThreeChars;
+            scaleExtra = dualFloorScaleExtraReduction;
+            scaleMin = dualFloorScaleMin;
         } else {
-            float scale = floorScaleThreeChars - (length - 3) * floorScaleExtraReduction;
-            return Math.max(scale, floorScaleMin);
+            scaleTwo = floorScaleTwoChars;
+            scaleThree = floorScaleThreeChars;
+            scaleExtra = floorScaleExtraReduction;
+            scaleMin = floorScaleMin;
         }
+        if (length <= 2) return scaleTwo;
+        else if (length == 3) return scaleThree;
+        else return Math.max(scaleThree - (length - 3) * scaleExtra, scaleMin);
     }
 
-    // 两种箭头渲染方式
-    protected void renderDirectionArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                        Lift.LiftDirection direction, int light, int overlay) {
-
+    protected void renderDirectionArrowAt(PoseStack matrices, MultiBufferSource vertexConsumers,
+                                          Lift.LiftDirection direction, int light, int overlay,
+                                          float x, float y, boolean dual) {
         if (arrowRenderMode == ArrowRenderMode.TEXTURE) {
-            renderTextureArrow(matrices, vertexConsumers, direction, light, overlay);
+            renderTextureArrowAt(matrices, vertexConsumers, direction, light, overlay, x, y, dual);
         } else {
-            renderFontArrow(matrices, vertexConsumers, direction, light);
+            renderFontArrowAt(matrices, vertexConsumers, direction, light, x, y, dual);
         }
     }
 
-    protected void renderTextureArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                      Lift.LiftDirection direction, int light, int overlay) {
-
+    protected void renderTextureArrowAt(PoseStack matrices, MultiBufferSource vertexConsumers,
+                                        Lift.LiftDirection direction, int light, int overlay,
+                                        float centerX, float centerY, boolean dual) {
         boolean rotateArrow = direction == Lift.LiftDirection.DOWN;
-
         matrices.pushPose();
 
-        float centerX = this.arrowX;
-        float minX = centerX - arrowWidth / 2;
-        float maxX = centerX + arrowWidth / 2;
-        float minY = arrowY - arrowHeight / 2;
-        float maxY = arrowY + arrowHeight / 2;
+        float w = dual ? dualArrowWidth : arrowWidth;
+        float h = dual ? dualArrowHeight : arrowHeight;
+        float minX = centerX - w / 2;
+        float maxX = centerX + w / 2;
+        float minY = centerY - h / 2;
+        float maxY = centerY + h / 2;
 
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.entityCutout(arrowTexture));
-
+        VertexConsumer vc = vertexConsumers.getBuffer(RenderType.entityCutout(arrowTexture));
         if (rotateArrow) {
-            matrices.translate(centerX, (minY + maxY) / 2.0f, 0);
+            matrices.translate(centerX, (minY + maxY) / 2f, 0);
             matrices.mulPose(Axis.ZP.rotationDegrees(180));
-            matrices.translate(-centerX, -(minY + maxY) / 2.0f, 0);
+            matrices.translate(-centerX, -(minY + maxY) / 2f, 0);
         }
-
-        var matrix = matrices.last().pose();
-        var normal = matrices.last().normal();
-        float normalZ = 1.0f;
-
-        vertexConsumer.vertex(matrix, minX, minY, depthOffset)
-                .color(255, 255, 255, 255)
-                .uv(0.0f, 1.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
-        vertexConsumer.vertex(matrix, minX, maxY, depthOffset)
-                .color(255, 255, 255, 255)
-                .uv(0.0f, 0.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
-        vertexConsumer.vertex(matrix, maxX, maxY, depthOffset)
-                .color(255, 255, 255, 255)
-                .uv(1.0f, 0.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
-        vertexConsumer.vertex(matrix, maxX, minY, depthOffset)
-                .color(255, 255, 255, 255)
-                .uv(1.0f, 1.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
+        var m = matrices.last().pose();
+        var n = matrices.last().normal();
+        float nz = 1f;
+        vc.vertex(m, minX, minY, depthOffset).color(255,255,255,255).uv(0,1).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
+        vc.vertex(m, minX, maxY, depthOffset).color(255,255,255,255).uv(0,0).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
+        vc.vertex(m, maxX, maxY, depthOffset).color(255,255,255,255).uv(1,0).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
+        vc.vertex(m, maxX, minY, depthOffset).color(255,255,255,255).uv(1,1).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
         matrices.popPose();
     }
 
-    protected void renderFontArrow(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                   Lift.LiftDirection direction, int light) {
-
-        String arrowText = direction == Lift.LiftDirection.UP ? arrowUpText : arrowDownText;
-
+    protected void renderFontArrowAt(PoseStack matrices, MultiBufferSource vertexConsumers,
+                                     Lift.LiftDirection direction, int light,
+                                     float x, float y, boolean dual) {
+        String text = direction == Lift.LiftDirection.UP ? arrowUpText : arrowDownText;
         matrices.pushPose();
-
-        matrices.translate(this.arrowX, arrowY, depthOffset);
-        matrices.scale(arrowScale, -arrowScale, arrowScale);
+        matrices.translate(x, y, depthOffset);
+        float scale = dual ? dualArrowScale : arrowScale;
+        matrices.scale(scale, -scale, scale);
         matrices.mulPose(Axis.YP.rotationDegrees(180));
-
-        float spacing = shouldEnableCustomSpacing() ? getCharacterSpacing() : 0.0f;
-        float spacingFactor = shouldEnableCustomSpacing() ? getLetterSpacingFactor() : 1.0f;
-
-        CustomFontRenderer.renderText(
-                matrices,
-                vertexConsumers,
-                arrowText,
-                arrowColor,
-                0, 0, 0,
-                1.0f,
-                light,
-                true,
-                fontName,
-                spacing,
-                spacingFactor
-        );
-
+        float spacing = shouldEnableCustomSpacing() ? getCharacterSpacing() : 0f;
+        float factor = shouldEnableCustomSpacing() ? getLetterSpacingFactor() : 1f;
+        CustomFontRenderer.renderText(matrices, vertexConsumers, text, arrowColor,
+                0, 0, 0, 1f, light, true, fontName, spacing, factor);
         matrices.popPose();
     }
 
-    protected void renderButton(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                float minY, float maxY,
-                                boolean isPressed, boolean rotate180,
-                                int light, int overlay, Direction facing) {
+    protected void renderButtonAt(PoseStack matrices, MultiBufferSource vertexConsumers,
+                                  float minY, float maxY, boolean isPressed, boolean rotate180,
+                                  int light, int overlay, Direction facing) {
+        ResourceLocation tex = isPressed ? buttonPressedTexture : buttonNormalTexture;
+        VertexConsumer vc = vertexConsumers.getBuffer(RenderType.entityCutout(tex));
 
-        ResourceLocation texture = isPressed ? buttonPressedTexture : buttonNormalTexture;
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderType.entityCutout(texture));
-
-        float centerX = buttonX;
-        float halfWidth = buttonSize / 2;
-        float minX = centerX - halfWidth;
-        float maxX = centerX + halfWidth;
-
+        float cx = buttonX, hw = buttonSize / 2;
+        float minX = cx - hw, maxX = cx + hw;
         float uStart, uEnd;
-        if (facing == Direction.SOUTH || facing == Direction.WEST) {
-            uStart = 1.0f;
-            uEnd = 0.0f;
-        } else {
-            uStart = 0.0f;
-            uEnd = 1.0f;
-        }
+        if (facing == Direction.SOUTH || facing == Direction.WEST) { uStart = 1f; uEnd = 0f; }
+        else { uStart = 0f; uEnd = 1f; }
 
         matrices.pushPose();
-
         if (rotate180) {
-            float centerY = (minY + maxY) / 2.0f;
-            matrices.translate(centerX, centerY, 0);
+            float cy = (minY + maxY) / 2f;
+            matrices.translate(cx, cy, 0);
             matrices.mulPose(Axis.ZP.rotationDegrees(180));
-            matrices.translate(-centerX, -centerY, 0);
+            matrices.translate(-cx, -cy, 0);
         }
-
-        var matrix = matrices.last().pose();
-        var normal = matrices.last().normal();
-        float normalZ = 1.0f;
-
+        var m = matrices.last().pose();
+        var n = matrices.last().normal();
+        float nz = 1f;
         int r = (buttonTintColor >> 16) & 0xFF;
         int g = (buttonTintColor >> 8) & 0xFF;
         int b = buttonTintColor & 0xFF;
-
-        vertexConsumer.vertex(matrix, minX, minY, depthOffset)
-                .color(r, g, b, 255)
-                .uv(uStart, 1.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
-        vertexConsumer.vertex(matrix, minX, maxY, depthOffset)
-                .color(r, g, b, 255)
-                .uv(uStart, 0.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
-        vertexConsumer.vertex(matrix, maxX, maxY, depthOffset)
-                .color(r, g, b, 255)
-                .uv(uEnd, 0.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
-        vertexConsumer.vertex(matrix, maxX, minY, depthOffset)
-                .color(r, g, b, 255)
-                .uv(uEnd, 1.0f)
-                .overlayCoords(overlay)
-                .uv2(light)
-                .normal(normal, 0, 0, normalZ)
-                .endVertex();
-
+        vc.vertex(m, minX, minY, depthOffset).color(r,g,b,255).uv(uStart,1).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
+        vc.vertex(m, minX, maxY, depthOffset).color(r,g,b,255).uv(uStart,0).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
+        vc.vertex(m, maxX, maxY, depthOffset).color(r,g,b,255).uv(uEnd,0).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
+        vc.vertex(m, maxX, minY, depthOffset).color(r,g,b,255).uv(uEnd,1).overlayCoords(overlay).uv2(light).normal(n,0,0,nz).endVertex();
         matrices.popPose();
-    }
-
-    protected Direction getFacingFromState(BlockState state) {
-        try {
-            return state.getValue(DirectionPropertyCache.getDirectionProperty(getFacingPropertyName()));
-        } catch (Exception e) {
-            return Direction.NORTH; // 默认朝向
-        }
-    }
-
-    protected void applyBaseTransform(PoseStack matrices, Direction facing) {
-        matrices.pushPose();
-
-        switch (facing) {
-            case SOUTH:
-                matrices.translate(0, baseYOffset, 0.99);
-                break;
-            case EAST:
-                matrices.translate(0.99, baseYOffset, 1);
-                matrices.mulPose(Axis.YP.rotationDegrees(90));
-                break;
-            case NORTH:
-                matrices.translate(1, baseYOffset, 0.01);
-                matrices.mulPose(Axis.YP.rotationDegrees(180));
-                break;
-            case WEST:
-                matrices.translate(0.01, baseYOffset, 0);
-                matrices.mulPose(Axis.YP.rotationDegrees(270));
-                break;
-            default:
-                break;
-        }
-    }
-
-    protected LiftData getLiftData(T entity, Level world, BlockPos trackPosition) {
-        Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
-        boolean isTopFloor = false;
-        boolean isBottomFloor = false;
-        String floorNumber = defaultFloorText;
-
-        int currentFloorY = trackPosition.getY();
-
-        for (Lift lift : ClientData.LIFTS) {
-            if (lift.hasFloor(trackPosition)) {
-                final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
-                final BlockEntity blockEntity = world.getBlockEntity(currentFloor);
-
-                if (blockEntity instanceof BlockLiftTrackFloor.TileEntityLiftTrackFloor) {
-                    floorNumber = ((BlockLiftTrackFloor.TileEntityLiftTrackFloor) blockEntity).getFloorNumber();
-                    liftDirection = lift.getLiftDirection();
-                    updateLiftDirection(entity, liftDirection);
-
-                    boolean[] hasButton = new boolean[2];
-                    lift.hasUpDownButtonForFloor(currentFloorY, hasButton);
-
-                    isTopFloor = !hasButton[0];
-                    isBottomFloor = !hasButton[1];
-                    break;
-                }
-            }
-        }
-
-
-        return new LiftData(floorNumber, liftDirection, isTopFloor, isBottomFloor);
-    }
-
-    protected void checkLiftArrival(T entity, BlockPos trackPosition) {
-        for (Lift lift : ClientData.LIFTS) {
-            if (lift.hasFloor(trackPosition)) {
-                final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
-                if (currentFloor != null && currentFloor.equals(trackPosition)) {
-                    liftArrived(entity);
-                    break;
-                }
-            }
-        }
-    }
-
-    protected static class LiftData {
-        public final String floorNumber;
-        public final Lift.LiftDirection liftDirection;
-        public final boolean isTopFloor;
-        public final boolean isBottomFloor;
-
-        public LiftData(String floorNumber, Lift.LiftDirection liftDirection,
-                        boolean isTopFloor, boolean isBottomFloor) {
-            this.floorNumber = floorNumber;
-            this.liftDirection = liftDirection;
-            this.isTopFloor = isTopFloor;
-            this.isBottomFloor = isBottomFloor;
-        }
     }
 
     private static class DirectionPropertyCache {
         private static Property<Direction> directionProperty;
-
-        public static Property<Direction> getDirectionProperty(String propertyName) {
-            if (directionProperty == null) {
-                directionProperty = BlockStateProperties.HORIZONTAL_FACING;
-            }
+        public static Property<Direction> getDirectionProperty(String name) {
+            if (directionProperty == null) directionProperty = BlockStateProperties.HORIZONTAL_FACING;
             return directionProperty;
         }
     }

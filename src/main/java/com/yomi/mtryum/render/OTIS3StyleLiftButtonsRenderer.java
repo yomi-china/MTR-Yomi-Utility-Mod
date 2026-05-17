@@ -1,13 +1,9 @@
 package com.yomi.mtryum.render;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.block.OTIS3StyleLiftButtonsBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
@@ -21,78 +17,54 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
     public OTIS3StyleLiftButtonsRenderer() {
         super();
 
+        // 单电梯参数
         this.buttonNormalTexture = OTIS3_BUTTON_NORMAL;
         this.buttonPressedTexture = OTIS3_BUTTON_PRESSED;
         this.arrowTexture = OTIS3_ARROW;
-
         this.floorNumberColor = 0xFFFF8C00;
         this.arrowColor = 0xFFFF8C00;
         this.buttonTintColor = 0xFFFFFF;
-
         this.fontName = "otis-series-1";
         this.defaultFloorText = "--";
-
         this.baseYOffset = -0.135f;
         this.floorNumberY = 0.7f;
         this.floorNumberXOffset = 0.5f;
         this.arrowY = 0.75f;
         this.buttonUpY = 0.48f;
         this.buttonDownY = 0.35f;
-
         this.buttonSize = 0.075f;
         this.arrowWidth = 0.073f;
         this.arrowHeight = 0.073f;
         this.depthOffset = 0.002f;
-
         this.floorScaleTwoChars = 0.002f;
         this.floorScaleThreeChars = 0.00085f;
         this.floorScaleExtraReduction = 0.0001f;
         this.floorScaleMin = 0.0001f;
         this.arrowScale = 0.00025f;
-
         this.arrowRenderMode = ArrowRenderMode.TEXTURE;
-
-
         this.arrowUpText = "<";
         this.arrowDownText = ">";
-
         this.singleButtonOffset = 0.06f;
-
         this.autoPadSingleDigit = true;
-
         this.enableCustomSpacing = true;
         this.characterSpacing = 4.0f;
         this.letterSpacingFactor = 1.0f;
+
+        // 双电梯参数
+        this.dualDisplayOffset = 0.16f;
+        this.dualFloorScaleTwoChars = 0.002f;
+        this.dualFloorScaleThreeChars = 0.00085f;
+        this.dualFloorScaleExtraReduction = 0.0001f;
+        this.dualFloorScaleMin = 0.0001f;
+        this.dualArrowScale = 0.00025f;
+        this.dualArrowWidth = 0.073f;
+        this.dualArrowHeight = 0.073f;
     }
 
+    @NotNull
     @Override
-    protected @NotNull String getFacingPropertyName() {
+    protected String getFacingPropertyName() {
         return "facing";
-    }
-
-    @Override
-    protected boolean isUpButtonPressed(OTIS3StyleLiftButtonsBlockEntity entity) {
-        return entity.isUpButtonPressed();
-    }
-
-    @Override
-    protected boolean isDownButtonPressed(OTIS3StyleLiftButtonsBlockEntity entity) {
-        return entity.isDownButtonPressed();
-    }
-
-    @Override
-    protected BlockPos getTrackPosition(OTIS3StyleLiftButtonsBlockEntity entity, Level world) {
-        return entity.getTrackPosition(world);
-    }
-
-    @Override
-    protected void updateLiftDirection(OTIS3StyleLiftButtonsBlockEntity entity, mtr.data.Lift.LiftDirection liftDirection) {
-        entity.updateLiftDirection();
-    }
-
-    @Override
-    protected void liftArrived(OTIS3StyleLiftButtonsBlockEntity entity) {
-        entity.liftArrived();
     }
 
     @Override
@@ -101,48 +73,5 @@ public class OTIS3StyleLiftButtonsRenderer extends AbstractLiftButtonsRenderer<O
             return state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         }
         return super.getFacingFromState(state);
-    }
-
-    @Override
-    protected void renderButton(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                float minY, float maxY,
-                                boolean isPressed, boolean rotate180,
-                                int light, int overlay, Direction facing) {
-        super.renderButton(matrices, vertexConsumers, minY, maxY, isPressed, rotate180, light, overlay, facing);
-    }
-
-    @Override
-    protected void renderFloorNumber(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                     String floor, int light) {
-        super.renderFloorNumber(matrices, vertexConsumers, floor, light);
-    }
-
-    @Override
-    protected void renderAllElements(PoseStack matrices, MultiBufferSource vertexConsumers,
-                                     int light, int overlay, String floorNumber,
-                                     mtr.data.Lift.LiftDirection liftDirection,
-                                     boolean upPressed, boolean downPressed,
-                                     Direction facing, boolean isTopFloor, boolean isBottomFloor) {
-        super.renderAllElements(matrices, vertexConsumers, light, overlay, floorNumber,
-                liftDirection, upPressed, downPressed, facing, isTopFloor, isBottomFloor);
-    }
-
-    @Override
-    protected void applyBaseTransform(PoseStack matrices, Direction facing) {
-        super.applyBaseTransform(matrices, facing);
-    }
-
-    @Override
-    protected float calculateFloorNumberScale(String floor) {
-        int length = floor.length();
-
-        if (length <= 2) {
-            return floorScaleTwoChars;
-        } else if (length == 3) {
-            return floorScaleThreeChars;
-        } else {
-            float scale = 0.0007f - (length - 3) * 0.0001f;
-            return Math.max(scale, 0.0001f);
-        }
     }
 }

@@ -1,23 +1,28 @@
 package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.registry.MtryumBlockEntities;
-import mtr.block.BlockLiftPanelBase;
 import mtr.block.IBlock;
 import mtr.mappings.BlockEntityMapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TKClassicLiftButtonsBlock extends AbstractLiftButtonsBlock {
+
+    private static final VoxelShape SHAPE_SINGLE_NORTH = Block.box(7, 1, 0, 9.5, 12, 0.1);
+    private static final VoxelShape SHAPE_SINGLE_SOUTH = Block.box(7, 1, 15.9, 9.5, 12, 16);
+    private static final VoxelShape SHAPE_SINGLE_EAST  = Block.box(15.9, 1, 7, 16, 12, 9.5);
+    private static final VoxelShape SHAPE_SINGLE_WEST  = Block.box(0, 1, 7, 0.1, 12, 9.5);
+
+    private static final VoxelShape SHAPE_DUAL_NORTH = Block.box(5.75, 1, 0, 10.75, 12, 0.1);
+    private static final VoxelShape SHAPE_DUAL_SOUTH = Block.box(5.75, 1, 15.9, 10.75, 12, 16);
+    private static final VoxelShape SHAPE_DUAL_EAST  = Block.box(15.9, 1, 5.75, 16, 12, 10.75);
+    private static final VoxelShape SHAPE_DUAL_WEST  = Block.box(0, 1, 5.75, 0.1, 12, 10.75);
 
     @Override
     public BlockEntityType<? extends BlockEntityMapper> getBlockEntityType() {
@@ -30,41 +35,34 @@ public class TKClassicLiftButtonsBlock extends AbstractLiftButtonsBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        Direction facing = state.getValue(FACING);
+    protected VoxelShape getSingleVoxelShape(Direction facing) {
         return switch (facing) {
-            case EAST -> Block.box(15.9, 1, 7, 16, 12, 9.5);
-            case WEST -> Block.box(0, 1, 7, 0.1, 12, 9.5);
-            case SOUTH -> Block.box(7.5, 1, 15.9, 9.5, 12, 16);
-            case NORTH -> Block.box(7, 1, 0, 9.5, 12, 0.1);
-            default -> Shapes.block();
+            case EAST  -> SHAPE_SINGLE_EAST;
+            case WEST  -> SHAPE_SINGLE_WEST;
+            case SOUTH -> SHAPE_SINGLE_SOUTH;
+            default    -> SHAPE_SINGLE_NORTH;
         };
     }
 
     @Override
-    protected void getServerTicker(Level level, BlockPos pos, BlockState state, BlockLiftPanelBase.TileEntityLiftPanel1Base entity) {
-        TKClassicLiftButtonsBlockEntity.serverTick(level, (TKClassicLiftButtonsBlockEntity) entity);
+    protected VoxelShape getDualVoxelShape(Direction facing) {
+        return switch (facing) {
+            case EAST  -> SHAPE_DUAL_EAST;
+            case WEST  -> SHAPE_DUAL_WEST;
+            case SOUTH -> SHAPE_DUAL_SOUTH;
+            default    -> SHAPE_DUAL_NORTH;
+        };
     }
 
     @Override
     protected void handleSpecialLogic(BlockState state, Level world, BlockPos pos, BlockEntity blockEntity) {
-        if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity liftEntity) {
+        if (blockEntity instanceof AbstractLiftButtonsBlockEntity liftEntity) {
             if (liftEntity.isLegacy() && !liftEntity.isAutoUnlocked()) {
-                boolean isLocked = IBlock.getStatePropertySafe(state, UNLOCKED);
-                if (!isLocked) {
+                if (!IBlock.getStatePropertySafe(state, UNLOCKED)) {
                     world.setBlockAndUpdate(pos, state.setValue(UNLOCKED, true));
                     liftEntity.markAsAutoUnlocked();
                 }
             }
         }
-    }
-
-    @Override
-    protected InteractionResult handleCallLift(BlockEntity blockEntity, boolean isUpButton) {
-        if (blockEntity instanceof TKClassicLiftButtonsBlockEntity) {
-            ((TKClassicLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.PASS;
     }
 }
