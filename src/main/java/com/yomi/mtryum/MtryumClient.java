@@ -5,6 +5,7 @@ import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
+import com.yomi.mtryum.registry.MtryumItemProperties;
 import com.yomi.mtryum.render.CustomFontManager;
 import com.yomi.mtryum.render.CustomFontRenderer;
 import com.yomi.mtryum.render.LiftArrivalLightRenderer;
@@ -111,6 +112,7 @@ public class MtryumClient implements ClientModInitializer {
                     }
                 });
         SetSoundIndexPacket.registerClient();
+        MtryumItemProperties.register();
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player != null) {
                 if (client.screen == null) {
