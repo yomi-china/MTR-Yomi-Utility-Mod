@@ -15,7 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class TKClassicFloorMonitorRenderer implements BlockEntityRenderer<TKClassicFloorMonitorEntity> {
+public class RendererTKClassicFloorMonitor implements BlockEntityRenderer<TKClassicFloorMonitorEntity> {
     private static final float TEXT_OFFSET = 0.00625F; // 文字偏移
     private static final float TEXT_SCALE = 0.015F; // 文字大小
     // TODO: 实现动画箭头

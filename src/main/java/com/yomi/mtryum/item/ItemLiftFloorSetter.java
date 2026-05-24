@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class LiftFloorSetterItem {
+public class ItemLiftFloorSetter {
     private static final String ELEVATOR_FLOOR_ID = "mtr:lift_track_floor_1";
     private static final String ELEVATOR_TRACK_ID = "mtr:lift_track_1";
     private static final String FLOOR_NBT_KEY = "floor_number";

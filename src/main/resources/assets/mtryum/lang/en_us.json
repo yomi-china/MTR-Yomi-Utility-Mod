@@ -45,7 +45,6 @@
   "item.mtryum.lift_floor_setter.wrong_block": "§7This block cannot be configured",
   "block.mtryum.otis_3200_style_lift_buttons": "Otis 3200 Style Lift Buttons",
   "item.mtryum.otis_3200_style_lift_buttons": "Otis 3200 Style Lift Buttons",
-  "block.mtryum.opaque_lift_door_1": "Unusable, Do Not Place",
   "tooltip.mtryum.auto_connector.shift_hint": "Must hold sneak key when using",
   "msg.mtryum.clicked_track": "Lift track selected: [%d, %d, %d]",
   "msg.mtryum.clicked_device": "Lift device selected: [%d, %d, %d]",

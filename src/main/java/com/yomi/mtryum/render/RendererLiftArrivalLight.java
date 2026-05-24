@@ -10,12 +10,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class LiftArrivalLightRenderer implements BlockEntityRenderer<LiftArrivalLightBlock.Entity> {
+public class RendererLiftArrivalLight implements BlockEntityRenderer<LiftArrivalLightBlock.Entity> {
 
     private static final int BLINK_INTERVAL_TICKS = 5; // 闪烁间隔
     private static final double ARRIVAL_THRESHOLD = 1; // 似乎没啥用，因为还没开门
 
-    public LiftArrivalLightRenderer() {
+    public RendererLiftArrivalLight() {
 
     }
 

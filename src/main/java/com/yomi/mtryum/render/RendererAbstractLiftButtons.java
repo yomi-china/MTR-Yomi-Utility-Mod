@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
+public abstract class RendererAbstractLiftButtons<T extends BlockEntity> implements BlockEntityRenderer<T> {
 
     // 单电梯参数
     protected ResourceLocation buttonNormalTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_normal.png");
@@ -95,7 +95,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         }
     }
 
-    public AbstractLiftButtonsRenderer() {}
+    public RendererAbstractLiftButtons() {}
 
     @NotNull
     protected abstract String getFacingPropertyName();
@@ -311,7 +311,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         float spacing = shouldEnableCustomSpacing() ? getCharacterSpacing() : 0.0f;
         float spacingFactor = shouldEnableCustomSpacing() ? getLetterSpacingFactor() : 1.0f;
 
-        CustomFontRenderer.renderText(matrices, vertexConsumers, floor, floorNumberColor,
+        RendererCustomFont.renderText(matrices, vertexConsumers, floor, floorNumberColor,
                 0, 0, 0, 1.0f, light, true, fontName, spacing, spacingFactor);
         matrices.popPose();
     }
@@ -385,7 +385,7 @@ public abstract class AbstractLiftButtonsRenderer<T extends BlockEntity> impleme
         matrices.mulPose(Axis.YP.rotationDegrees(180));
         float spacing = shouldEnableCustomSpacing() ? getCharacterSpacing() : 0f;
         float factor = shouldEnableCustomSpacing() ? getLetterSpacingFactor() : 1f;
-        CustomFontRenderer.renderText(matrices, vertexConsumers, text, arrowColor,
+        RendererCustomFont.renderText(matrices, vertexConsumers, text, arrowColor,
                 0, 0, 0, 1f, light, true, fontName, spacing, factor);
         matrices.popPose();
     }

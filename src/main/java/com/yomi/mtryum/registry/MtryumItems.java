@@ -2,7 +2,7 @@ package com.yomi.mtryum.registry;
 
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
-import com.yomi.mtryum.item.LiftAutoConnectorItem;
+import com.yomi.mtryum.item.ItemLiftAutoConnector;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,7 +19,7 @@ public class MtryumItems {
                     new Item(new FabricItemSettings().stacksTo(1)));
     public static final Item LIFT_BUTTON_AUTO_CONNECTOR =
             registerItem("lift_button_auto_connector",
-                    new LiftAutoConnectorItem());
+                    new ItemLiftAutoConnector());
     public static final Item LIFT_ARRIVAL_LIGHT =
             registerBlockItem("lift_arrival_light",
                     MtryumBlocks.LIFT_ARRIVAL_LIGHT_BLOCK);

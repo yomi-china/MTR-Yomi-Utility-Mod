@@ -1,8 +1,8 @@
 package com.yomi.mtryum.item;
 
-import com.yomi.mtryum.block.AbstractLiftButtonsBlock;
-import com.yomi.mtryum.block.AbstractLiftButtonsBlockEntity;
 import mtr.CreativeModeTabs;
+import mtr.block.BlockLiftButtons;
+import mtr.block.BlockLiftPanelBase;
 import mtr.block.BlockLiftTrackFloor;
 import mtr.item.ItemBlockClickingBase;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,6 @@ public class ItemLiftPartsLinkModifier extends ItemBlockClickingBase {
 
     @Override
     protected void onStartClick(UseOnContext context, CompoundTag compoundTag) {
-
     }
 
     @Override
@@ -38,16 +37,23 @@ public class ItemLiftPartsLinkModifier extends ItemBlockClickingBase {
 
         final boolean startIsFloor = blockStart instanceof BlockLiftTrackFloor;
         final boolean endIsFloor = blockEnd instanceof BlockLiftTrackFloor;
-        final boolean startIsButtons = blockStart instanceof AbstractLiftButtonsBlock;
-        final boolean endIsButtons = blockEnd instanceof AbstractLiftButtonsBlock;
+        final boolean startIsParts = blockStart instanceof BlockLiftButtons
+                || blockStart instanceof BlockLiftPanelBase;
+        final boolean endIsParts = blockEnd instanceof BlockLiftButtons
+                || blockEnd instanceof BlockLiftPanelBase;
 
-        if ((startIsFloor && endIsButtons) || (startIsButtons && endIsFloor)) {
+        if ((startIsFloor && endIsParts) || (startIsParts && endIsFloor)) {
             final BlockPos posFloor = startIsFloor ? posStart : posEnd;
-            final BlockPos posButtons = startIsFloor ? posEnd : posStart;
+            final BlockPos posParts = startIsFloor ? posEnd : posStart;
 
-            final BlockEntity blockEntity = world.getBlockEntity(posButtons);
-            if (blockEntity instanceof AbstractLiftButtonsBlockEntity liftEntity) {
-                liftEntity.registerFloor(posFloor, isConnector);
+            final BlockEntity blockEntity = world.getBlockEntity(posParts);
+
+            if (blockEntity instanceof BlockLiftButtons.TileEntityLiftButtons tile) {
+                tile.registerFloor(posFloor, isConnector);
+            }
+
+            if (blockEntity instanceof BlockLiftPanelBase.TileEntityLiftPanel1Base panel) {
+                panel.registerFloor(posFloor, isConnector);
             }
         }
     }
@@ -55,6 +61,8 @@ public class ItemLiftPartsLinkModifier extends ItemBlockClickingBase {
     @Override
     protected boolean clickCondition(UseOnContext context) {
         final Block block = context.getLevel().getBlockState(context.getClickedPos()).getBlock();
-        return block instanceof BlockLiftTrackFloor || block instanceof AbstractLiftButtonsBlock;
+        return block instanceof BlockLiftTrackFloor
+                || block instanceof BlockLiftButtons
+                || block instanceof BlockLiftPanelBase;
     }
 }

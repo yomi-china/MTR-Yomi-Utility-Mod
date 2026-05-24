@@ -5,12 +5,12 @@ import com.yomi.mtryum.block.TKClassicLiftButtonsBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class TKClassicLiftButtonsRenderer extends AbstractLiftButtonsRenderer<TKClassicLiftButtonsBlockEntity> {
+public class RendererTKClassicLiftButtons extends RendererAbstractLiftButtons<TKClassicLiftButtonsBlockEntity> {
 
     private static final ResourceLocation TK_UP_NORMAL = new ResourceLocation(Mtryum.MOD_ID, "textures/button/tk_normal.png");
     private static final ResourceLocation TK_UP_PRESSED = new ResourceLocation(Mtryum.MOD_ID, "textures/button/tk_pressed.png");
 
-    public TKClassicLiftButtonsRenderer() {
+    public RendererTKClassicLiftButtons() {
         super();
 
         // 单电梯参数

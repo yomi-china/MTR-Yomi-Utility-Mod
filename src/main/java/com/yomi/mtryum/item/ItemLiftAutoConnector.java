@@ -1,9 +1,7 @@
 package com.yomi.mtryum.item;
 
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
-import com.yomi.mtryum.block.LiftArrivalSoundPlayerBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
-import com.yomi.mtryum.block.MitsubishiStyleLiftButtonsBlock;
 import mtr.block.BlockLiftButtons;
 import mtr.block.BlockLiftPanelBase;
 import mtr.block.BlockLiftTrackFloor;
@@ -26,7 +24,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
+public class ItemLiftAutoConnector extends ItemLiftButtonsLinkModifier {
 
     private static final Logger LOGGER = LogManager.getLogger("LiftAutoConnector");
     private static final int MAX_FLOORS = 512;
@@ -42,7 +40,7 @@ public class LiftAutoConnectorItem extends ItemLiftButtonsLinkModifier {
     private static final String ID8 = "mtryum:mitsubishi_floor_monitor";
     private static final String ID9 = "mtryum:tk_style_lift_buttons";
 
-    public LiftAutoConnectorItem() {
+    public ItemLiftAutoConnector() {
         super(true);
     }
 

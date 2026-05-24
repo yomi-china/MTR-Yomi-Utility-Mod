@@ -1,6 +1,7 @@
 package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.MtryumClient;
+import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import mtr.block.BlockLiftButtons;
 import mtr.mappings.BlockEntityMapper;
@@ -102,6 +103,10 @@ public class MLFMBlock extends BlockLiftButtons {
                 }
             }
             return InteractionResult.sidedSuccess(world.isClientSide());
+        }
+
+        if (stack.getItem() instanceof ItemLiftPartsLinkModifier) {
+            return InteractionResult.PASS;
         }
 
         // 空手

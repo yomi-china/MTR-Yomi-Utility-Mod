@@ -10,9 +10,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-public class MLFMRender extends AbstractLiftFloorMonitorRenderer<MLFMEntity> {
+public class RenderMLFM extends RendererAbstractLiftFloorMonitor<MLFMEntity> {
 
-    public MLFMRender() {
+    public RenderMLFM() {
         this.arrowTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/arrow/mitsubshi_arrow.png");
         this.arrowRenderMode = ArrowRenderMode.TEXT;
         this.floorColor = 0xFFFF8C00;

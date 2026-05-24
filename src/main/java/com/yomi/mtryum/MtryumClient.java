@@ -6,14 +6,14 @@ import com.yomi.mtryum.network.SetSoundIndexPacket;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
 import com.yomi.mtryum.registry.MtryumItemProperties;
-import com.yomi.mtryum.render.CustomFontManager;
-import com.yomi.mtryum.render.CustomFontRenderer;
-import com.yomi.mtryum.render.LiftArrivalLightRenderer;
-import com.yomi.mtryum.render.MLFMRender;
-import com.yomi.mtryum.render.MitsubishiStyleLiftButtonsRenderer;
-import com.yomi.mtryum.render.OTIS3StyleLiftButtonsRenderer;
-import com.yomi.mtryum.render.TKClassicFloorMonitorRenderer;
-import com.yomi.mtryum.render.TKClassicLiftButtonsRenderer;
+import com.yomi.mtryum.registry.MtryumCustomFontManager;
+import com.yomi.mtryum.render.RendererCustomFont;
+import com.yomi.mtryum.render.RendererLiftArrivalLight;
+import com.yomi.mtryum.render.RenderMLFM;
+import com.yomi.mtryum.render.RendererMitsubishiStyleLiftButtons;
+import com.yomi.mtryum.render.RendererOTIS3StyleLiftButtons;
+import com.yomi.mtryum.render.RendererTKClassicFloorMonitor;
+import com.yomi.mtryum.render.RendererTKClassicLiftButtons;
 import com.yomi.mtryum.screen.LiftArrivalSoundPlayerScreen;
 import com.yomi.mtryum.screen.TKClassicFloorMonitorScreen;
 import net.fabricmc.api.ClientModInitializer;
@@ -74,36 +74,36 @@ public class MtryumClient implements ClientModInitializer {
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY,
-                context -> new LiftArrivalLightRenderer()
+                context -> new RendererLiftArrivalLight()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.LIFT_FLOOR_MONITOR,
-                ctx -> new TKClassicFloorMonitorRenderer()
+                ctx -> new RendererTKClassicFloorMonitor()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.MLFM_ENTITY,
-                ctx -> new MLFMRender()
+                ctx -> new RenderMLFM()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY,
-                context -> new MitsubishiStyleLiftButtonsRenderer()
+                context -> new RendererMitsubishiStyleLiftButtons()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY,
-                context1 -> new TKClassicLiftButtonsRenderer()
+                context1 -> new RendererTKClassicLiftButtons()
         );
         BlockEntityRendererRegistry.register(
                 MtryumBlockEntities.OTIS3_STYLE_LIFT_BUTTONS_ENTITY,
-                context -> new OTIS3StyleLiftButtonsRenderer()
+                context -> new RendererOTIS3StyleLiftButtons()
         );
-        CustomFontManager fontManager = CustomFontManager.getInstance();
+        MtryumCustomFontManager fontManager = MtryumCustomFontManager.getInstance();
         fontManager.initialize();
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
                 .registerReloadListener(new SimpleSynchronousResourceReloadListener() {
                     @Override
                     public void onResourceManagerReload(ResourceManager resourceManager) {
-                        CustomFontManager.getInstance().clearCache();
-                        CustomFontRenderer.cleanupAll();
+                        MtryumCustomFontManager.getInstance().clearCache();
+                        RendererCustomFont.cleanupAll();
                     }
 
                     @Override

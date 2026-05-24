@@ -1,4 +1,4 @@
-package com.yomi.mtryum.render;
+package com.yomi.mtryum.registry;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.yomi.mtryum.Mtryum;
@@ -18,15 +18,15 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomFontManager implements ResourceManagerReloadListener {
-    private static CustomFontManager instance;
+public class MtryumCustomFontManager implements ResourceManagerReloadListener {
+    private static MtryumCustomFontManager instance;
     private final Map<String, FontTexture> textureCache = new HashMap<>();
     private final Map<String, Font> fontCache = new HashMap<>();
     private boolean initialized = false;
 
-    public static CustomFontManager getInstance() {
+    public static MtryumCustomFontManager getInstance() {
         if (instance == null) {
-            instance = new CustomFontManager();
+            instance = new MtryumCustomFontManager();
         }
         return instance;
     }

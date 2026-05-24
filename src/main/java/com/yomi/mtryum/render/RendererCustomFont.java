@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.yomi.mtryum.Mtryum;
+import com.yomi.mtryum.registry.MtryumCustomFontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,8 +18,8 @@ import org.joml.Matrix4f;
 import java.util.HashMap;
 import java.util.Map;
 
-public class  CustomFontRenderer {
-    private static final Map<String, CustomFontRenderer> INSTANCES = new HashMap<>();
+public class RendererCustomFont {
+    private static final Map<String, RendererCustomFont> INSTANCES = new HashMap<>();
 
     private final String fontName;
     private ResourceLocation fontAtlas;
@@ -31,12 +32,12 @@ public class  CustomFontRenderer {
                     "abcdefghijklmnopqrstuvwxyz" +
                     " .:-+*/|<>()[]{}";
 
-    public CustomFontRenderer(String fontName) {
+    public RendererCustomFont(String fontName) {
         this.fontName = fontName;
     }
 
-    public static CustomFontRenderer getInstance(String fontName) {
-        return INSTANCES.computeIfAbsent(fontName, CustomFontRenderer::new);
+    public static RendererCustomFont getInstance(String fontName) {
+        return INSTANCES.computeIfAbsent(fontName, RendererCustomFont::new);
     }
 
     public void initialize() {
@@ -52,7 +53,7 @@ public class  CustomFontRenderer {
     }
 
     private void generateFontAtlas() {
-        CustomFontManager fontManager = CustomFontManager.getInstance();
+        MtryumCustomFontManager fontManager = MtryumCustomFontManager.getInstance();
         fontManager.initialize();
 
         int atlasWidth = 1024;
@@ -77,7 +78,7 @@ public class  CustomFontRenderer {
         int padding = 1; // 字符间填充
 
         for (char c : DEFAULT_CHAR_SET.toCharArray()) {
-            CustomFontManager.FontTexture charTexture =
+            MtryumCustomFontManager.FontTexture charTexture =
                     fontManager.getStringTexture(String.valueOf(c), 0xFFFFFFFF, fontName);
 
             if (charTexture != null && charTexture.getImage() != null) {
@@ -160,7 +161,7 @@ public class  CustomFontRenderer {
     ) {
         if (text == null || text.isEmpty()) return;
 
-        CustomFontRenderer renderer = getInstance(fontName);
+        RendererCustomFont renderer = getInstance(fontName);
         if (!renderer.initialized) {
             renderer.initialize();
         }
@@ -291,7 +292,7 @@ public class  CustomFontRenderer {
     }
 
     public static void cleanupAll() {
-        for (CustomFontRenderer renderer : INSTANCES.values()) {
+        for (RendererCustomFont renderer : INSTANCES.values()) {
             renderer.cleanup();
         }
         INSTANCES.clear();

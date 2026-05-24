@@ -14,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> implements BlockEntityRenderer<T> {
+public abstract class RendererAbstractLiftFloorMonitor<T extends BlockEntity> implements BlockEntityRenderer<T> {
 
     public static class ArrowRenderMode {
         public static final int TEXTURE = 0;
@@ -225,7 +225,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         int green = (arrowTextColor >> 8) & 0xFF;
         int blue = arrowTextColor & 0xFF;
 
-        CustomFontRenderer.renderText(
+        RendererCustomFont.renderText(
                 matrices,
                 vertexConsumers,
                 arrowText,
@@ -260,7 +260,7 @@ public abstract class AbstractLiftFloorMonitorRenderer<T extends BlockEntity> im
         int green = (floorColor >> 8) & 0xFF;
         int blue = floorColor & 0xFF;
 
-        CustomFontRenderer.renderText(
+        RendererCustomFont.renderText(
                 matrices,
                 vertexConsumers,
                 floor,
