@@ -4,17 +4,28 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.yomi.mtryum.Mtryum;
+import com.yomi.mtryum.block.AbstractLiftButtonsBlock;
 import com.yomi.mtryum.block.AbstractLiftButtonsBlockEntity;
+import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
+import mtr.block.BlockLiftPanelBase;
 import mtr.block.BlockLiftTrackFloor;
+import mtr.block.IBlock;
 import mtr.client.ClientData;
+import mtr.client.IDrawing;
 import mtr.data.Lift;
+import mtr.mappings.Utilities;
+import mtr.render.RenderLiftButtons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,7 +38,7 @@ import java.util.List;
 
 public abstract class RendererAbstractLiftButtons<T extends BlockEntity> implements BlockEntityRenderer<T> {
 
-    // 单电梯参数
+    // 单梯参数
     protected ResourceLocation buttonNormalTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_normal.png");
     protected ResourceLocation buttonPressedTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_pressed.png");
     protected ResourceLocation arrowTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/arrow/mitsubshi_arrow.png");
@@ -69,7 +80,7 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
     protected float singleButtonOffset = 0.06f;
     protected boolean autoPadSingleDigit = false;
 
-    //  双电梯参数
+    // 双梯额外参数
     protected float dualDisplayOffset = 0.18f;
     protected float dualFloorScaleTwoChars = 0.0006f;
     protected float dualFloorScaleThreeChars = 0.00055f;
@@ -139,7 +150,17 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
         final Direction facing = getFacingFromState(state);
         if (facing == null) return;
 
-        // -获取所有电梯显示数据
+        final Player player = Minecraft.getInstance().player;
+        if (player == null) return;
+
+        final BlockPos pos = entity.getBlockPos();
+
+        // 检查玩家是否手持连接/移除器
+        final boolean holdingLinker = Utilities.isHolding(player, item ->
+                item instanceof ItemLiftPartsLinkModifier
+                        || Block.byItem(item) instanceof AbstractLiftButtonsBlock
+                        || Block.byItem(item) instanceof BlockLiftPanelBase);
+
         final List<LiftDisplayEntry> entries = new ArrayList<>();
         final boolean[] hasBtnOverall = {false, false};
         final boolean[] pressedOverall = {false, false};
@@ -149,10 +170,21 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
         final Lift.LiftDirection[] primaryDir = {Lift.LiftDirection.NONE};
 
         if (entity instanceof AbstractLiftButtonsBlockEntity liftEntity) {
+            // 连线渲染
+            if (holdingLinker) {
+                matrices.pushPose();
+                matrices.translate(0.5, 0, 0.5);
+                liftEntity.forEachTrackPosition(world, (trackPos, trackFloor) -> {
+                    RenderLiftButtons.renderLiftObjectLink(matrices, vertexConsumers,
+                            world, pos, trackPos, facing, true);
+                });
+                matrices.popPose();
+            }
+
             liftEntity.forEachTrackPosition(world, (trackPos, trackFloor) -> {
                 for (final Lift lift : ClientData.LIFTS) {
                     if (lift.hasFloor(trackPos)) {
-                        // 电梯当前所在楼层
+                        // 当前所在楼层
                         final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                         final BlockEntity be = world.getBlockEntity(currentFloor);
                         String floorNumber = defaultFloorText;
@@ -165,7 +197,6 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
                                 lift.getPositionX(), lift.getPositionZ(),
                                 floorNumber, dir));
 
-                        // 按钮可见性
                         boolean[] hasBtn = new boolean[2];
                         lift.hasUpDownButtonForFloor(trackPos.getY(), hasBtn);
                         if (hasBtn[0]) hasBtnOverall[0] = true;
@@ -177,7 +208,6 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
                         if (lift.liftInstructions.containsInstruction(trackPos.getY(), false))
                             pressedOverall[1] = true;
 
-                        // 顶层底层判断
                         if (hasBtn[0]) topOverall[0] = false;
                         if (hasBtn[1]) bottomOverall[0] = false;
 
@@ -192,28 +222,28 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
         }
 
         entries.sort(Comparator.comparingDouble(entry ->
-                facing.getStepX() * (entry.z - entity.getBlockPos().getZ())
-                        - facing.getStepZ() * (entry.x - entity.getBlockPos().getX())));
+                facing.getStepX() * (entry.z - pos.getZ())
+                        - facing.getStepZ() * (entry.x - pos.getX())));
 
         applyBaseTransform(matrices, facing);
 
         if (entries.size() >= 2) {
-            // 双电梯
+            final boolean swap = facing.getAxis() == Direction.Axis.Z;
+            final LiftDisplayEntry leftEntry = swap ? entries.get(1) : entries.get(0);
+            final LiftDisplayEntry rightEntry = swap ? entries.get(0) : entries.get(1);
             renderDualLiftDisplays(matrices, vertexConsumers, light, overlay,
-                    entries.get(0), entries.get(1), facing);
+                    leftEntry, rightEntry, facing);
             renderButtons(matrices, vertexConsumers, light, overlay, facing,
                     hasBtnOverall[0], hasBtnOverall[1],
                     pressedOverall[0], pressedOverall[1],
                     topOverall[0], bottomOverall[0]);
         } else if (entries.size() == 1) {
-            // 单电梯
             final LiftDisplayEntry entry = entries.get(0);
             renderAllElements(matrices, vertexConsumers, light, overlay,
                     processFloorNumber(entry.floorNumber), entry.direction,
                     pressedOverall[0], pressedOverall[1],
                     facing, topOverall[0], bottomOverall[0]);
         } else {
-            // 无电梯
             renderAllElements(matrices, vertexConsumers, light, overlay,
                     defaultFloorText, Lift.LiftDirection.NONE,
                     false, false, facing, true, true);
@@ -256,7 +286,6 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
                                           int light, int overlay,
                                           LiftDisplayEntry left, LiftDisplayEntry right,
                                           Direction facing) {
-        // 左侧
         float leftX = 0.5f - dualDisplayOffset;
         renderFloorNumberAt(matrices, vertexConsumers,
                 processFloorNumber(left.floorNumber), light,
@@ -267,7 +296,6 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
                     leftX, arrowY, true);
         }
 
-        // 右
         float rightX = 0.5f + dualDisplayOffset;
         renderFloorNumberAt(matrices, vertexConsumers,
                 processFloorNumber(right.floorNumber), light,
