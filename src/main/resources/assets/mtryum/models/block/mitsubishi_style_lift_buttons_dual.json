@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "mtryum:block/mitsubishi_style_lift_buttons",
-		"particle": "mtryum:block/mitsubishi_style_lift_buttons"
+		"1": "mtryum:block/mitsubishi_style_lift_buttons_dual",
+		"particle": "mtryum:block/mitsubishi_style_lift_buttons_dual"
 	},
 	"elements": [
 		{

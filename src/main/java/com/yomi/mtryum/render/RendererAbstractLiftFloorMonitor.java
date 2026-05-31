@@ -3,15 +3,24 @@ package com.yomi.mtryum.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.yomi.mtryum.block.AbstractLiftButtonsBlock;
+import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
+import mtr.block.BlockLiftPanelBase;
 import mtr.block.BlockLiftTrackFloor;
+import mtr.client.ClientData;
 import mtr.data.Lift;
+import mtr.item.ItemLiftButtonsLinkModifier;
+import mtr.mappings.Utilities;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public abstract class RendererAbstractLiftFloorMonitor<T extends BlockEntity> implements BlockEntityRenderer<T> {
@@ -63,16 +72,26 @@ public abstract class RendererAbstractLiftFloorMonitor<T extends BlockEntity> im
         final Level world = entity.getLevel();
         if (world == null) return;
 
+        final Player player = Minecraft.getInstance().player;
+        if (player == null) return;
+
         // 获取轨道位置
         final BlockPos trackPosition = getTrackPosition(entity, world);
         if (trackPosition == null) return;
+
+        // 检查玩家是否手持电梯相关物品
+        final boolean holdingLinker = Utilities.isHolding(player, item ->
+                item instanceof ItemLiftPartsLinkModifier
+                        || item instanceof ItemLiftButtonsLinkModifier
+                        || Block.byItem(item) instanceof AbstractLiftButtonsBlock
+                        || Block.byItem(item) instanceof BlockLiftPanelBase);
 
         // 获取电梯方向
         Lift.LiftDirection liftDirection = Lift.LiftDirection.NONE;
         String floorNumber = "??";
 
         // 获取电梯数据
-        for (Lift lift : mtr.client.ClientData.LIFTS) {
+        for (Lift lift : ClientData.LIFTS) {
             if (lift.hasFloor(trackPosition)) {
                 final BlockPos currentFloor = lift.getCurrentFloorBlockPos();
                 final BlockEntity blockEntity = world.getBlockEntity(currentFloor);

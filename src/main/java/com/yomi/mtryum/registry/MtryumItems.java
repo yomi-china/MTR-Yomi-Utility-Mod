@@ -3,6 +3,7 @@ package com.yomi.mtryum.registry;
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
 import com.yomi.mtryum.item.ItemLiftAutoConnector;
+import com.yomi.mtryum.item.ItemOpaqueLiftDoor;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -45,11 +46,8 @@ public class MtryumItems {
             registerItem("onboard_tool",
                     new Item(new FabricItemSettings().stacksTo(1)));
     public static final Item OPAQUE_LIFT_DOOR_1 =
-            registerBlockItem("opaque_lift_door_1",
-                    MtryumBlocks.OPAQUE_LIFT_DOOR_1);
-    public static final Item SMART_ANNOUNCER =
-            registerBlockItem("smart_announcer",
-                    MtryumBlocks.SMART_ANNOUNCER);
+            registerItem("opaque_lift_door_1",
+                    new ItemOpaqueLiftDoor(new FabricItemSettings()));
     public static final Item LIFT_PARTS_LINK_CONNECTOR =
             registerItem("lift_parts_link_connector",
                     new ItemLiftPartsLinkModifier(true));

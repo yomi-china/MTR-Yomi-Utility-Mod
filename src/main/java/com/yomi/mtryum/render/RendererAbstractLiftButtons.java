@@ -13,6 +13,7 @@ import mtr.block.IBlock;
 import mtr.client.ClientData;
 import mtr.client.IDrawing;
 import mtr.data.Lift;
+import mtr.item.ItemLiftButtonsLinkModifier;
 import mtr.mappings.Utilities;
 import mtr.render.RenderLiftButtons;
 import net.minecraft.client.Minecraft;
@@ -38,7 +39,6 @@ import java.util.List;
 
 public abstract class RendererAbstractLiftButtons<T extends BlockEntity> implements BlockEntityRenderer<T> {
 
-    // 单梯参数
     protected ResourceLocation buttonNormalTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_normal.png");
     protected ResourceLocation buttonPressedTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/button/mitsubshi_pressed.png");
     protected ResourceLocation arrowTexture = new ResourceLocation(Mtryum.MOD_ID, "textures/arrow/mitsubshi_arrow.png");
@@ -79,6 +79,10 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
     protected String arrowDownText = ">";
     protected float singleButtonOffset = 0.06f;
     protected boolean autoPadSingleDigit = false;
+
+    protected int linkR = 255;
+    protected int linkG = 255;
+    protected int linkB = 255;
 
     // 双梯额外参数
     protected float dualDisplayOffset = 0.18f;
@@ -155,9 +159,10 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
 
         final BlockPos pos = entity.getBlockPos();
 
-        // 检查玩家是否手持连接/移除器
+        // 检查玩家是否手持电梯相关物品
         final boolean holdingLinker = Utilities.isHolding(player, item ->
-                item instanceof ItemLiftPartsLinkModifier
+                        item instanceof ItemLiftPartsLinkModifier
+                        || item instanceof ItemLiftButtonsLinkModifier
                         || Block.byItem(item) instanceof AbstractLiftButtonsBlock
                         || Block.byItem(item) instanceof BlockLiftPanelBase);
 
@@ -175,8 +180,8 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
                 matrices.pushPose();
                 matrices.translate(0.5, 0, 0.5);
                 liftEntity.forEachTrackPosition(world, (trackPos, trackFloor) -> {
-                    RenderLiftButtons.renderLiftObjectLink(matrices, vertexConsumers,
-                            world, pos, trackPos, facing, true);
+                    renderLiftObjectColorfulLink(matrices, vertexConsumers,
+                            world, pos, trackPos, facing, true, linkR, linkG, linkB);
                 });
                 matrices.popPose();
             }
@@ -456,5 +461,13 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
             if (directionProperty == null) directionProperty = BlockStateProperties.HORIZONTAL_FACING;
             return directionProperty;
         }
+    }
+
+    public static void renderLiftObjectColorfulLink(PoseStack matrices, MultiBufferSource vertexConsumers, Level world, BlockPos pos, BlockPos trackPosition, Direction facing, boolean holdingLinker, int r, int g, int b) {
+        if (holdingLinker) {
+            Direction trackFacing = (Direction)IBlock.getStatePropertySafe(world, trackPosition, HorizontalDirectionalBlock.FACING);
+            IDrawing.drawLine(matrices, vertexConsumers, (float)(trackPosition.getX() - pos.getX()) + (float)trackFacing.getStepX() / 2.0F, (float)(trackPosition.getY() - pos.getY()) + 0.5F, (float)(trackPosition.getZ() - pos.getZ()) + (float)trackFacing.getStepZ() / 2.0F, (float)facing.getStepX() / 2.0F, 0.25F, (float)facing.getStepZ() / 2.0F, r, g, b);
+        }
+
     }
 }

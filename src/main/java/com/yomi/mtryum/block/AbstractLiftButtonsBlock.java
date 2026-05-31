@@ -38,7 +38,7 @@ import java.util.List;
 public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    // 单梯/群控
+    // 单梯或群控
     public static final BooleanProperty DUAL = BooleanProperty.create("dual");
 
     protected AbstractLiftButtonsBlock() {

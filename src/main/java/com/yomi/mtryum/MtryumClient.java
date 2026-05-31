@@ -7,6 +7,7 @@ import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
 import com.yomi.mtryum.registry.MtryumItemProperties;
 import com.yomi.mtryum.registry.MtryumCustomFontManager;
+import com.yomi.mtryum.render.RenderOpaqueLiftDoor;
 import com.yomi.mtryum.render.RendererCustomFont;
 import com.yomi.mtryum.render.RendererLiftArrivalLight;
 import com.yomi.mtryum.render.RenderMLFM;
@@ -23,6 +24,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -44,57 +46,42 @@ public class MtryumClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        BlockRenderLayerMap.INSTANCE.putBlock(
-                MtryumBlocks.LIFT_ARRIVAL_LIGHT_BLOCK,
-                RenderType.cutout()
-        );
-        BlockRenderLayerMap.INSTANCE.putBlock(
-                MtryumBlocks.LIFT_ARRIVAL_SOUND_PLAYER_BLOCK,
-                RenderType.cutout()
-        );
-        BlockRenderLayerMap.INSTANCE.putBlock(
-                MtryumBlocks.LIFT_FLOOR_MONITOR,
-                RenderType.cutout()
-        );
-        BlockRenderLayerMap.INSTANCE.putBlock(
-                MtryumBlocks.MLFM,
-                RenderType.cutout()
-        );
-        BlockRenderLayerMap.INSTANCE.putBlock(
-                MtryumBlocks.MITSUBISHI_STYLE_LIFT_BUTTONS,
-                RenderType.cutout()
-        );
-        BlockRenderLayerMap.INSTANCE.putBlock(
-                MtryumBlocks.TK_STYLE_LIFT_BUTTONS,
-                RenderType.cutout()
-        );
-        BlockRenderLayerMap.INSTANCE.putBlock(
-                MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS,
-                RenderType.cutout()
-        );
-        BlockEntityRendererRegistry.register(
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.LIFT_ARRIVAL_LIGHT_BLOCK, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.LIFT_ARRIVAL_SOUND_PLAYER_BLOCK, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.LIFT_FLOOR_MONITOR, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.MLFM, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.MITSUBISHI_STYLE_LIFT_BUTTONS, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.TK_STYLE_LIFT_BUTTONS, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.OPAQUE_LIFT_DOOR_1, RenderType.cutout());
+
+        BlockEntityRenderers.register(
                 MtryumBlockEntities.LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY,
                 context -> new RendererLiftArrivalLight()
         );
-        BlockEntityRendererRegistry.register(
+        BlockEntityRenderers.register(
                 MtryumBlockEntities.LIFT_FLOOR_MONITOR,
                 ctx -> new RendererTKClassicFloorMonitor()
         );
-        BlockEntityRendererRegistry.register(
+        BlockEntityRenderers.register(
                 MtryumBlockEntities.MLFM_ENTITY,
                 ctx -> new RenderMLFM()
         );
-        BlockEntityRendererRegistry.register(
+        BlockEntityRenderers.register(
                 MtryumBlockEntities.MITSUBISHI_STYLE_LIFT_BUTTONS_ENTITY,
                 context -> new RendererMitsubishiStyleLiftButtons()
         );
-        BlockEntityRendererRegistry.register(
+        BlockEntityRenderers.register(
                 MtryumBlockEntities.TK_STYLE_LIFT_BUTTONS_ENTITY,
                 context1 -> new RendererTKClassicLiftButtons()
         );
-        BlockEntityRendererRegistry.register(
+        BlockEntityRenderers.register(
                 MtryumBlockEntities.OTIS3_STYLE_LIFT_BUTTONS_ENTITY,
                 context -> new RendererOTIS3StyleLiftButtons()
+        );
+        BlockEntityRenderers.register(
+                MtryumBlockEntities.OPAQUE_LIFT_DOOR_TILE_ENTITY,
+                RenderOpaqueLiftDoor::new
         );
         MtryumCustomFontManager fontManager = MtryumCustomFontManager.getInstance();
         fontManager.initialize();

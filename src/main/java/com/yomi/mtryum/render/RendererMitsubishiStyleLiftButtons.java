@@ -18,7 +18,6 @@ public class RendererMitsubishiStyleLiftButtons extends RendererAbstractLiftButt
     public RendererMitsubishiStyleLiftButtons() {
         super();
 
-        // 单电梯参数
         this.buttonNormalTexture = MITSUBISHI_BUTTON_NORMAL;
         this.buttonPressedTexture = MITSUBISHI_BUTTON_PRESSED;
         this.floorNumberColor = 0xFFFF8C00;
@@ -32,7 +31,7 @@ public class RendererMitsubishiStyleLiftButtons extends RendererAbstractLiftButt
         this.arrowY = 0.88f;
         this.buttonUpY = 0.48f;
         this.buttonDownY = 0.35f;
-        this.buttonSize = 0.075f;
+        this.buttonSize = 0.07f;
         this.arrowWidth = 0.125f;
         this.arrowHeight = 0.125f;
         this.depthOffset = 0.002f;
@@ -48,6 +47,10 @@ public class RendererMitsubishiStyleLiftButtons extends RendererAbstractLiftButt
         this.enableCustomSpacing = true;
         this.characterSpacing = 2.0f;
         this.letterSpacingFactor = 1.0f;
+
+        this.linkR = 255;
+        this.linkG = 140;
+        this.linkB = 0;
 
         // 双电梯参数
         this.dualDisplayOffset = 0.095f;

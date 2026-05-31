@@ -17,28 +17,27 @@ public class RendererOTIS3StyleLiftButtons extends RendererAbstractLiftButtons<O
     public RendererOTIS3StyleLiftButtons() {
         super();
 
-        // 单电梯参数
         this.buttonNormalTexture = OTIS3_BUTTON_NORMAL;
         this.buttonPressedTexture = OTIS3_BUTTON_PRESSED;
         this.arrowTexture = OTIS3_ARROW;
-        this.floorNumberColor = 0xFFFF8C00;
+        this.floorNumberColor = 0xFFDA2B00;
         this.arrowColor = 0xFFFF8C00;
         this.buttonTintColor = 0xFFFFFF;
         this.fontName = "otis-series-1";
         this.defaultFloorText = "--";
         this.baseYOffset = -0.135f;
-        this.floorNumberY = 0.7f;
+        this.floorNumberY = 0.758f;
         this.floorNumberXOffset = 0.5f;
-        this.arrowY = 0.75f;
+        this.arrowY = 0.838f;
         this.buttonUpY = 0.48f;
         this.buttonDownY = 0.35f;
-        this.buttonSize = 0.075f;
+        this.buttonSize = 0.0585f;
         this.arrowWidth = 0.073f;
         this.arrowHeight = 0.073f;
         this.depthOffset = 0.002f;
-        this.floorScaleTwoChars = 0.002f;
-        this.floorScaleThreeChars = 0.00085f;
-        this.floorScaleExtraReduction = 0.0001f;
+        this.floorScaleTwoChars = 0.0018f;
+        this.floorScaleThreeChars = 0.0007f;
+        this.floorScaleExtraReduction = 0.00015f;
         this.floorScaleMin = 0.0001f;
         this.arrowScale = 0.00025f;
         this.arrowRenderMode = ArrowRenderMode.TEXTURE;
@@ -49,6 +48,10 @@ public class RendererOTIS3StyleLiftButtons extends RendererAbstractLiftButtons<O
         this.enableCustomSpacing = true;
         this.characterSpacing = 4.0f;
         this.letterSpacingFactor = 1.0f;
+
+        this.linkR = 218;
+        this.linkG = 43;
+        this.linkB = 0;
 
         // 双电梯参数
         this.dualDisplayOffset = 0.16f;
