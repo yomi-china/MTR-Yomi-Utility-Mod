@@ -75,7 +75,7 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
 
     @Override
     public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.mtryum.lift_arrival_light.line1")
+        tooltip.add(Component.translatable("tooltip.mtryum.connect")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
     }
 
@@ -86,20 +86,10 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
         return rotateShape(baseShape, facing);
     }
 
-    /**
-     * 返回单梯形态的基础碰撞箱（北方向，贴于 Z=0 面）。
-     */
     protected abstract VoxelShape getSingleBaseShape();
 
-    /**
-     * 返回双梯形态的基础碰撞箱（北方向，贴于 Z=0 面）。
-     */
     protected abstract VoxelShape getDualBaseShape();
 
-    /**
-     * 根据朝向旋转基础碰撞箱。基础碰撞箱应定义为北面（Z=0 附着面）。
-     * 注意：forAllBoxes 给出的坐标是 0～1 归一化值，必须 ×16 转为像素值后再旋转。
-     */
     protected static VoxelShape rotateShape(VoxelShape baseShape, Direction facing) {
         if (facing == Direction.NORTH) {
             return baseShape;

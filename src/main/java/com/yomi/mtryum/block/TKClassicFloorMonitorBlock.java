@@ -78,7 +78,7 @@ public class TKClassicFloorMonitorBlock extends BlockLiftButtons {
 
     @Override
     public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.mtryum.floor_monitor.line1")
+        tooltip.add(Component.translatable("tooltip.mtryum.connect")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
         tooltip.add(Component.translatable("tooltip.mtryum.floor_monitor.line2")
                 .setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
