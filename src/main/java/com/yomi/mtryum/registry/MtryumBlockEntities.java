@@ -1,6 +1,7 @@
 package com.yomi.mtryum.registry;
 
 import com.yomi.mtryum.Mtryum;
+import com.yomi.mtryum.block.GlassLiftDoorBlock;
 import com.yomi.mtryum.block.LiftArrivalLightBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
 import com.yomi.mtryum.block.MLFMEntity;
@@ -24,6 +25,7 @@ public class MtryumBlockEntities {
     public static BlockEntityType<TKClassicLiftButtonsBlockEntity> TK_STYLE_LIFT_BUTTONS_ENTITY;
     public static BlockEntityType<OTIS3StyleLiftButtonsBlockEntity> OTIS3_STYLE_LIFT_BUTTONS_ENTITY;
     public static BlockEntityType<OpaqueLiftDoorBlock.OpaqueLiftDoorTileEntity> OPAQUE_LIFT_DOOR_TILE_ENTITY;
+    public static BlockEntityType<GlassLiftDoorBlock.GlassLiftDoorTileEntity> GLASS_LIFT_DOOR_TILE_ENTITY;
 
     public static void register() {
         LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY = Registry.register(
@@ -88,6 +90,14 @@ public class MtryumBlockEntities {
                 FabricBlockEntityTypeBuilder.create(
                         OpaqueLiftDoorBlock.OpaqueLiftDoorTileEntity::new,
                         MtryumBlocks.OPAQUE_LIFT_DOOR_1
+                ).build(null)
+        );
+        GLASS_LIFT_DOOR_TILE_ENTITY = Registry.register(
+                BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                new ResourceLocation(Mtryum.MOD_ID, "glass_lift_door_tile_entity"),
+                FabricBlockEntityTypeBuilder.create(
+                        GlassLiftDoorBlock.GlassLiftDoorTileEntity::new,
+                        MtryumBlocks.GLASS_LIFT_DOOR_1
                 ).build(null)
         );
     }

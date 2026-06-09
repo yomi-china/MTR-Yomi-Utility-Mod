@@ -1,5 +1,6 @@
 package com.yomi.mtryum;
 
+import com.yomi.mtryum.block.GlassLiftDoorBlock;
 import com.yomi.mtryum.block.LiftArrivalSoundPlayerEntity;
 import com.yomi.mtryum.block.TKClassicFloorMonitorEntity;
 import com.yomi.mtryum.network.SetSoundIndexPacket;
@@ -7,6 +8,7 @@ import com.yomi.mtryum.registry.MtryumBlockEntities;
 import com.yomi.mtryum.registry.MtryumBlocks;
 import com.yomi.mtryum.registry.MtryumItemProperties;
 import com.yomi.mtryum.registry.MtryumCustomFontManager;
+import com.yomi.mtryum.render.RenderGlassLiftDoor;
 import com.yomi.mtryum.render.RenderOpaqueLiftDoor;
 import com.yomi.mtryum.render.RendererCustomFont;
 import com.yomi.mtryum.render.RendererLiftArrivalLight;
@@ -54,6 +56,7 @@ public class MtryumClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.TK_STYLE_LIFT_BUTTONS, RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.OTIS3_STYLE_LIFT_BUTTONS, RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.OPAQUE_LIFT_DOOR_1, RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(MtryumBlocks.GLASS_LIFT_DOOR_1, RenderType.cutout());
 
         BlockEntityRenderers.register(
                 MtryumBlockEntities.LIFT_ARRIVAL_LIGHT_BLOCK_ENTITY,
@@ -82,6 +85,10 @@ public class MtryumClient implements ClientModInitializer {
         BlockEntityRenderers.register(
                 MtryumBlockEntities.OPAQUE_LIFT_DOOR_TILE_ENTITY,
                 RenderOpaqueLiftDoor::new
+        );
+        BlockEntityRenderers.register(
+                MtryumBlockEntities.GLASS_LIFT_DOOR_TILE_ENTITY,
+                RenderGlassLiftDoor::new
         );
         MtryumCustomFontManager fontManager = MtryumCustomFontManager.getInstance();
         fontManager.initialize();

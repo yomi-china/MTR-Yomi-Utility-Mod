@@ -13,9 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class ItemOpaqueLiftDoor extends Item implements IBlock {
+public class ItemGlassLiftDoor extends Item implements IBlock {
 
-    public ItemOpaqueLiftDoor(Properties properties) {
+    public ItemGlassLiftDoor(Properties properties) {
         super(properties);
     }
 
@@ -23,7 +23,7 @@ public class ItemOpaqueLiftDoor extends Item implements IBlock {
     public InteractionResult useOn(UseOnContext context) {
         final int horizontalBlocks = 2;
 
-        if (ItemPSDAPGBase.blocksNotReplaceable(context, horizontalBlocks, 2, MtryumBlocks.OPAQUE_LIFT_DOOR_1)) {
+        if (ItemPSDAPGBase.blocksNotReplaceable(context, horizontalBlocks, 2, MtryumBlocks.GLASS_LIFT_DOOR_1)) {
             return InteractionResult.FAIL;
         }
 
@@ -34,7 +34,7 @@ public class ItemOpaqueLiftDoor extends Item implements IBlock {
         for (int x = 0; x < horizontalBlocks; x++) {
             final BlockPos newPos = pos.relative(playerFacing.getClockWise(), x);
             for (int y = 0; y < 2; y++) {
-                final BlockState state = MtryumBlocks.OPAQUE_LIFT_DOOR_1
+                final BlockState state = MtryumBlocks.GLASS_LIFT_DOOR_1
                         .defaultBlockState()
                         .setValue(BlockPSDAPGBase.FACING, playerFacing)
                         .setValue(HALF, y == 1 ? DoubleBlockHalf.UPPER : DoubleBlockHalf.LOWER)

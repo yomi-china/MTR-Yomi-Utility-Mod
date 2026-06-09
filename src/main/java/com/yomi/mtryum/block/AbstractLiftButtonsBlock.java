@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
@@ -38,7 +39,6 @@ import java.util.List;
 public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    // 单梯或群控
     public static final BooleanProperty DUAL = BooleanProperty.create("dual");
 
     protected AbstractLiftButtonsBlock() {
@@ -65,15 +65,12 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
         return defaultBlockState().setValue(FACING, facing).setValue(DUAL, false);
     }
 
-
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
     }
 
-
     @Override
     public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-
     }
 
     @Override
@@ -85,16 +82,64 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
     @Override
     public final VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction facing = state.getValue(FACING);
-        if (state.getValue(DUAL)) {
-            return getDualVoxelShape(facing);
-        } else {
-            return getSingleVoxelShape(facing);
-        }
+        VoxelShape baseShape = state.getValue(DUAL) ? getDualBaseShape() : getSingleBaseShape();
+        return rotateShape(baseShape, facing);
     }
 
-    protected abstract VoxelShape getSingleVoxelShape(Direction facing);
+    /**
+     * 返回单梯形态的基础碰撞箱（北方向，贴于 Z=0 面）。
+     */
+    protected abstract VoxelShape getSingleBaseShape();
 
-    protected abstract VoxelShape getDualVoxelShape(Direction facing);
+    /**
+     * 返回双梯形态的基础碰撞箱（北方向，贴于 Z=0 面）。
+     */
+    protected abstract VoxelShape getDualBaseShape();
+
+    /**
+     * 根据朝向旋转基础碰撞箱。基础碰撞箱应定义为北面（Z=0 附着面）。
+     * 注意：forAllBoxes 给出的坐标是 0～1 归一化值，必须 ×16 转为像素值后再旋转。
+     */
+    protected static VoxelShape rotateShape(VoxelShape baseShape, Direction facing) {
+        if (facing == Direction.NORTH) {
+            return baseShape;
+        }
+        VoxelShape[] resultHolder = {Shapes.empty()};
+        baseShape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
+            // 将归一化坐标转为像素坐标 (0-16)
+            double px = minX * 16.0, py = minY * 16.0, pz = minZ * 16.0;
+            double px2 = maxX * 16.0, py2 = maxY * 16.0, pz2 = maxZ * 16.0;
+
+            double nx1, nx2, nz1, nz2;
+            switch (facing) {
+                case SOUTH -> {
+                    nx1 = px;
+                    nx2 = px2;
+                    nz1 = 16.0 - pz2;
+                    nz2 = 16.0 - pz;
+                }
+                case EAST -> {
+                    nx1 = 16.0 - pz2;
+                    nx2 = 16.0 - pz;
+                    nz1 = px;
+                    nz2 = px2;
+                }
+                case WEST -> {
+                    nx1 = pz;
+                    nx2 = pz2;
+                    nz1 = px;
+                    nz2 = px2;
+                }
+                default -> { return; }
+            }
+
+            resultHolder[0] = Shapes.or(resultHolder[0], Block.box(
+                    Math.min(nx1, nx2), py, Math.min(nz1, nz2),
+                    Math.max(nx1, nx2), py2, Math.max(nz1, nz2)
+            ));
+        });
+        return resultHolder[0];
+    }
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos,
@@ -139,6 +184,5 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
     public abstract BlockEntityMapper createBlockEntity(BlockPos pos, BlockState state);
 
     protected void handleSpecialLogic(BlockState state, Level world, BlockPos pos, BlockEntity blockEntity) {
-
     }
 }

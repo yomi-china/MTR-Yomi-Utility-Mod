@@ -62,7 +62,6 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
     protected float buttonX = 0.5f;
     protected float buttonUpY = 0.48f;
     protected float buttonDownY = 0.35f;
-
     protected float buttonSize = 0.075f;
     protected float arrowWidth = 0.125f;
     protected float arrowHeight = 0.125f;
@@ -79,6 +78,10 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
     protected String arrowDownText = ">";
     protected float singleButtonOffset = 0.06f;
     protected boolean autoPadSingleDigit = false;
+
+    protected boolean enableSeparateArrowX = false;
+    protected float arrowUpX = 0.5f;
+    protected float arrowDownX = 0.5f;
 
     protected int linkR = 255;
     protected int linkG = 255;
@@ -267,8 +270,12 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
                 calculateFloorScale(floorNumber, false));
 
         if (liftDirection != Lift.LiftDirection.NONE) {
+            float xPos = arrowX;
+            if (enableSeparateArrowX) {
+                xPos = (liftDirection == Lift.LiftDirection.UP) ? arrowUpX : arrowDownX;
+            }
             renderDirectionArrowAt(matrices, vertexConsumers, liftDirection, light, overlay,
-                    arrowX, arrowY, false);
+                    xPos, arrowY, false);
         }
 
         if (!isTopFloor) {

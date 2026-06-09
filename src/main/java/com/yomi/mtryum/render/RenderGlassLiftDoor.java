@@ -22,13 +22,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-public class RenderOpaqueLiftDoor extends BlockEntityRendererMapper<BlockPSDAPGDoorBase.TileEntityPSDAPGDoorBase> implements IGui, IBlock {
+public class RenderGlassLiftDoor extends BlockEntityRendererMapper<BlockPSDAPGDoorBase.TileEntityPSDAPGDoorBase> implements IGui, IBlock {
 
     private static final EntityModel<Entity> MODEL_LEFT = new ModelSingleCube(28, 18, 0, 0, 0, 12, 16, 2);
     private static final EntityModel<Entity> MODEL_RIGHT = new ModelSingleCube(28, 18, 4, 0, 0, 12, 16, 2);
     private static final EntityModel<Entity> MODEL_LOCKED = new ModelSingleCube(6, 6, 5, 6, 1, 6, 6, 0);
 
-    public RenderOpaqueLiftDoor(BlockEntityRendererProvider.Context context) {
+    public RenderGlassLiftDoor(BlockEntityRendererProvider.Context context) {
         super(context.getBlockEntityRenderDispatcher());
     }
 
@@ -40,7 +40,7 @@ public class RenderOpaqueLiftDoor extends BlockEntityRendererMapper<BlockPSDAPGD
 
         final BlockPos pos = entity.getBlockPos();
         final Direction facing = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.FACING);
-        final boolean side = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.SIDE) == IBlock.EnumSide.RIGHT;
+        final boolean side = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.SIDE) == EnumSide.RIGHT;
         final boolean half = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.HALF) == DoubleBlockHalf.UPPER;
         final boolean unlocked = IBlock.getStatePropertySafe(world, pos, BlockPSDAPGDoorBase.UNLOCKED);
         final float open = Math.min(entity.getOpen(MTRClient.getLastFrameDuration()), 1);
@@ -55,7 +55,7 @@ public class RenderOpaqueLiftDoor extends BlockEntityRendererMapper<BlockPSDAPGD
         baseTransform.add(matricesNew -> matricesNew.translate(open * (side ? -1 : 1), 0, 0));
 
         final ResourceLocation texture = new ResourceLocation(String.format(
-                "mtryum:textures/block/opaque_lift_door_%s_%s_1.png",
+                "mtryum:textures/block/glass_lift_door_%s_%s_1.png",
                 half ? "top" : "bottom",
                 side ? "right" : "left"
         ));
@@ -85,7 +85,7 @@ public class RenderOpaqueLiftDoor extends BlockEntityRendererMapper<BlockPSDAPGD
     public boolean shouldRenderOffScreen(BlockPSDAPGDoorBase.TileEntityPSDAPGDoorBase blockEntity) {
         return true;
     }
-
+    
     private static class ModelSingleCube extends EntityModel<Entity> {
         private final ModelMapper cube;
 

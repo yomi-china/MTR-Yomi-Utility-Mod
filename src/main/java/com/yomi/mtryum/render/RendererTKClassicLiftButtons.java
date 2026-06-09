@@ -51,7 +51,7 @@ public class RendererTKClassicLiftButtons extends RendererAbstractLiftButtons<TK
         this.linkB = 0;
 
         // 双电梯参数
-        this.dualDisplayOffset = 0.16f;
+        this.dualDisplayOffset = 0.1f;
         this.dualFloorScaleTwoChars = 0.0009f;
         this.dualFloorScaleThreeChars = 0.0007f;
         this.dualFloorScaleExtraReduction = 0.00015f;

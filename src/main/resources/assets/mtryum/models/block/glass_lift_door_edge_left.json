@@ -6,7 +6,7 @@
   "elements": [
     {
       "from": [ 0, 0, 2 ],
-      "to": [ 4.1, 16, 4 ],
+      "to": [ 4, 16, 4 ],
       "faces": {
         "down":  { "texture": "#particle", "cullface": "down" },
         "up":    { "texture": "#particle", "cullface": "up" },

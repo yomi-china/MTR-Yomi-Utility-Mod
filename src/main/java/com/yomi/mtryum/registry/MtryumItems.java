@@ -1,6 +1,7 @@
 package com.yomi.mtryum.registry;
 
 import com.yomi.mtryum.Mtryum;
+import com.yomi.mtryum.item.ItemGlassLiftDoor;
 import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
 import com.yomi.mtryum.item.ItemLiftAutoConnector;
 import com.yomi.mtryum.item.ItemOpaqueLiftDoor;
@@ -48,6 +49,9 @@ public class MtryumItems {
     public static final Item OPAQUE_LIFT_DOOR_1 =
             registerItem("opaque_lift_door_1",
                     new ItemOpaqueLiftDoor(new FabricItemSettings()));
+    public static final Item GLASS_LIFT_DOOR_1 =
+            registerItem("glass_lift_door_1",
+                    new ItemGlassLiftDoor(new FabricItemSettings()));
     public static final Item LIFT_PARTS_LINK_CONNECTOR =
             registerItem("lift_parts_link_connector",
                     new ItemLiftPartsLinkModifier(true));
