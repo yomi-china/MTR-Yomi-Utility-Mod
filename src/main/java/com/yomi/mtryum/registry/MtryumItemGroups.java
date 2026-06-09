@@ -13,6 +13,8 @@ public class MtryumItemGroups {
             .appendItems(stacks -> {
                 stacks.add(new ItemStack(MtryumItems.LIFT_FLOOR_SETTER));
                 stacks.add(new ItemStack(MtryumItems.LIFT_BUTTON_AUTO_CONNECTOR));
+                stacks.add(new ItemStack(MtryumItems.LIFT_PARTS_LINK_CONNECTOR));
+                stacks.add(new ItemStack(MtryumItems.LIFT_PARTS_LINK_REMOVER));
                 stacks.add(new ItemStack(MtryumItems.ONBOARD_TOOL));
             })
             .build();
@@ -21,13 +23,13 @@ public class MtryumItemGroups {
             .appendItems(stacks -> {
                 stacks.add(new ItemStack(MtryumItems.LIFT_ARRIVAL_LIGHT));
                 stacks.add(new ItemStack(MtryumItems.LIFT_ARRIVAL_SOUND_PLAYER));
-                stacks.add(new ItemStack(MtryumBlocks.LIFT_FLOOR_MONITOR));
-                stacks.add(new ItemStack(MtryumBlocks.MLFM));
-                stacks.add(new ItemStack(MtryumBlocks.MITSUBISHI_STYLE_LIFT_BUTTONS));
-                stacks.add(new ItemStack(MtryumBlocks.TK_STYLE_LIFT_BUTTONS));
+                stacks.add(new ItemStack(MtryumItems.LIFT_FLOOR_MONITOR));
+                stacks.add(new ItemStack(MtryumItems.MLFM));
+                stacks.add(new ItemStack(MtryumItems.MITSUBISHI_STYLE_LIFT_BUTTONS));
+                stacks.add(new ItemStack(MtryumItems.TK_STYLE_LIFT_BUTTONS));
                 stacks.add(new ItemStack(MtryumItems.OTIS3_STYLE_LIFT_BUTTONS));
-                //stacks.add(new ItemStack(MtryumItems.SMART_ANNOUNCER));
-                //stacks.add(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
+                stacks.add(new ItemStack(MtryumItems.OPAQUE_LIFT_DOOR_1));
+                stacks.add(new ItemStack(MtryumItems.GLASS_LIFT_DOOR_1));
             })
             .build();
 

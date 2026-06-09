@@ -1,17 +1,20 @@
 package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.registry.MtryumBlockEntities;
-import mtr.block.BlockLiftPanelBase;
 import mtr.block.IBlock;
 import mtr.mappings.BlockEntityMapper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MitsubishiStyleLiftButtonsBlock extends AbstractLiftButtonsBlock {
+
+    private static final VoxelShape SHAPE_SINGLE = Block.box(6.5, 1, 0, 9.5, 14, 0.1);
+    private static final VoxelShape SHAPE_DUAL = Block.box(5, 1, 0, 11, 14, 0.1);
 
     @Override
     public BlockEntityType<? extends BlockEntityMapper> getBlockEntityType() {
@@ -24,29 +27,24 @@ public class MitsubishiStyleLiftButtonsBlock extends AbstractLiftButtonsBlock {
     }
 
     @Override
-    protected void getServerTicker(Level level, BlockPos pos, BlockState state, BlockLiftPanelBase.TileEntityLiftPanel1Base entity) {
-        MitsubishiStyleLiftButtonsBlockEntity.serverTick(level, (MitsubishiStyleLiftButtonsBlockEntity) entity);
+    protected VoxelShape getSingleBaseShape() {
+        return SHAPE_SINGLE;
+    }
+
+    @Override
+    protected VoxelShape getDualBaseShape() {
+        return SHAPE_DUAL;
     }
 
     @Override
     protected void handleSpecialLogic(BlockState state, Level world, BlockPos pos, BlockEntity blockEntity) {
-        if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity liftEntity) {
+        if (blockEntity instanceof AbstractLiftButtonsBlockEntity liftEntity) {
             if (liftEntity.isLegacy() && !liftEntity.isAutoUnlocked()) {
-                boolean isLocked = IBlock.getStatePropertySafe(state, UNLOCKED);
-                if (!isLocked) {
+                if (!IBlock.getStatePropertySafe(state, UNLOCKED)) {
                     world.setBlockAndUpdate(pos, state.setValue(UNLOCKED, true));
                     liftEntity.markAsAutoUnlocked();
                 }
             }
         }
-    }
-
-    @Override
-    protected InteractionResult handleCallLift(BlockEntity blockEntity, boolean isUpButton) {
-        if (blockEntity instanceof MitsubishiStyleLiftButtonsBlockEntity) {
-            ((MitsubishiStyleLiftButtonsBlockEntity) blockEntity).callLift(isUpButton);
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.PASS;
     }
 }

@@ -1,119 +1,22 @@
 package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.registry.MtryumBlockEntities;
-import mtr.block.BlockLiftPanelBase;
-import mtr.data.Lift;
-import mtr.data.RailwayData;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OTIS3StyleLiftButtonsBlockEntity extends BlockLiftPanelBase.TileEntityLiftPanel1Base {
+public class OTIS3StyleLiftButtonsBlockEntity extends AbstractLiftButtonsBlockEntity {
 
-    private static final String KEY_UP_PRESSED = "up_pressed";
-    private static final String KEY_DOWN_PRESSED = "down_pressed";
-
-    private boolean upButtonPressed;
-    private boolean downButtonPressed;
     public static final Logger LOGGER = LoggerFactory.getLogger("OTIS3StyleLiftButtons");
 
-    public OTIS3StyleLiftButtonsBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state, false);
-    }
-
     public OTIS3StyleLiftButtonsBlockEntity(BlockPos pos, BlockState state) {
-        this(MtryumBlockEntities.OTIS3_STYLE_LIFT_BUTTONS_ENTITY, pos, state);
+        super(pos, state);
     }
 
     @Override
-    public void readCompoundTag(CompoundTag compoundTag) {
-        super.readCompoundTag(compoundTag);
-        upButtonPressed = compoundTag.getBoolean(KEY_UP_PRESSED);
-        downButtonPressed = compoundTag.getBoolean(KEY_DOWN_PRESSED);
-    }
-
-    @Override
-    public void writeCompoundTag(CompoundTag compoundTag) {
-        super.writeCompoundTag(compoundTag);
-        compoundTag.putBoolean(KEY_UP_PRESSED, upButtonPressed);
-        compoundTag.putBoolean(KEY_DOWN_PRESSED, downButtonPressed);
-    }
-
-    public void callLift(boolean callUp) {
-        if (level != null && !level.isClientSide) {
-            BlockPos trackPos = getTrackPosition(level);
-
-            if (trackPos != null) {
-                final RailwayData railwayData = RailwayData.getInstance(level);
-
-                if (railwayData != null) {
-                    for (Lift lift : railwayData.lifts) {
-
-                        if (lift.hasFloor(trackPos)) {
-                            lift.pressButton(trackPos.getY());
-
-                            if (callUp) {
-                                upButtonPressed = true;
-                            } else {
-                                downButtonPressed = true;
-                            }
-                            setChanged();
-                            syncData();
-                            return;
-                        }
-                    }
-                } else {
-                    LOGGER.error("Call lift:RailwayData is null");
-                }
-            }
-        }
-    }
-
-    public static void serverTick(Level level, OTIS3StyleLiftButtonsBlockEntity entity) {
-        if (level != null && !level.isClientSide) {
-            BlockPos trackPos = entity.getTrackPosition(level);
-            if (trackPos != null) {
-                RailwayData railwayData = RailwayData.getInstance(level);
-                if (railwayData != null) {
-                    for (Lift lift : railwayData.lifts) {
-                        if (lift.hasFloor(trackPos)) {
-                            BlockPos currentFloor = lift.getCurrentFloorBlockPos();
-                            if (currentFloor != null && currentFloor.equals(trackPos)) {
-                                entity.liftArrived();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void liftArrived() {
-        if (level == null) {
-            LOGGER.error("MTRYUM liftArrived:Level is null");
-            return;
-        }
-        upButtonPressed = false;
-        downButtonPressed = false;
-        setChanged();
-        if (!level.isClientSide()) {
-            syncData();
-        }
-    }
-
-    public boolean isUpButtonPressed() {
-        return upButtonPressed;
-    }
-
-    public boolean isDownButtonPressed() {
-        return downButtonPressed;
-    }
-
-    public void updateLiftDirection() {
+    public BlockEntityType<?> getType() {
+        return MtryumBlockEntities.OTIS3_STYLE_LIFT_BUTTONS_ENTITY;
     }
 }
