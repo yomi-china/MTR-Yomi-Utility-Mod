@@ -57,7 +57,7 @@ public class RendererOTIS3StyleLiftButtons extends RendererAbstractLiftButtons<O
         this.linkB = 0;
 
         // 双电梯参数
-        this.dualDisplayOffset = 0.16f;
+        this.dualDisplayOffset = 0.1f;
         this.dualFloorScaleTwoChars = 0.002f;
         this.dualFloorScaleThreeChars = 0.00085f;
         this.dualFloorScaleExtraReduction = 0.0001f;
