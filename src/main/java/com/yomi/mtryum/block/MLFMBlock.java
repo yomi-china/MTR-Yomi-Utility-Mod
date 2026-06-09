@@ -1,6 +1,7 @@
 package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.MtryumClient;
+import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import mtr.block.BlockLiftButtons;
 import mtr.mappings.BlockEntityMapper;
@@ -78,8 +79,8 @@ public class MLFMBlock extends BlockLiftButtons {
 
     @Override
     public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.mtryum.connect").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
         tooltip.add(Component.translatable("tooltip.mtryum.floor_monitor.line1").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
-        tooltip.add(Component.translatable("tooltip.mtryum.floor_monitor.line2").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
     }
 
     @Override
@@ -102,6 +103,10 @@ public class MLFMBlock extends BlockLiftButtons {
                 }
             }
             return InteractionResult.sidedSuccess(world.isClientSide());
+        }
+
+        if (stack.getItem() instanceof ItemLiftPartsLinkModifier) {
+            return InteractionResult.PASS;
         }
 
         // 空手

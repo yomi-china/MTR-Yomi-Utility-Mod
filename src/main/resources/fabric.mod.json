@@ -11,6 +11,7 @@
     "homepage": "https://yomi-china.github.io/mod-mtryum/",
     "sources": "https://github.com/yomi-china/MTR-Yomi-Utility-Mod/"
   },
+  "license": "GNU Lesser General Public License v3.0",
   "icon": "assets/mtryum/icon.png",
   "environment": "*",
   "entrypoints": {

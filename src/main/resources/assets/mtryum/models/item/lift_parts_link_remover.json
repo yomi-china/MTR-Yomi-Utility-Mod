@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mtryum:item/lift_parts_link_remover"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "mtryum:linking": 1.0
+      },
+      "model": "mtryum:item/lift_parts_link_remover_active"
+    }
+  ]
+}
