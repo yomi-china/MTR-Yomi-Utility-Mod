@@ -31,7 +31,7 @@ public class RendererMitsubishiStyleLiftButtons extends RendererAbstractLiftButt
         this.arrowY = 0.88f;
         this.buttonUpY = 0.48f;
         this.buttonDownY = 0.35f;
-        this.buttonSize = 0.065f;
+        this.buttonSize = 0.068f;
         this.arrowWidth = 0.125f;
         this.arrowHeight = 0.125f;
         this.depthOffset = 0.002f;
