@@ -1,19 +1,35 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,dual=false": {
       "model": "mtryum:block/tk_style_lift_buttons",
       "y": 0
     },
-    "facing=east": {
+    "facing=east,dual=false": {
       "model": "mtryum:block/tk_style_lift_buttons",
       "y": 90
     },
-    "facing=south": {
+    "facing=south,dual=false": {
       "model": "mtryum:block/tk_style_lift_buttons",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,dual=false": {
       "model": "mtryum:block/tk_style_lift_buttons",
+      "y": 270
+    },
+    "facing=north,dual=true": {
+      "model": "mtryum:block/tk_style_lift_buttons_dual",
+      "y": 0
+    },
+    "facing=east,dual=true": {
+      "model": "mtryum:block/tk_style_lift_buttons_dual",
+      "y": 90
+    },
+    "facing=south,dual=true": {
+      "model": "mtryum:block/tk_style_lift_buttons_dual",
+      "y": 180
+    },
+    "facing=west,dual=true": {
+      "model": "mtryum:block/tk_style_lift_buttons_dual",
       "y": 270
     }
   }

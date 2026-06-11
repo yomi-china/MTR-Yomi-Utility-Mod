@@ -1,6 +1,7 @@
 package com.yomi.mtryum.block;
 
 import com.yomi.mtryum.MtryumClient;
+import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
 import com.yomi.mtryum.registry.MtryumBlockEntities;
 import mtr.block.BlockLiftButtons;
 import mtr.mappings.BlockEntityMapper;
@@ -38,10 +39,10 @@ public class TKClassicFloorMonitorBlock extends BlockLiftButtons {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final ResourceLocation BRUSH_ITEM_ID = new ResourceLocation("mtr", "brush");
 
-    private static final VoxelShape NORTH = Block.box(0, 8, 0, 16, 12, 1); //东市买骏马
-    private static final VoxelShape SOUTH = Block.box(0, 8, 15, 16, 12, 16); //西市买鞍鞯
-    private static final VoxelShape EAST = Block.box(15, 8, 0, 16, 12, 16); //南市买辔头
-    private static final VoxelShape WEST = Block.box(0, 8, 0, 1, 12, 16); //北市买长鞭
+    private static final VoxelShape NORTH = Block.box(0, 8, 0, 16, 12, 1);
+    private static final VoxelShape SOUTH = Block.box(0, 8, 15, 16, 12, 16);
+    private static final VoxelShape EAST = Block.box(15, 8, 0, 16, 12, 16);
+    private static final VoxelShape WEST = Block.box(0, 8, 0, 1, 12, 16);
 
     public TKClassicFloorMonitorBlock() {
         super();
@@ -78,31 +79,39 @@ public class TKClassicFloorMonitorBlock extends BlockLiftButtons {
 
     @Override
     public void appendHoverText(ItemStack stack, BlockGetter world, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(new TranslatableComponent("tooltip.mtryum.floor_monitor.line1").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
-        tooltip.add(new TranslatableComponent("tooltip.mtryum.floor_monitor.line2").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+        tooltip.add(new TranslatableComponent("tooltip.mtryum.connect")
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+        tooltip.add(new TranslatableComponent("tooltip.mtryum.floor_monitor.line2")
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos,
+                                 Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack stack = player.getItemInHand(hand);
         final Item item = stack.getItem();
 
+        // 刷子打开配置界面
         if (Registry.ITEM.getKey(item).equals(BRUSH_ITEM_ID)) {
             if (world.isClientSide && hand == InteractionHand.MAIN_HAND) {
                 MtryumClient.scheduleFMScreenOpen(pos);
                 return InteractionResult.sidedSuccess(world.isClientSide());
             }
         }
+
+        // 自定义连接器
+        if (stack.getItem() instanceof ItemLiftPartsLinkModifier) {
+            return InteractionResult.PASS;
+        }
+
         return super.use(state, world, pos, player, hand, hit);
     }
 
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-
     }
 
     @Override
     public void playerWillDestroy(Level world, BlockPos pos, BlockState state, Player player) {
-
     }
 }

@@ -1,0 +1,35 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "mtryum:block/mitsubishi_style_lift_buttons_dual",
+		"particle": "mtryum:block/mitsubishi_style_lift_buttons_dual"
+	},
+	"elements": [
+		{
+			"from": [5, 1, 0.1],
+			"to": [8, 14, 0.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 7.5, 0]},
+			"faces": {
+				"north": {"uv": [0, 0, 3, 13], "texture": "#1"},
+				"east": {"uv": [0, 0, 0, 13], "texture": "#1"},
+				"south": {"uv": [3, 0, 6, 13], "texture": "#1"},
+				"west": {"uv": [3, 0, 3, 13], "texture": "#1"},
+				"up": {"uv": [3, 0, 0, 0], "texture": "#1"},
+				"down": {"uv": [6, 0, 3, 0], "texture": "#1"}
+			}
+		},
+		{
+			"from": [8, 1, 0.1],
+			"to": [11, 14, 0.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 7.5, 0]},
+			"faces": {
+				"north": {"uv": [0, 0, 3, 13], "texture": "#1"},
+				"east": {"uv": [0, 0, 0, 13], "texture": "#1"},
+				"south": {"uv": [3, 0, 6, 13], "texture": "#1"},
+				"west": {"uv": [3, 0, 3, 13], "texture": "#1"},
+				"up": {"uv": [3, 0, 0, 0], "texture": "#1"},
+				"down": {"uv": [6, 0, 3, 0], "texture": "#1"}
+			}
+		}
+	]
+}
