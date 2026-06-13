@@ -96,7 +96,6 @@ public abstract class AbstractLiftButtonsBlock extends BlockLiftButtons {
         }
         VoxelShape[] resultHolder = {Shapes.empty()};
         baseShape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
-            // 将归一化坐标转为像素坐标 (0-16)
             double px = minX * 16.0, py = minY * 16.0, pz = minZ * 16.0;
             double px2 = maxX * 16.0, py2 = maxY * 16.0, pz2 = maxZ * 16.0;
 
