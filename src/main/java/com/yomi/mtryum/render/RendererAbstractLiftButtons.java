@@ -223,7 +223,6 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
                             primaryDir[0] = dir;
                             primaryFloor[0] = floorNumber;
                         }
-                        break;
                     }
                 }
             });
@@ -236,7 +235,7 @@ public abstract class RendererAbstractLiftButtons<T extends BlockEntity> impleme
         applyBaseTransform(matrices, facing);
 
         if (entries.size() >= 2) {
-            final boolean swap = facing.getAxis() == Direction.Axis.Z;
+            final boolean swap = true;
             final LiftDisplayEntry leftEntry = swap ? entries.get(1) : entries.get(0);
             final LiftDisplayEntry rightEntry = swap ? entries.get(0) : entries.get(1);
             renderDualLiftDisplays(matrices, vertexConsumers, light, overlay,
