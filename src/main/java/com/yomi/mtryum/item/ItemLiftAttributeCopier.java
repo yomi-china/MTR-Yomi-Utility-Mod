@@ -96,7 +96,6 @@ public class ItemLiftAttributeCopier extends Item {
         final CompoundTag tag = stack.getOrCreateTag();
         tag.putBoolean("copied", true);
 
-        // MTR官方版属性
         tag.putInt("lift_height", lift.liftHeight);
         tag.putInt("lift_width", lift.liftWidth);
         tag.putInt("lift_depth", lift.liftDepth);
@@ -109,6 +108,30 @@ public class ItemLiftAttributeCopier extends Item {
 
         // 1.20.1的YMTR特有属性
         copyYMTRFields(lift, tag);
+
+        player.sendSystemMessage(
+                Component.translatable("msg.mtryum.lift_attr_copy.copy_details_standard",
+                        lift.liftHeight, lift.liftWidth, lift.liftDepth,
+                        lift.liftOffsetX, lift.liftOffsetY, lift.liftOffsetZ,
+                        lift.isDoubleSided ? "Yes" : "No",
+                        lift.liftStyle.name(),
+                        lift.facing.getName()
+                ).withStyle(ChatFormatting.GRAY)
+        );
+        if (FIELD_ACCELERATION != null) {
+            try {
+                final float accel = FIELD_ACCELERATION.getFloat(lift);
+                final float speed = FIELD_MAX_SPEED.getFloat(lift);
+                final Object colorObj = FIELD_DISPLAY_COLOR.get(lift);
+                final String colorName = colorObj != null ? ((Enum<?>) colorObj).name() : "RED";
+                player.sendSystemMessage(
+                        Component.translatable("msg.mtryum.lift_attr_copy.copy_details_ymtr",
+                                accel, speed, colorName
+                        ).withStyle(ChatFormatting.GRAY)
+                );
+            } catch (IllegalAccessException ignored) {
+            }
+        }
 
         player.displayClientMessage(
                 Component.translatable("msg.mtryum.lift_attr_copy.copy_success"),
@@ -170,7 +193,6 @@ public class ItemLiftAttributeCopier extends Item {
         }
     }
 
-    // 通过反射将 NBT 中的值写入 YMTR 特有字段
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static void pasteYMTRFields(Lift lift, CompoundTag tag) {
         if (FIELD_ACCELERATION == null) {
@@ -210,7 +232,6 @@ public class ItemLiftAttributeCopier extends Item {
             i += (scanForFloors ? -1 : 1);
         }
 
-        // 在所有电梯中查找包含这些楼层的电梯
         for (final BlockPos floor : floors) {
             for (final LiftServer lift : railwayData.lifts) {
                 if (lift.hasFloor(floor)) {
