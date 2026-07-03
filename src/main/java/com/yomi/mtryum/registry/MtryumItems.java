@@ -2,6 +2,7 @@ package com.yomi.mtryum.registry;
 
 import com.yomi.mtryum.Mtryum;
 import com.yomi.mtryum.item.ItemGlassLiftDoor;
+import com.yomi.mtryum.item.ItemLiftAttributeCopier;
 import com.yomi.mtryum.item.ItemLiftPartsLinkModifier;
 import com.yomi.mtryum.item.ItemLiftAutoConnector;
 import com.yomi.mtryum.item.ItemOpaqueLiftDoor;
@@ -58,6 +59,9 @@ public class MtryumItems {
     public static final Item LIFT_PARTS_LINK_REMOVER =
             registerItem("lift_parts_link_remover",
                     new ItemLiftPartsLinkModifier(false));
+    public static final Item LIFT_ATTRIBUTE_COPIER =
+            registerItem("lift_attribute_copier",
+                    new ItemLiftAttributeCopier(new FabricItemSettings().stacksTo(1)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Mtryum.MOD_ID, name), item);

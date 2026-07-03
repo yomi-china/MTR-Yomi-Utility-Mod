@@ -55,5 +55,14 @@
   "tooltip.mtryum.floor_monitor.line1": "以刷右擊則鎖",
   "tooltip.mtryum.floor_monitor.line2": "空手右擊可調色",
   "tooltip.mtryum.lift_arrival_light.line1": "以 MTR 所攜升階鈕聯器接之；升階抵站則燈爍",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右擊調聲，刷右擊預聞"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右擊調聲，刷右擊預聞",
+  "item.mtryum.lift_attribute_copy": "升階屬性鈔器",
+  "msg.mtryum.lift_attr_copy.copy_success": "升階屬性已鈔成！",
+  "msg.mtryum.lift_attr_copy.paste_success": "升階屬性已貼入！",
+  "msg.mtryum.lift_attr_copy.no_lift_found": "斯軌未見升階",
+  "msg.mtryum.lift_attr_copy.no_attributes": "未儲屬性，請先潛行右擊升階軌以鈔之",
+  "tooltip.mtryum.lift_attr_copy.line1": "潛行右擊升階軌：鈔升階全屬性",
+  "tooltip.mtryum.lift_attr_copy.line2": "右擊升階軌：貼入所儲屬性",
+  "tooltip.mtryum.lift_attr_copy.has_data": "狀：已鈔屬性",
+  "tooltip.mtryum.lift_attr_copy.no_data": "狀：虛（無屬性）"
 }

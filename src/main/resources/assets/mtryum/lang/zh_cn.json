@@ -55,5 +55,14 @@
   "tooltip.mtryum.floor_monitor.line1": "使用刷子右击以锁定",
   "tooltip.mtryum.floor_monitor.line2": "空手右击调整颜色",
   "tooltip.mtryum.lift_arrival_light.line1": "使用MTR自带的电梯按钮连接器进行连接；当电梯到站时，此灯闪烁",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右击调整音效，刷子右击预览音效"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右击调整音效，刷子右击预览音效",
+  "item.mtryum.lift_attribute_copy": "电梯属性复制器",
+  "msg.mtryum.lift_attr_copy.copy_success": "电梯属性已成功复制！",
+  "msg.mtryum.lift_attr_copy.paste_success": "电梯属性已成功粘贴！",
+  "msg.mtryum.lift_attr_copy.no_lift_found": "此轨道未找到电梯",
+  "msg.mtryum.lift_attr_copy.no_attributes": "未存储任何属性，请先潜行+右键电梯轨道复制属性",
+  "tooltip.mtryum.lift_attr_copy.line1": "潜行+右键电梯轨道：复制电梯全部属性",
+  "tooltip.mtryum.lift_attr_copy.line2": "右键电梯轨道：粘贴已存储的属性",
+  "tooltip.mtryum.lift_attr_copy.has_data": "状态：已复制属性",
+  "tooltip.mtryum.lift_attr_copy.no_data": "状态：空（无属性数据）"
 }

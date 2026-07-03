@@ -55,5 +55,14 @@
   "tooltip.mtryum.floor_monitor.line1": "Щелкните правой кнопкой кистью, чтобы заблокировать",
   "tooltip.mtryum.floor_monitor.line2": "Щелкните правой кнопкой пустой рукой, чтобы изменить цвет",
   "tooltip.mtryum.lift_arrival_light.line1": "Подключите с помощью встроенного соединителя кнопок лифта MTR; лампа мигает при прибытии лифта.",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "Щелкните правой кнопкой пустой рукой для настройки звука, кистью – чтобы прослушать"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "Щелкните правой кнопкой пустой рукой для настройки звука, кистью – чтобы прослушать",
+  "item.mtryum.lift_attribute_copy": "Lift Attribute Copier",
+  "msg.mtryum.lift_attr_copy.copy_success": "Lift attributes copied successfully!",
+  "msg.mtryum.lift_attr_copy.paste_success": "Lift attributes pasted successfully!",
+  "msg.mtryum.lift_attr_copy.no_lift_found": "No elevator found for this track",
+  "msg.mtryum.lift_attr_copy.no_attributes": "No attributes stored. Shift+Right-Click a lift track to copy attributes first",
+  "tooltip.mtryum.lift_attr_copy.line1": "Shift+Right-Click a lift track: Copy all lift attributes",
+  "tooltip.mtryum.lift_attr_copy.line2": "Right-Click a lift track: Paste stored attributes",
+  "tooltip.mtryum.lift_attr_copy.has_data": "Status: Attributes copied",
+  "tooltip.mtryum.lift_attr_copy.no_data": "Status: Empty (no attributes)"
 }

@@ -55,5 +55,14 @@
   "tooltip.mtryum.floor_monitor.line1": "Kliknij prawym przyciskiem pędzlem, aby zablokować",
   "tooltip.mtryum.floor_monitor.line2": "Kliknij prawym przyciskiem pustą ręką, aby dostosować kolor",
   "tooltip.mtryum.lift_arrival_light.line1": "Podłącz za pomocą wbudowanego łącznika przycisków windy MTR; lampka miga, gdy winda przybędzie.",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "Kliknij prawym przyciskiem pustą ręką, aby dostosować dźwięk, pędzlem – aby odsłuchać"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "Kliknij prawym przyciskiem pustą ręką, aby dostosować dźwięk, pędzlem – aby odsłuchać",
+  "item.mtryum.lift_attribute_copy": "Lift Attribute Copier",
+  "msg.mtryum.lift_attr_copy.copy_success": "Lift attributes copied successfully!",
+  "msg.mtryum.lift_attr_copy.paste_success": "Lift attributes pasted successfully!",
+  "msg.mtryum.lift_attr_copy.no_lift_found": "No elevator found for this track",
+  "msg.mtryum.lift_attr_copy.no_attributes": "No attributes stored. Shift+Right-Click a lift track to copy attributes first",
+  "tooltip.mtryum.lift_attr_copy.line1": "Shift+Right-Click a lift track: Copy all lift attributes",
+  "tooltip.mtryum.lift_attr_copy.line2": "Right-Click a lift track: Paste stored attributes",
+  "tooltip.mtryum.lift_attr_copy.has_data": "Status: Attributes copied",
+  "tooltip.mtryum.lift_attr_copy.no_data": "Status: Empty (no attributes)"
 }

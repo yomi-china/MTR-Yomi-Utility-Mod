@@ -55,5 +55,14 @@
   "tooltip.mtryum.floor_monitor.line1": "ブラシで右クリックしてロック",
   "tooltip.mtryum.floor_monitor.line2": "素手で右クリックして色を調整",
   "tooltip.mtryum.lift_arrival_light.line1": "MTR内蔵のエレベーターボタン接続器で接続します。エレベーター到着時にこのライトが点滅します。",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "素手で右クリックすると音を調整、ブラシで右クリックすると音をプレビューします"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "素手で右クリックすると音を調整、ブラシで右クリックすると音をプレビューします",
+  "item.mtryum.lift_attribute_copy": "エレベーター属性コピー機",
+  "msg.mtryum.lift_attr_copy.copy_success": "エレベーター属性をコピーしました！",
+  "msg.mtryum.lift_attr_copy.paste_success": "エレベーター属性を貼り付けました！",
+  "msg.mtryum.lift_attr_copy.no_lift_found": "この軌道にエレベーターが見つかりません",
+  "msg.mtryum.lift_attr_copy.no_attributes": "属性が保存されていません。先にスニーク+右クリックで属性をコピーしてください",
+  "tooltip.mtryum.lift_attr_copy.line1": "スニーク+右クリック：エレベーターの全属性をコピー",
+  "tooltip.mtryum.lift_attr_copy.line2": "右クリック：保存された属性を貼り付け",
+  "tooltip.mtryum.lift_attr_copy.has_data": "状態：属性コピー済み",
+  "tooltip.mtryum.lift_attr_copy.no_data": "状態：空（属性なし）"
 }

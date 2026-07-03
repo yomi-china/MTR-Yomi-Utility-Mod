@@ -22,6 +22,7 @@ public class MtryumItemGroups {
                         output.accept(MtryumItems.LIFT_PARTS_LINK_CONNECTOR);
                         output.accept(MtryumItems.LIFT_PARTS_LINK_REMOVER);
                         output.accept(MtryumItems.ONBOARD_TOOL);
+                        output.accept(MtryumItems.LIFT_ATTRIBUTE_COPIER);
 
                     })
                     .build()

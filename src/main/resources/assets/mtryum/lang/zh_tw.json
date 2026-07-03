@@ -55,5 +55,14 @@
   "tooltip.mtryum.floor_monitor.line1": "使用刷子右擊以鎖定",
   "tooltip.mtryum.floor_monitor.line2": "空手右擊調整顏色",
   "tooltip.mtryum.lift_arrival_light.line1": "使用MTR自帶的電梯按鈕連接器進行連接；當電梯到站時，此燈閃爍",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右擊調整音效，刷子右擊預覽音效"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "空手右擊調整音效，刷子右擊預覽音效",
+  "item.mtryum.lift_attribute_copy": "電梯屬性複製器",
+  "msg.mtryum.lift_attr_copy.copy_success": "電梯屬性已成功複製！",
+  "msg.mtryum.lift_attr_copy.paste_success": "電梯屬性已成功貼上！",
+  "msg.mtryum.lift_attr_copy.no_lift_found": "此軌道未找到電梯",
+  "msg.mtryum.lift_attr_copy.no_attributes": "未儲存任何屬性，請先潛行+右鍵電梯軌道複製屬性",
+  "tooltip.mtryum.lift_attr_copy.line1": "潛行+右鍵電梯軌道：複製電梯全部屬性",
+  "tooltip.mtryum.lift_attr_copy.line2": "右鍵電梯軌道：貼上已儲存的屬性",
+  "tooltip.mtryum.lift_attr_copy.has_data": "狀態：已複製屬性",
+  "tooltip.mtryum.lift_attr_copy.no_data": "狀態：空（無屬性資料）"
 }
