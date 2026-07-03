@@ -1,14 +1,14 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "mtryum:item/lift_attribute_copy"
+    "layer0": "mtryum:item/lift_attribute_copier"
   },
   "overrides": [
     {
       "predicate": {
         "mtryum:copied": 1.0
       },
-      "model": "mtryum:item/lift_attribute_copy_copied"
+      "model": "mtryum:item/lift_attribute_copier_copied"
     }
   ]
 }
