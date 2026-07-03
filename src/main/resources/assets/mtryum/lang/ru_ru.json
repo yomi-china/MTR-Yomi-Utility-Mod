@@ -58,7 +58,7 @@
   "tooltip.mtryum.floor_monitor.line2": "Щелкните правой кнопкой пустой рукой, чтобы изменить цвет",
   "tooltip.mtryum.lift_arrival_light.line1": "Подключите с помощью встроенного соединителя кнопок лифта MTR; лампа мигает при прибытии лифта.",
   "tooltip.mtryum.lift_arrival_sound_player.line1": "Щелкните правой кнопкой пустой рукой для настройки звука, кистью – чтобы прослушать",
-  "item.mtryum.lift_attribute_copy": "Lift Attribute Copier",
+  "item.mtryum.lift_attribute_copier": "Lift Attribute Copier",
   "msg.mtryum.lift_attr_copy.copy_success": "Lift attributes copied successfully!",
   "msg.mtryum.lift_attr_copy.paste_success": "Lift attributes pasted successfully!",
   "msg.mtryum.lift_attr_copy.no_lift_found": "No elevator found for this track",

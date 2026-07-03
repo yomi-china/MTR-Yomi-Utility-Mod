@@ -58,7 +58,7 @@
   "tooltip.mtryum.floor_monitor.line2": "Right-click with empty hand to adjust color",
   "tooltip.mtryum.lift_arrival_light.line1": "Connect using MTR's built-in lift button connector; this light flashes when the lift arrives.",
   "tooltip.mtryum.lift_arrival_sound_player.line1": "Right-click with empty hand to adjust sound, right-click with brush to preview sound",
-  "item.mtryum.lift_attribute_copy": "Lift Attribute Copier",
+  "item.mtryum.lift_attribute_copier": "Lift Attribute Copier",
   "msg.mtryum.lift_attr_copy.copy_success": "Lift attributes copied successfully!",
   "msg.mtryum.lift_attr_copy.paste_success": "Lift attributes pasted successfully!",
   "msg.mtryum.lift_attr_copy.no_lift_found": "No elevator found for this track",
