@@ -17,6 +17,8 @@
   "item.mtryum.lift_floor_setter.no_sound_found": "No sound configuration found on this block",
   "item.mtryum.lift_floor_setter.sound_complete": "Sound settings applied successfully!",
   "item.mtryum.lift_floor_setter.sound_start": "Applying lift sound settings...",
+  "item.mtryum.lift_floor_setter.sound_progress": "Applied sound settings to %d block(s)",
+  "item.mtryum.lift_floor_setter.elevator_progress": "Auto-set %d floor(s) successfully!",
   "item.mtryum.lift_floor_setter.wrong_block": "Cannot use this tool on this block",
   "item.mtryum.lift_parts_link_connector": "Lift Parts Link Connector",
   "item.mtryum.lift_parts_link_remover": "Lift Parts Link Remover",
@@ -55,5 +57,16 @@
   "tooltip.mtryum.floor_monitor.line1": "Right-click with brush to lock",
   "tooltip.mtryum.floor_monitor.line2": "Right-click with empty hand to adjust color",
   "tooltip.mtryum.lift_arrival_light.line1": "Connect using MTR's built-in lift button connector; this light flashes when the lift arrives.",
-  "tooltip.mtryum.lift_arrival_sound_player.line1": "Right-click with empty hand to adjust sound, right-click with brush to preview sound"
+  "tooltip.mtryum.lift_arrival_sound_player.line1": "Right-click with empty hand to adjust sound, right-click with brush to preview sound",
+  "item.mtryum.lift_attribute_copier": "Lift Attribute Copier",
+  "msg.mtryum.lift_attr_copy.copy_success": "Lift attributes copied successfully!",
+  "msg.mtryum.lift_attr_copy.paste_success": "Lift attributes pasted successfully!",
+  "msg.mtryum.lift_attr_copy.no_lift_found": "No elevator found for this track",
+  "msg.mtryum.lift_attr_copy.no_attributes": "No attributes stored. Shift+Right-Click a lift track to copy attributes first",
+  "msg.mtryum.lift_attr_copy.copy_details_standard": "  Size: %dx%dx%d  Offset: (%d,%d,%d)  Double: %s  Style: %s  Facing: %s",
+  "msg.mtryum.lift_attr_copy.copy_details_ymtr": "  Accel: %.3f  MaxSpeed: %.2f  Display Color: %s",
+  "tooltip.mtryum.lift_attr_copy.line1": "Shift+Right-Click a lift track: Copy all lift attributes",
+  "tooltip.mtryum.lift_attr_copy.line2": "Right-Click a lift track: Paste stored attributes",
+  "tooltip.mtryum.lift_attr_copy.has_data": "Status: Attributes copied",
+  "tooltip.mtryum.lift_attr_copy.no_data": "Status: Empty (no attributes)"
 }

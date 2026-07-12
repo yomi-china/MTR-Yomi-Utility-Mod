@@ -16,6 +16,7 @@ public class MtryumItemGroups {
                 stacks.add(new ItemStack(MtryumItems.LIFT_PARTS_LINK_CONNECTOR));
                 stacks.add(new ItemStack(MtryumItems.LIFT_PARTS_LINK_REMOVER));
                 stacks.add(new ItemStack(MtryumItems.ONBOARD_TOOL));
+                stacks.add(new ItemStack(MtryumItems.LIFT_ATTRIBUTE_COPIER));
             })
             .build();
     public static final CreativeModeTab BLOCK_GROUP = FabricItemGroupBuilder.create(new ResourceLocation(Mtryum.MOD_ID, "block_group"))

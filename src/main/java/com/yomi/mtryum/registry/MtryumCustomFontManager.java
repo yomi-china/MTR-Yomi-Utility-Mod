@@ -37,7 +37,6 @@ public class MtryumCustomFontManager implements ResourceManagerReloadListener {
         try {
             Mtryum.LOGGER.info("Initializing custom fonts...");
 
-            // 加载字体
             loadFont("mitsubishi-modern", "assets/mtryum/fonts/mitsubishi-modern.ttf", 80);
             loadFont("old-thyssenkrupp", "assets/mtryum/fonts/old-thyssenkrupp.ttf", 60);
             loadFont("otis-series-1", "assets/mtryum/fonts/otis-series-1.ttf", 60);
@@ -52,12 +51,6 @@ public class MtryumCustomFontManager implements ResourceManagerReloadListener {
         }
     }
 
-    /**
-     * 加载自定义字体
-     * @param fontName 字体名称
-     * @param fontPath 字体文件路径
-     * @param baseSize 基础字体大小
-     */
     public synchronized void loadFont(String fontName, String fontPath, int baseSize) {
         try {
             Font font;
@@ -65,13 +58,11 @@ public class MtryumCustomFontManager implements ResourceManagerReloadListener {
             if (fontPath != null) {
                 InputStream fontStream = getClass().getClassLoader().getResourceAsStream(fontPath);
                 if (fontStream == null) {
-                    // 尝试备用路径
                     fontStream = getClass().getClassLoader().getResourceAsStream(fontPath.substring(fontPath.lastIndexOf('/') + 1));
                 }
 
                 if (fontStream != null) {
-                    font = Font.createFont(Font.TRUETYPE_FONT, fontStream)
-                            .deriveFont(Font.PLAIN, baseSize);
+                    font = createFontFromStream(fontStream, baseSize, fontPath);
                     fontStream.close();
 
                     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -91,6 +82,16 @@ public class MtryumCustomFontManager implements ResourceManagerReloadListener {
             Mtryum.LOGGER.error("Failed to load font {}: {}", fontName, e.getMessage());
             // 回退
             fontCache.put(fontName, new Font("SansSerif", Font.PLAIN, baseSize));
+        }
+    }
+
+    private Font createFontFromStream(InputStream fontStream, int baseSize, String fontPath) throws Exception {
+        try {
+            return Font.createFont(Font.TRUETYPE_FONT, fontStream)
+                    .deriveFont(Font.PLAIN, baseSize);
+        } catch (java.awt.FontFormatException e) {
+            Mtryum.LOGGER.warn("Failed to load '{}' with TRUETYPE_FONT format: {}", fontPath, e.getMessage());
+            throw e;
         }
     }
 

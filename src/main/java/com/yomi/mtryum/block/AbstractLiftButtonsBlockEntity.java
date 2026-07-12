@@ -1,12 +1,16 @@
 package com.yomi.mtryum.block;
 
 import mtr.block.BlockLiftButtons;
+import mtr.block.BlockLiftTrackFloor;
 import mtr.data.Lift;
 import mtr.data.RailwayData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractLiftButtonsBlockEntity extends BlockLiftButtons.TileEntityLiftButtons {
 
@@ -66,20 +70,19 @@ public abstract class AbstractLiftButtonsBlockEntity extends BlockLiftButtons.Ti
         final BlockState state = level.getBlockState(worldPosition);
         if (!(state.getBlock() instanceof AbstractLiftButtonsBlock)) return;
 
-        final int[] count = {0};
+        final RailwayData railwayData = RailwayData.getInstance(level);
+        if (railwayData == null) return;
+
+        final Set<Lift> uniqueLifts = new HashSet<>();
         forEachTrackPosition(level, (trackPos, tile) -> {
-            final RailwayData railwayData = RailwayData.getInstance(level);
-            if (railwayData != null) {
-                for (final Lift lift : railwayData.lifts) {
-                    if (lift.hasFloor(trackPos)) {
-                        count[0]++;
-                        break;
-                    }
+            for (final Lift lift : railwayData.lifts) {
+                if (lift.hasFloor(trackPos)) {
+                    uniqueLifts.add(lift);
                 }
             }
         });
 
-        final boolean dual = count[0] >= 2;
+        final boolean dual = uniqueLifts.size() >= 2;
         if (state.getValue(AbstractLiftButtonsBlock.DUAL) != dual) {
             level.setBlockAndUpdate(worldPosition, state.setValue(AbstractLiftButtonsBlock.DUAL, dual));
         }

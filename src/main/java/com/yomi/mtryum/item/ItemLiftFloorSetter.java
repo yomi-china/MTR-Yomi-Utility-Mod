@@ -41,7 +41,7 @@ public class ItemLiftFloorSetter {
                                 .withStyle(ChatFormatting.BLUE)
                 );
 
-                processSoundPlayerChain(world, startPos, selectedSound);
+                processSoundPlayerChain(world, startPos, selectedSound, player);
 
                 player.sendSystemMessage(
                         Component.translatable("item.mtryum.lift_floor_setter.sound_complete")
@@ -70,7 +70,7 @@ public class ItemLiftFloorSetter {
                         .withStyle(ChatFormatting.BLUE)
         );
 
-        processElevatorChain(world, startPos);
+        processElevatorChain(world, startPos, player);
 
         player.sendSystemMessage(
                 Component.translatable("item.mtryum.lift_floor_setter.elevator_complete")
@@ -86,7 +86,7 @@ public class ItemLiftFloorSetter {
         return nbt.contains(SOUND_INDEX_NBT_KEY) ? nbt.getInt(SOUND_INDEX_NBT_KEY) : -1;
     }
 
-    private static void processSoundPlayerChain(Level world, BlockPos startPos, int soundIndex) {
+    private static void processSoundPlayerChain(Level world, BlockPos startPos, int soundIndex, Player player) {
         int minY = startPos.getY();
         int maxY = 315;
         int count = 0;
@@ -101,14 +101,11 @@ public class ItemLiftFloorSetter {
             }
         }
 
-        if (count > 0) {
-            Player player = world.getNearestPlayer(startPos.getX(), startPos.getY(), startPos.getZ(), 10, false);
-            if (player != null) {
-                player.sendSystemMessage(
-                        Component.translatable("item.mtryum.lift_floor_setter.sound_progress", count)
-                                .withStyle(ChatFormatting.GRAY)
-                );
-            }
+        if (count > 0 && player != null) {
+            player.sendSystemMessage(
+                    Component.translatable("item.mtryum.lift_floor_setter.sound_progress", count)
+                            .withStyle(ChatFormatting.GRAY)
+            );
         }
     }
 
@@ -125,7 +122,7 @@ public class ItemLiftFloorSetter {
         }
     }
 
-    private static void processElevatorChain(Level world, BlockPos startPos) {
+    private static void processElevatorChain(Level world, BlockPos startPos, Player player) {
         int currentFloor = 1;
         BlockPos currentPos = startPos;
         int count = 0;
@@ -147,14 +144,11 @@ public class ItemLiftFloorSetter {
             currentPos = currentPos.above();
         }
 
-        if (count > 0) {
-            Player player = world.getNearestPlayer(startPos.getX(), startPos.getY(), startPos.getZ(), 10, false);
-            if (player != null) {
-                player.sendSystemMessage(
-                        Component.translatable("item.mtryum.lift_floor_setter.elevator_progress", count)
-                                .withStyle(ChatFormatting.GRAY)
-                );
-            }
+        if (count > 0 && player != null) {
+            player.sendSystemMessage(
+                    Component.translatable("item.mtryum.lift_floor_setter.elevator_progress", count)
+                            .withStyle(ChatFormatting.GRAY)
+            );
         }
     }
 
